@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "iajus-juris",
+  "displayName": "iaJus — Jurisprudência, Doutrina & Legislação BR",
+  "description": "Acesso ao MCP remoto iaJus (jurisprudência brasileira STF/STJ/TST/TCU/TJs/TRFs/TRTs, doutrina de autores e legislação federal) mais três skills — uma por corpus — que ensinam o agente a pesquisar, citar e classificar pelas 8 modalidades de busca (semântica, regex, FTS, ontologia OJBU, CNJ, grafo de citações, jurimetria e híbrida). Instale uma coisa e ganhe as skills + o servidor MCP já configurado.",
+  "version": "1.0.0",
+  "author": { "name": "iaJus / Celeris", "email": "contato@iajus.com.br" },
+  "homepage": "https://iajus.com.br",
+  "repository": "https://github.com/rafaelob/iajus-plugin-public",
+  "license": "LicenseRef-Proprietary",
+  "keywords": ["jurisprudencia", "doutrina", "legislacao", "direito", "brasil", "stf", "stj", "tst", "tcu", "mcp"],
+  "userConfig": {
+    "api_token": {
+      "type": "string",
+      "title": "iaJus API Key",
+      "description": "Sua chave iaJus (formato ik_…). Obrigatória em todos os planos; sem chave válida o MCP responde 401. A chave é mascarada e guardada no keychain do sistema — nunca em settings.json nem no repositório. Solicite em https://iajus.com.br.",
+      "sensitive": true,
+      "required": true
+    },
+    "mcp_url": {
+      "type": "string",
+      "title": "iaJus MCP URL (opcional)",
+      "description": "Endpoint do MCP remoto iaJus. Deixe em branco para usar o padrão de produção (Cloud Run, southamerica-east1).",
+      "default": "https://iajus-mcp-234355917040.southamerica-east1.run.app/mcp"
+    }
+  },
+  "defaultEnabled": false
+}

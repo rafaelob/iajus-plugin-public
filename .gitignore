@@ -1,0 +1,3 @@
+# nothing tracked beyond plugin tree
+*.bak
+.DS_Store
