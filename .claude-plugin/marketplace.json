@@ -12,7 +12,7 @@
   "plugins": [
     {
       "name": "iajus-juris",
-      "source": "iajus-juris",
+      "source": "./plugins/iajus-juris",
       "displayName": "iaJus — Jurisprudência, Doutrina & Legislação BR",
       "description": "Três skills (uma por corpus: jurisprudência, doutrina e legislação) + acesso ao MCP remoto iaJus (jurisprudência STF/STJ/TST/TCU/TJs/TRFs/TRTs, doutrina de autores e legislação federal). Instale uma coisa: ganha as skills e o servidor MCP configurado, autenticado pela sua chave ik_*.",
       "version": "1.0.0",
