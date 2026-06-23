@@ -1,27 +1,35 @@
-# iaJus — plugin Claude Code (jurisprudência, doutrina & legislação BR)
+# iaJus — plugin Claude Code (jurisprudência + legislação BR)
 
-Um plugin: você ganha **três skills** que ensinam o agente a pesquisar, **citar** e
-classificar jurisprudência, doutrina e legislação brasileira **+** o **servidor MCP
-remoto iaJus** já configurado. Não precisa configurar o MCP na mão.
+> **Versão 1.3.0** — autenticação por **OAuth 2.1 por padrão** (login no navegador,
+> refresh automático); a chave `ik_*` continua disponível como **fallback manual**.
+> Funcionalidade (compatível com 1.x): famílias Tribunais de Contas, administrativo
+> CARF, Turmas Recursais dos JEFs e resultados com **campos úteis** (relator, data,
+> ementa, link estável). Ver `CHANGELOG.md`.
 
-> Este repositório é **público** e contém **apenas o manifesto** do plugin (skills +
-> configuração do MCP) — **zero segredo**. O acesso aos dados é gateado **na camada
-> MCP** pela sua chave `ik_*`: sem chave válida, toda busca responde **401**.
-> **Peça a sua chave em https://iajus.com.br.**
+Um plugin: você ganha **skills** que ensinam o agente a pesquisar/citar
+jurisprudência e legislação brasileira **+** o **servidor MCP remoto iaJus** já
+configurado. Não precisa configurar o MCP na mão.
+
+O corpus cobre **milhões de acórdãos** nas famílias: **tribunais superiores**
+(STF/STJ/TST/TSE/STM/TNU), **TJs** (estaduais), **TRFs**, **TRTs**, **TREs**,
+**Tribunais de Contas** (TCU + TCEs), **Turmas Recursais dos JEFs** e
+**jurisprudência administrativa** (CARF) — mais **legislação federal, estadual e
+municipal**.
 
 ## O que vem no plugin
 
 | Componente | Conteúdo |
 |---|---|
-| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 8 modalidades |
-| `skills/consultar-doutrina/` | como localizar doutrina de autores (obra, capítulo) com a referência bibliográfica |
-| `skills/consultar-legislacao/` | como localizar leis/artigos por termo, tema (ontologia) ou citação literal |
-| `.mcp.json` | servidor `iajus` (streamable-HTTP) com header `Authorization: Bearer ${user_config.api_token}` |
+| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 8 modalidades (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
+| `skills/consultar-legislacao/` | como localizar leis/artigos **federais** por termo, tema (ontologia) ou citação literal, com texto íntegra e histórico de alterações |
+| `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** ao vivo na fonte oficial (UF [+ município] + tipo + número + ano) |
+| `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email profile offline_access`) |
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
-jurisprudência, doutrina ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
+jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
+(Doutrina é premium — fica só no perfil VadeFocus, fora deste plugin.)
 
-### As 8 modalidades de busca (tools do MCP)
+### As 8 modalidades de busca + qualificadas (tools do MCP)
 
 | Tool | Para quê |
 |---|---|
@@ -32,80 +40,70 @@ jurisprudência, doutrina ou legislação. Após instalar/habilitar, rode `/relo
 | `buscar_por_cnj` | número de processo CNJ (exato ou por componentes) |
 | `buscar_por_ontologia` | ramo/sub-área OJBU via subárvore ltree (L1/L2/L3 TPU + temas transversais) |
 | `buscar_grafo` | grafo de citações `legal_edges` (quem cita uma súmula/tema; auditoria de lacunas) |
-| `buscar_jurimetria` | filtros tipados + agregações (contagem por tribunal/relator/ano/classe/resultado) |
+| `buscar_jurimetria` | estatística agregada do corpus (contagens/distribuição por tribunal, ano, ramo) |
+| `consultar_qualificada` | precedentes qualificados de um órgão (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) |
 
-Todas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem as
-famílias `jurisprudencia` + `doutrina` + `legislacao` e são **read-only**.
+As buscas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem
+as famílias `jurisprudencia` + `legislacao` e são read-only.
 
-> **Filtro por órgão:** as modalidades de **significado** (`buscar_semantica`,
-> `buscar_hibrida`) usam `tribunal=STF`; as de **texto/estrutura** (`buscar_fts`,
-> `buscar_regex`, `buscar_por_ontologia`) usam `orgao_code=stf` (sigla minúscula).
+## Autenticação: OAuth 2.1 (padrão)
 
-## Como a chave entra (mecanismo `userConfig`)
+O `.mcp.json` declara o servidor `iajus` (`type: http`) **sem header de
+autorização**, então na primeira conexão o Claude Code detecta o `401` do MCP,
+descobre o Authorization Server pelo Protected Resource Metadata
+(`/.well-known/oauth-protected-resource/mcp` → AS `app.iajus.com.br`) e abre o
+**login OAuth no navegador** (a mesma conta "Entrar" da aplicação). O token é
+guardado com segurança pelo Claude Code e **renovado automaticamente** (o AS anuncia
+`offline_access`, que o Claude Code anexa ao escopo para refresh sem novo login).
+Nenhuma chave é digitada nem guardada por padrão.
 
-O plugin declara `userConfig.api_token` marcado `sensitive: true` e `required: true`.
-Ao **habilitar** o plugin, o Claude Code pede a sua chave `ik_*`, **mascara** o input
-e a guarda no **keychain do sistema** — nunca em `settings.json`, nunca no
-repositório. O `.mcp.json` injeta `Authorization: Bearer ${user_config.api_token}`
-em toda request. **É a instalação de credencial única**: uma coisa instala o plugin
-e autentica o MCP.
+A autorização é por usuário (a conta iaJus), validada server-side. O "restrito" é
+imposto na **camada MCP** (os dados), não no repositório do marketplace (que só tem
+manifesto, **zero segredo**).
 
-A chave é validada server-side (hash SHA-256). Sem chave válida → todo `buscar_*`
-responde **401**. O "restrito" é imposto na **camada MCP** (os dados), não no
-repositório do marketplace (que só tem manifesto, **zero segredo**).
-
-## Instalar — Claude Code
+## Instalar
 
 ```text
-/plugin marketplace add github.com/<owner>/<repo>   # marketplace público iaJus
+/plugin marketplace add github.com/rafaelob/iajus-plugin-public   # repo público do marketplace (cliente)
 /plugin install iajus-juris@iajus
-/plugin enable iajus-juris@iajus                     # aqui o Claude pede sua chave ik_* (guardada no keychain)
-/reload-plugins                                      # conecta o servidor MCP iajus com a chave
+/plugin enable iajus-juris@iajus
+/reload-plugins                              # conecta o MCP iajus; o Claude abre o login OAuth no navegador
 ```
 
-O plugin vem **desabilitado por padrão** (`defaultEnabled: false`) porque conecta a
-um serviço externo. Ao habilitar, informe a chave quando solicitado. Para trocar o
-endpoint, preencha o campo opcional **iaJus MCP URL** (`user_config.mcp_url`); em
-branco, usa o padrão de produção:
+O plugin vem **habilitado por padrão** (`defaultEnabled: true`) e já traz o endpoint do
+MCP fixado no padrão de produção. Ao usar a primeira tool, o Claude abre o login OAuth no
+navegador (mesma conta da aplicação) e renova o token sozinho via `offline_access`:
 
 ```
-https://iajus-mcp-234355917040.southamerica-east1.run.app/mcp
+https://mcp.iajus.com.br/mcp
 ```
 
-## Instalar — Cowork / Claude Desktop
+### Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 
-No Cowork/Desktop, adicione o plugin apontando para o **mesmo repositório GitHub
-público** (Settings → Plugins → "Add plugin" → URL do repositório
-`github.com/<owner>/<repo>`). Ao habilitar, informe a chave `ik_*` quando
-solicitado. O endpoint do MCP é o mesmo (campo opcional **iaJus MCP URL**; em branco
-usa o padrão de produção acima).
+Se preferir a chave estática à OAuth, registre o servidor fora do plugin com o
+header Bearer (não há fallback automático: header presente e rejeitado falha a
+conexão, então use OU OAuth OU Bearer):
+
+```text
+/mcp add iajus --transport http --url https://mcp.iajus.com.br/mcp --header "Authorization: Bearer ik_live_..."
+```
+
+A chave é validada server-side (hash SHA-256); sem chave válida → `401`. **Nunca
+cole a chave em commits ou chat.**
 
 ## Codex (mesmo MCP remoto)
 
-O Codex consome MCP via `~/.codex/config.toml`. Aponte para o mesmo endpoint com a
-chave por variável de ambiente:
+Plugin Codex equivalente (OAuth por padrão). Caminho **sem git** (ZIP): extraia o
+pacote e `codex plugin marketplace add ./iajus-juris-codex` → `codex plugin add
+iajus-juris@iajus`. Caminho **git privado**: `codex plugin marketplace add
+https://dist.iajus.com.br/marketplace.git` (HTTP Basic via git credential-helper —
+e-mail + `ik_*`; **nunca** credencial na URL). Fallback `ik_*`: `codex mcp add iajus
+--url https://mcp.iajus.com.br/mcp --bearer-token-env-var IAJUS_API_TOKEN`. Detalhes
+em `saas/plugin/plugins/iajus-juris-codex/README.md`.
 
-```bash
-codex mcp add iajus --url https://iajus-mcp-234355917040.southamerica-east1.run.app/mcp \
-  --bearer-token-env-var IAJUS_API_TOKEN
-export IAJUS_API_TOKEN=ik_live_SUA_CHAVE_AQUI   # nunca commitar/colar em chat
-```
+## Compatibilidade de clientes (autenticação)
 
-## Atualizar para novas versões
-
-```text
-/plugin marketplace update iajus
-/plugin update iajus-juris@iajus
-/reload-plugins
-```
-
-A sua chave no keychain é preservada na atualização. Novas ferramentas e mais
-cobertura entram no **servidor** e ficam disponíveis sem reinstalar (mesmo endereço,
-mesma chave).
-
-## Compatibilidade de clientes
-
-> Clientes que aceitam Bearer estático: Claude Code, Claude Desktop, Cowork, Cursor,
-> Gemini CLI, Codex (headless). Claude.ai web e ChatGPT exigem OAuth (v2 — em
-> preparação). A chave é validada server-side; nunca trafega na URL nem em log.
-> **Não cole a chave em commits ou chat.** Solicite a sua em https://iajus.com.br.
+> **OAuth 2.1** (padrão, recomendado): Claude Code, Claude Desktop, claude.ai web,
+> ChatGPT (conector/Developer Mode), Codex. **Bearer `ik_*`** (fallback): Claude
+> Code/Desktop, Cursor, Gemini CLI, Codex (headless). A chave é validada server-side;
+> nunca trafega na URL nem em log. **Não cole a chave em commits ou chat.**

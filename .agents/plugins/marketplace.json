@@ -1,0 +1,20 @@
+{
+  "name": "iajus",
+  "interface": {
+    "displayName": "iaJus — Jurisprudência & Legislação BR"
+  },
+  "plugins": [
+    {
+      "name": "iajus-juris",
+      "source": {
+        "source": "local",
+        "path": "./plugins/iajus-juris-codex"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

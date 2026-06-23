@@ -2,9 +2,9 @@
   "mcpServers": {
     "iajus": {
       "type": "http",
-      "url": "${user_config.mcp_url}",
-      "headers": {
-        "Authorization": "Bearer ${user_config.api_token}"
+      "url": "https://mcp.iajus.com.br/mcp",
+      "oauth": {
+        "scopes": "openid email profile offline_access"
       }
     }
   }
