@@ -44,6 +44,19 @@ Notas de uso:
   trecho literal ≥3 chars. Em erro, a tool devolve `{ "erro": "…", "resultados": [] }`
   (nunca stack trace) — leia a mensagem e ajuste.
 
+## Campos canônicos novos (taxonomia + matéria + autoria)
+
+- **`consultar_qualificada` devolve a taxonomia CANÔNICA do precedente:** `tipo_canonico`
+  (o tipo padronizado), `tipo_label` (rótulo PT-BR pronto para exibição) e `tipo_familia`
+  (a família qualitativa: vinculante / editorial / …). Use-os para agrupar e rotular os
+  precedentes por tipo, em vez de inferir do texto da ementa.
+- **`materia`** acompanha cada qualificada (= `ramo_hint`, presente em ~100% delas): é a
+  matéria/ramo canônico do precedente. Use como **facet de recorte** ("súmulas de
+  Tributário") e em perguntas de **jurimetria** (distribuição por matéria).
+- **`redator_acordao`** vem nos acórdãos: é o magistrado **redator** do acórdão (autoria
+  pelo art. 941 do CPC), com `revisor` quando houver — o autor do acórdão a citar, distinto
+  do relator sorteado nos casos de relator vencido.
+
 ## Ontologia OJBU (ramos reais — use estes códigos)
 
 `buscar_por_ontologia` recebe `l1_code` (código TPU do ramo, inteiro), opcionalmente
@@ -77,6 +90,9 @@ recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si
   `data_julgamento` quando presentes. Resuma a `ementa_snippet` em 1-2 frases.
 - Quando útil, mostre a classificação OJBU do registro (`classificacao.l1`,
   `ramo_l1_codes`) e ofereça abrir o inteiro teor pelo `inteiro_teor_url`.
+- Em **acórdãos**, atribua a autoria ao **`redator_acordao`** (o redator — autor do
+  acórdão pelo art. 941 do CPC) e ao `revisor` quando vier; nas **qualificadas** apresente
+  `tipo_label` (o tipo) e `materia` (a matéria/ramo) para situar o precedente.
 - Se a busca **não** retornar resultado relevante (`total: 0` ou hits fracos),
   **diga isso honestamente** — não preencha a lacuna com um precedente fabricado.
 

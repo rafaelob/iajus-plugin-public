@@ -5,6 +5,21 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 iaJus — o plugin é o cliente fino.
 
+## [1.4.0] — 2026-06-24
+
+Reflete os campos canônicos novos do MCP (taxonomia + matéria + autoria) que o agente
+passa a citar e a usar como facet de recorte e jurimetria.
+
+### Adicionado
+
+- **Skill `pesquisar-jurisprudencia`** documenta os campos novos do MCP: em
+  `consultar_qualificada`, a taxonomia canônica `tipo_canonico` / `tipo_label` /
+  `tipo_familia` (vinculante/editorial/…) e `materia` (matéria/ramo canônico, `ramo_hint`,
+  presente em ~100% das qualificadas — facet de recorte e de jurimetria); nos acórdãos,
+  `redator_acordao` e `revisor` (a autoria do acórdão pelo art. 941 do CPC, distinta do
+  relator sorteado quando vencido). Orienta o agente a agrupar por `materia`/`tipo_label`
+  e a atribuir a autoria ao redator.
+
 ## [1.3.0] — 2026-06-18
 
 Autenticação por **OAuth 2.1 por padrão** (login no navegador, refresh automático);

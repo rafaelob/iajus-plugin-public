@@ -15,7 +15,7 @@
       "source": "./plugins/iajus-juris",
       "displayName": "iaJus — Jurisprudência & Legislação BR",
       "description": "Três skills (jurisprudência, legislação federal e legislação estadual/municipal ao vivo) + acesso ao MCP remoto iaJus (jurisprudência STF/STJ/TST/TCU/TJs/TRFs/TRTs/TREs, legislação federal, estadual e municipal). Instale uma coisa: ganha as skills e o servidor MCP já configurado, autenticado por OAuth 2.1 (login no navegador; chave ik_* como fallback).",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "author": { "name": "iaJus / Celeris", "email": "contato@iajus.com.br" },
       "homepage": "https://iajus.com.br",
       "license": "LicenseRef-Proprietary",
