@@ -12,6 +12,13 @@ qualificados, repercussão geral) com classificação alinhada ao CNJ/TPU (ontol
 OJBU: 21 ramos L1 → sub-áreas L2/L3). **Use o MCP em vez de inventar precedentes —
 a fonte é a verdade; nunca cite de memória.**
 
+> **Cobertura TJ-RJ (atual):** os acórdãos do TJ-RJ no corpus são hoje
+> predominantemente **cíveis**; as Câmaras Criminais (1ª a 8ª + Seção Criminal)
+> ainda estão em ingestão. Para matéria **criminal** do TJ-RJ, trate um `total: 0`
+> ou recall fraco como **lacuna de cobertura em andamento**, não como ausência de
+> precedente: avise o usuário e ofereça os tribunais superiores (STJ/STF) para a
+> tese criminal. (Demais tribunais e o TJ-RJ cível não têm essa ressalva.)
+
 ## Escolha da modalidade (8 tools de busca + qualificadas)
 
 Comece pela modalidade certa para a pergunta. As buscas retornam um envelope
