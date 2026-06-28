@@ -1,6 +1,6 @@
 # iaJus — plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 1.3.0** — autenticação por **OAuth 2.1 por padrão** (login no navegador,
+> **Versão 1.4.1** — autenticação por **OAuth 2.1 por padrão** (login no navegador,
 > refresh automático); a chave `ik_*` continua disponível como **fallback manual**.
 > Funcionalidade (compatível com 1.x): famílias Tribunais de Contas, administrativo
 > CARF, Turmas Recursais dos JEFs e resultados com **campos úteis** (relator, data,
@@ -99,7 +99,7 @@ iajus-juris@iajus`. Caminho **git privado**: `codex plugin marketplace add
 https://dist.iajus.com.br/marketplace.git` (HTTP Basic via git credential-helper —
 e-mail + `ik_*`; **nunca** credencial na URL). Fallback `ik_*`: `codex mcp add iajus
 --url https://mcp.iajus.com.br/mcp --bearer-token-env-var IAJUS_API_TOKEN`. Detalhes
-em `saas/plugin/plugins/iajus-juris-codex/README.md`.
+em `plugins/iajus-juris-codex/README.md`.
 
 ## Compatibilidade de clientes (autenticação)
 

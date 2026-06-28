@@ -1,7 +1,7 @@
 ---
 name: consultar-legislacao
 description: Consulta legislação FEDERAL brasileira real (leis, decretos, MPVs, leis complementares, emendas) pelo MCP iaJus, com texto íntegra do Planalto, resolução por tipo/número/ano, busca por tema, grafo de normas e histórico de alterações artigo por artigo. Acione sempre que o usuário pedir o texto de uma lei federal, um artigo específico, a redação vigente de um dispositivo, normas por tema/ramo do direito, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z", "esse dispositivo está em vigor", "esse artigo foi alterado" — em vez de citar de memória. NÃO use para legislação ESTADUAL/MUNICIPAL (skill consultar-legislacao-estadual) nem para precedentes/acórdãos/súmulas (skill pesquisar-jurisprudencia).
-allowed-tools: mcp__iajus__consultar_legislacao_federal, mcp__plugin_iajus-juris_iajus__consultar_legislacao_federal, mcp__iajus__buscar_legislacao_federal, mcp__plugin_iajus-juris_iajus__buscar_legislacao_federal, mcp__iajus__listar_legislacao_federal, mcp__plugin_iajus-juris_iajus__listar_legislacao_federal, mcp__iajus__obter_texto_legislacao, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__obter_alteracoes_legislacao, mcp__plugin_iajus-juris_iajus__obter_alteracoes_legislacao, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_iajus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__ler_dispositivo_legal, mcp__plugin_iajus-juris_iajus__ler_dispositivo_legal, mcp__iajus__pesquisar_legislacao, mcp__plugin_iajus-juris_iajus__pesquisar_legislacao, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__consultar_ontologia_juridica, mcp__plugin_iajus-juris_iajus__consultar_ontologia_juridica, mcp__iajus__classificar_norma, mcp__plugin_iajus-juris_iajus__classificar_norma
+allowed-tools: mcp__iajus__consultar_legislacao_federal, mcp__plugin_iajus-juris_iajus__consultar_legislacao_federal, mcp__iajus__buscar_legislacao_federal, mcp__plugin_iajus-juris_iajus__buscar_legislacao_federal, mcp__iajus__listar_legislacao_federal, mcp__plugin_iajus-juris_iajus__listar_legislacao_federal, mcp__iajus__obter_texto_legislacao, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__obter_alteracoes_legislacao, mcp__plugin_iajus-juris_iajus__obter_alteracoes_legislacao, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_iajus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__ler_dispositivo_legal, mcp__plugin_iajus-juris_iajus__ler_dispositivo_legal, mcp__iajus__pesquisar_legislacao, mcp__plugin_iajus-juris_iajus__pesquisar_legislacao, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__consultar_ontologia_juridica, mcp__plugin_iajus-juris_iajus__consultar_ontologia_juridica, mcp__iajus__classificar_norma, mcp__plugin_iajus-juris_iajus__classificar_norma, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__consultar_protocolo_classificacao, mcp__plugin_iajus-juris_iajus__consultar_protocolo_classificacao
 ---
 
 # Consultar legislação federal brasileira (iaJus)
@@ -19,18 +19,27 @@ MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
 | Quero o **texto íntegra** de uma norma ou de um artigo | `obter_texto_legislacao` / `obter_texto_legislacao_markdown` | Texto pleno; a variante `_markdown` traz a estrutura hierárquica (Título/Capítulo/Art./§). |
 | Quero a redação de UM dispositivo específico ("art. 5º, II") | `ler_dispositivo_legal` | Isola o dispositivo (artigo, parágrafo, inciso) com a redação vigente. |
 | Não sei o número — busca por nome/tema ("CDC", "Lei Geral de Proteção de Dados") | `buscar_legislacao_federal` | Busca por termo/tema na legislação federal. |
+| Tenho o **nome/apelido** da norma e quero a norma + **vigência** ("CLT", "Código de Defesa do Consumidor") | `buscar_norma_por_nome` | Resolve a norma pelo nome/apelido e devolve o **`status`** (vigente / revogada). **Para amparo, sirva só `vigente`.** |
+| Tenho **tipo + número** e quero a norma + **vigência** ("Lei 8078", "LC 95") | `buscar_norma_por_numero` | Resolve por `tipo` + `numero` (+ `ano`) e devolve o **`status`** (vigente / revogada). |
 | Listar normas de um tipo/ano | `listar_legislacao_federal` | Enumera (ex.: leis de 2023). |
 | Esse artigo foi **alterado/revogado**? Por qual norma e quando? | `obter_alteracoes_legislacao` | Histórico de alterações artigo por artigo (norma alteradora + data). |
 | Quais normas citam/alteram/são citadas por esta | `consultar_grafo_legislacao` | Relações entre normas (`cita_legislacao`, `altera_norma`). |
 | Busca conceitual/semântica no corpus de legislação | `buscar_semantica` / `buscar_fts` / `buscar_hibrida` | Passe `family="legislacao"`. Semântica casa por significado; FTS por expressão (use `phrase=true` p/ ordem exata). |
 | "Quais leis tratam de um ramo do direito" | `buscar_por_ontologia` | `l1_code` TPU + `family="legislacao"`. Ex.: `l1_code=1156` (Consumidor → CDC), `14` (Tributário), `899` (Civil → CC). |
 | Taxonomia OJBU de referência / classificar uma norma | `consultar_ontologia_juridica` / `classificar_norma` | Árvore de ramos (21 L1) e classificação de um texto normativo. |
+| Protocolo de decisão CNJ/TPU (como classificar passo a passo) | `consultar_protocolo_classificacao` | Devolve o protocolo de classificação CNJ/TPU para o agente seguir antes de atribuir o ramo/assunto. |
 
 Fluxo recomendado: **resolva ou descubra a norma** (`consultar_legislacao_federal` quando
 sabe o número; `buscar_legislacao_federal`/`buscar_semantica` quando só sabe o tema) →
 **leia o texto** (`obter_texto_legislacao_markdown` ou `ler_dispositivo_legal` para um
 dispositivo) → **cheque vigência** (`obter_alteracoes_legislacao`) antes de afirmar que a
 redação está em vigor.
+
+Para a pergunta **"qual a norma chamada X / a Lei nº N, e está em vigor?"** prefira
+`buscar_norma_por_nome` (por nome/apelido) e `buscar_norma_por_numero` (por tipo + número):
+elas retornam a **vigência (`status`)** junto com a norma e **substituem** os antigos
+`pesquisar_*` de lookup. **Para amparo jurídico, sirva apenas o que vier `status=vigente`** e
+sinalize explicitamente quando a norma estiver `revogada`.
 
 ## Regras de citação (obrigatório)
 

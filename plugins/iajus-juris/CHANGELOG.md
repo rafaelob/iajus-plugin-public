@@ -5,6 +5,33 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 iaJus — o plugin é o cliente fino.
 
+## [1.4.1] — 2026-06-27
+
+Documenta tools do MCP que já eram servidas no perfil `iajus` mas não apareciam em
+nenhuma skill, e conserta referências de caminho quebradas nos READMEs.
+
+### Adicionado
+
+- **Skill `consultar-legislacao`** passa a documentar e habilitar as tools de **amparo
+  §11** `buscar_norma_por_nome` (resolve a norma pelo nome/apelido — ex.: "CLT", "Código
+  de Defesa do Consumidor") e `buscar_norma_por_numero` (resolve por `tipo` + `numero` —
+  ex.: "Lei 8078"). Ambas devolvem o **`status` de vigência** (vigente / revogada) e
+  **substituem** os antigos `pesquisar_*` de lookup; para amparo jurídico, sirva apenas
+  `status=vigente`. A mesma skill ganha `consultar_protocolo_classificacao` (protocolo de
+  decisão CNJ/TPU).
+- **Skill `pesquisar-jurisprudencia`** passa a documentar e habilitar
+  `consultar_informativos_stf` e `consultar_informativos_stj` (informativos de
+  jurisprudência do STF/STJ — a síntese oficial dos julgados de destaque por edição).
+
+### Corrigido
+
+- **Referências de caminho quebradas nos READMEs** repontadas para caminhos in-package
+  válidos no espelho público (`saas/plugin/plugins/iajus-juris-codex/README.md` →
+  `plugins/iajus-juris-codex/README.md`; `saas/clients/codex/config.toml.example` →
+  `./.mcp.json`).
+- **Banner de versão do README** do plugin Claude Code corrigido (estava "1.3.0" enquanto
+  os manifestos e o CHANGELOG já eram 1.4.0).
+
 ## [1.4.0] — 2026-06-24
 
 Reflete os campos canônicos novos do MCP (taxonomia + matéria + autoria) que o agente

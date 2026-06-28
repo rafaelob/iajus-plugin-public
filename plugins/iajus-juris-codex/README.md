@@ -69,7 +69,7 @@ codex mcp add iajus --url https://mcp.iajus.com.br/mcp --bearer-token-env-var IA
 
 Build antigo do Codex sem `url` remoto: bridge stdio
 `npx -y mcp-remote https://mcp.iajus.com.br/mcp --header "Authorization: Bearer ${IAJUS_API_TOKEN}"`
-(requer Node/npx). Detalhes em `saas/clients/codex/config.toml.example`.
+(requer Node/npx). A configuração do servidor está em `./.mcp.json`.
 
 > Manifesto do plugin: `.codex-plugin/plugin.json`; manifesto do marketplace:
 > `.agents/plugins/marketplace.json`. OAuth keys do Codex (`oauth_resource`/`scopes`)
