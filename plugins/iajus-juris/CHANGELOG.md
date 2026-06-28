@@ -5,6 +5,36 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 iaJus — o plugin é o cliente fino.
 
+## [1.5.0] — 2026-06-28
+
+Nova skill de **estado do corpus ao vivo** e semântica de corpus vivo/em crescimento
+nas skills de busca. Descrições de SKILL.md encurtadas para < 500 chars (regra do
+operador 2026-06-28).
+
+### Adicionado
+
+- **Skill `corpus-status`** — ensina e habilita a tool `estatisticas_corpus_pg`, que lê
+  o **read-model Postgres ao vivo** (o mesmo que as buscas consultam) e responde "o que
+  tem na base AGORA?": por família (jurisprudência/doutrina/legislação) total de
+  unidades, nº de órgãos, faixa de anos e cobertura de embedding `_3s`/FTS; por órgão
+  contagem + anos cobertos; por espécie de qualificada (vigentes/canceladas); e
+  legislação por esfera e status. Totalmente data-driven — nova ingestão aparece sem
+  mudança de skill. Presente nas duas variantes (`iajus-juris` e `iajus-juris-codex`),
+  bodies byte-idênticos.
+- **Semântica de corpus VIVO** nas skills `pesquisar-jurisprudencia` e
+  `consultar-legislacao`: um `total: 0` para um órgão/ano/norma já em cobertura =
+  **cobertura em andamento**, não inexistência; órgãos/anos/famílias novos aparecem na
+  busca automaticamente. As skills apontam para `corpus-status` para conferir o estado
+  atual.
+
+### Mudado
+
+- **Descrições de frontmatter das SKILL.md encurtadas para < 500 caracteres** (regra do
+  operador 2026-06-28, travada em `tests/saas/test_plugin_marketplace_contracts.py`).
+  As três skills de busca tinham descrições de 719-778 chars; o detalhe vive no corpo da
+  skill, a descrição é só o gatilho. Significado, gatilhos "Acione quando…" e diacríticos
+  preservados.
+
 ## [1.4.1] — 2026-06-27
 
 Documenta tools do MCP que já eram servidas no perfil `iajus` mas não apareciam em

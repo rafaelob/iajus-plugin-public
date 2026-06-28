@@ -1,6 +1,6 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP iaJus, com as 8 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, grafo de citações, jurimetria) e a leitura de precedentes qualificados (súmulas, repercussão geral, IRDR, IRR, IAC). Acione sempre que o usuário pedir precedente, acórdão, súmula, repercussão geral, tema repetitivo, número de processo CNJ, estatística de julgados ou o grafo de citações de uma súmula/tema — ou perguntar "o que os tribunais decidiram sobre X", "tem precedente sobre Y", "qual o entendimento atual", "quantos acórdãos sobre Z" — em vez de responder de memória. NÃO use para o texto de leis/decretos (skills consultar-legislacao e consultar-legislacao-estadual).
+description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP iaJus, com 8 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, grafo de citações, jurimetria), precedentes qualificados (súmulas, repercussão geral, IRDR, IRR, IAC) e informativos STF/STJ. Acione quando o usuário pedir precedente, acórdão, súmula, tema repetitivo, número CNJ, estatística de julgados ou o entendimento atual de um tribunal. NÃO use para leis.
 allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_iajus-juris_iajus__buscar_grafo, mcp__iajus__buscar_jurimetria, mcp__plugin_iajus-juris_iajus__buscar_jurimetria, mcp__iajus__consultar_qualificada, mcp__plugin_iajus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_iajus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_iajus-juris_iajus__consultar_informativos_stj
 ---
 
@@ -11,6 +11,14 @@ Você tem acesso ao servidor MCP `iajus`, que indexa jurisprudência brasileira
 qualificados, repercussão geral) com classificação alinhada ao CNJ/TPU (ontologia
 OJBU: 21 ramos L1 → sub-áreas L2/L3). **Use o MCP em vez de inventar precedentes —
 a fonte é a verdade; nunca cite de memória.**
+
+> **Corpus VIVO e em crescimento:** a base é ingerida continuamente — órgãos, anos
+> e famílias novos aparecem na busca automaticamente, sem mudança de skill. Um
+> `total: 0` (ou recall fraco) para um órgão/ano que já está em cobertura significa
+> **cobertura em andamento**, não "não existe": avise o usuário e ofereça uma fonte
+> alternativa (ex.: tribunal superior). Para conferir o que a base contém AGORA
+> (por órgão/ano/família + quanto já está embedado), use a skill **corpus-status**
+> (`estatisticas_corpus_pg`).
 
 > **Cobertura TJ-RJ (atual):** os acórdãos do TJ-RJ no corpus são hoje
 > predominantemente **cíveis**; as Câmaras Criminais (1ª a 8ª + Seção Criminal)

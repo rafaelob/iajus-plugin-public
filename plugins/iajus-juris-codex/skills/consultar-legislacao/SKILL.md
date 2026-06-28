@@ -1,6 +1,6 @@
 ---
 name: consultar-legislacao
-description: Consulta legislação FEDERAL brasileira real (leis, decretos, MPVs, leis complementares, emendas) pelo MCP iaJus, com texto íntegra do Planalto, resolução por tipo/número/ano, busca por tema, grafo de normas e histórico de alterações artigo por artigo. Acione sempre que o usuário pedir o texto de uma lei federal, um artigo específico, a redação vigente de um dispositivo, normas por tema/ramo do direito, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z", "esse dispositivo está em vigor", "esse artigo foi alterado" — em vez de citar de memória. NÃO use para legislação ESTADUAL/MUNICIPAL (skill consultar-legislacao-estadual) nem para precedentes/acórdãos/súmulas (skill pesquisar-jurisprudencia).
+description: Consulta legislação FEDERAL brasileira real (leis, decretos, MPVs, LCs, emendas) pelo MCP iaJus: texto íntegra do Planalto, resolução por tipo/número/ano, busca por tema, vigência (vigente/revogada) e alterações artigo por artigo. Acione quando o usuário pedir o texto de uma lei federal, um artigo ou a redação vigente de um dispositivo, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z". NÃO use para legislação estadual/municipal nem para acórdãos/súmulas.
 allowed-tools: mcp__iajus__consultar_legislacao_federal, mcp__plugin_iajus-juris_iajus__consultar_legislacao_federal, mcp__iajus__buscar_legislacao_federal, mcp__plugin_iajus-juris_iajus__buscar_legislacao_federal, mcp__iajus__listar_legislacao_federal, mcp__plugin_iajus-juris_iajus__listar_legislacao_federal, mcp__iajus__obter_texto_legislacao, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__obter_alteracoes_legislacao, mcp__plugin_iajus-juris_iajus__obter_alteracoes_legislacao, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_iajus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__ler_dispositivo_legal, mcp__plugin_iajus-juris_iajus__ler_dispositivo_legal, mcp__iajus__pesquisar_legislacao, mcp__plugin_iajus-juris_iajus__pesquisar_legislacao, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__consultar_ontologia_juridica, mcp__plugin_iajus-juris_iajus__consultar_ontologia_juridica, mcp__iajus__classificar_norma, mcp__plugin_iajus-juris_iajus__classificar_norma, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__consultar_protocolo_classificacao, mcp__plugin_iajus-juris_iajus__consultar_protocolo_classificacao
 ---
 
@@ -10,6 +10,13 @@ Você tem acesso ao servidor MCP `iajus` para **legislação federal** brasileir
 decretos, MPVs, leis complementares, emendas constitucionais, decretos-lei), com **texto
 íntegra do Planalto** e rastreamento de alterações artigo por artigo via Senado. Use o
 MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
+
+> **Corpus VIVO e em crescimento:** a base de legislação é ingerida continuamente —
+> normas e dispositivos novos aparecem automaticamente, sem mudança de skill. Um
+> `total: 0` para uma norma que deveria existir pode ser **cobertura em andamento**,
+> não inexistência — diga isso honestamente e não invente a norma. Para ver o que a
+> base de legislação contém AGORA (por esfera/status + cobertura de indexação), use a
+> skill **corpus-status** (`estatisticas_corpus_pg`).
 
 ## Como consultar — escolha o caminho pela pergunta
 
