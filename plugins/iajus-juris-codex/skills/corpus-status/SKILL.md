@@ -1,6 +1,6 @@
 ---
 name: corpus-status
-description: Mostra o que a base iaJus CONTÉM AGORA pelo MCP (tool estatisticas_corpus_pg, lê o Postgres ao vivo) — por família (jurisprudência/doutrina/legislação) total de unidades, nº de órgãos, faixa de anos e cobertura de embedding/FTS; por órgão contagem + anos; por qualificada e legislação por status. Acione quando o usuário perguntar "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do órgão X?", "quanto já está embedado?". Corpus VIVO — total 0 = cobertura em andamento.
+description: Mostra o que a base iaJus contém AGORA via MCP (tool estatisticas_corpus_pg, lê o Postgres ao vivo): por família (jurisprudência/doutrina/legislação) total de unidades, nº de órgãos, faixa de anos e cobertura de embedding/FTS; por órgão contagem + anos; por qualificada e legislação por status. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do órgão X?", "quanto já está embedado?". Corpus VIVO — total 0 = cobertura em andamento.
 allowed-tools: mcp__iajus__estatisticas_corpus_pg, mcp__plugin_iajus-juris_iajus__estatisticas_corpus_pg
 ---
 
