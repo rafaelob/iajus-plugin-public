@@ -45,9 +45,9 @@ vigência (`status_vigencia`) nas qualificadas e nos hits de busca.
 - **Recorte de ano na skill de jurisprudência:** `buscar_semantica` aceita `ano` (um
   ano exato), não `ano_min`/`ano_max` (que são da `buscar_hibrida`/FTS/regex/ontologia);
   `ramo_l1` vale para ambas (não só para a híbrida).
-- **Pisos temporais do corpus** atualizados na skill (STF/STJ/TST/TSE desde 2000, TCU
-  desde 1992, controle concentrado do STF desde 1988, TRTs 2016, demais 2013 — o texto
-  anterior dizia "2013-2026 / TST-TRTs-TREs 2016-2026").
+- **Pisos temporais do corpus** atualizados na skill (desde 2000 em todos os
+  tribunais — exceções: controle concentrado do STF desde 1988, TCU desde 1992,
+  TRF6 desde 2022; o texto anterior dizia "2013-2026 / TST-TRTs-TREs 2016-2026").
 
 ## [1.5.0] — 2026-06-28
 

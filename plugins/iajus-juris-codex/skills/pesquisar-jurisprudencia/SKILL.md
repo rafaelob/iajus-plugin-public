@@ -7,9 +7,9 @@ allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__busc
 # Pesquisar jurisprudência brasileira (iaJus)
 
 Você tem acesso ao servidor MCP `iajus`, que indexa jurisprudência brasileira
-(acórdãos colegiados com piso por órgão — STF/STJ/TST/TSE desde 2000, TCU desde
-1992, controle concentrado do STF desde 1988, TRTs desde 2016, demais tribunais
-desde 2013 —, súmulas, precedentes qualificados, repercussão geral) com
+(acórdãos colegiados desde 2000 em todos os tribunais — exceções: controle
+concentrado do STF desde 1988, TCU desde 1992, TRF6 desde 2022 —, súmulas,
+precedentes qualificados, repercussão geral) com
 classificação alinhada ao CNJ/TPU (ontologia OJBU: 21 ramos L1 → sub-áreas L2/L3).
 **Use o MCP em vez de inventar precedentes — a fonte é a verdade; nunca cite de
 memória.**
