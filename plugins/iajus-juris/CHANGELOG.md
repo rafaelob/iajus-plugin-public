@@ -5,6 +5,50 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 iaJus — o plugin é o cliente fino.
 
+## [1.6.0] — 2026-07-02
+
+Documenta e habilita a superfície nova do MCP servida no perfil geral `iajus`:
+jurimetria agregada exata, grafo de legislação com alterações por dispositivo (§11) e
+vigência (`status_vigencia`) nas qualificadas e nos hits de busca.
+
+### Adicionado
+
+- **4 tools de jurimetria agregada** documentadas e habilitadas na skill
+  `pesquisar-jurisprudencia`: `jurimetria_volume` (volume por órgão × ano; recorte
+  obrigatório), `jurimetria_relator` (ranking de relatores de um órgão; LGPD n<20
+  suprimido), `jurimetria_classe` (volume por classe CNJ + `cobertura_classe_pct`) e
+  `jurimetria_orgao_julgador` (volume por câmara/turma/seção). Contagens EXATAS do
+  read-model agregado (rollups do projector — scan-safe), sempre com o **envelope de
+  honestidade** `{snapshot_id, as_of, denominator_definition, value_kind, coverage_pct,
+  truncado}`; taxas de resultado seguem "sem cobertura" (nunca inferidas). A skill agora
+  distingue: números exatos → `jurimetria_*`; navegação/facet estruturada →
+  `buscar_jurimetria`.
+- **Grafo de legislação por dispositivo (§11)** na skill `consultar-legislacao`:
+  `consultar_grafo_legislacao` passou a retornar `alteracoes_dispositivo` (eventos por
+  artigo — "redação dada por"/"revogado por"/"regulamentado por", com `dispositivo_ref`
+  + norma alteradora) e `citacoes` (`cita`/`citada_por`), além da cadeia de alterações,
+  dead-ends e conversão MPV→LEI.
+- **Vigência em toda a superfície** documentada nas duas skills de busca:
+  `consultar_qualificada` marca `status_vigencia` (canceladas/superadas saem MARCADAS,
+  vigentes primeiro; `incluir_canceladas=false` oculta; novo modo por matéria via
+  `materia=`); hits de busca trazem o envelope de confiança `trust`
+  `{authority_tier, status_vigencia, trecho}`; em legislação, `buscar_hibrida` serve por
+  padrão só normas em vigor (`incluir_historico=true` para pesquisa histórica) e expõe
+  `is_amending_only`; citações numéricas ("súmula 145 do STF", "tema 1234") disparam
+  lookup exato prependado em `buscar_fts`/`buscar_semantica`.
+
+### Corrigido
+
+- **Banner de versão do README** estava "1.4.1" com manifestos 1.5.0 (mesma classe do
+  fix da 1.4.1); README e manifestos agora dizem **quatro** skills (a `corpus-status`
+  da 1.5.0 faltava na tabela "O que vem no plugin" e nas descrições "três skills").
+- **Recorte de ano na skill de jurisprudência:** `buscar_semantica` aceita `ano` (um
+  ano exato), não `ano_min`/`ano_max` (que são da `buscar_hibrida`/FTS/regex/ontologia);
+  `ramo_l1` vale para ambas (não só para a híbrida).
+- **Pisos temporais do corpus** atualizados na skill (STF/STJ/TST/TSE desde 2000, TCU
+  desde 1992, controle concentrado do STF desde 1988, TRTs 2016, demais 2013 — o texto
+  anterior dizia "2013-2026 / TST-TRTs-TREs 2016-2026").
+
 ## [1.5.0] — 2026-06-28
 
 Nova skill de **estado do corpus ao vivo** e semântica de corpus vivo/em crescimento

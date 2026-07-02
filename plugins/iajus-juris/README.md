@@ -1,10 +1,11 @@
 # iaJus — plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 1.4.1** — autenticação por **OAuth 2.1 por padrão** (login no navegador,
-> refresh automático); a chave `ik_*` continua disponível como **fallback manual**.
-> Funcionalidade (compatível com 1.x): famílias Tribunais de Contas, administrativo
-> CARF, Turmas Recursais dos JEFs e resultados com **campos úteis** (relator, data,
-> ementa, link estável). Ver `CHANGELOG.md`.
+> **Versão 1.6.0** — jurimetria agregada exata (`jurimetria_volume` / `jurimetria_relator`
+> / `jurimetria_classe` / `jurimetria_orgao_julgador`), grafo de legislação com alterações
+> **por dispositivo** (`alteracoes_dispositivo`) e vigência (`status_vigencia`) nas
+> qualificadas e nos hits de busca (envelope `trust`). Autenticação por **OAuth 2.1 por
+> padrão** (login no navegador, refresh automático); chave `ik_*` como **fallback
+> manual**. Compatível com 1.x. Ver `CHANGELOG.md`.
 
 Um plugin: você ganha **skills** que ensinam o agente a pesquisar/citar
 jurisprudência e legislação brasileira **+** o **servidor MCP remoto iaJus** já
@@ -20,31 +21,38 @@ municipal**.
 
 | Componente | Conteúdo |
 |---|---|
-| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 8 modalidades (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
-| `skills/consultar-legislacao/` | como localizar leis/artigos **federais** por termo, tema (ontologia) ou citação literal, com texto íntegra e histórico de alterações |
+| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 8 modalidades + as 4 tools de **jurimetria agregada** (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
+| `skills/consultar-legislacao/` | como localizar leis/artigos **federais** por termo, tema (ontologia) ou citação literal, com texto íntegra, vigência e grafo de alterações (inclusive **por dispositivo**) |
 | `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** ao vivo na fonte oficial (UF [+ município] + tipo + número + ano) |
+| `skills/corpus-status/` | o que a base contém AGORA (`estatisticas_corpus_pg`): por família/órgão/qualificada/esfera, com faixa de anos e cobertura de indexação |
 | `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email profile offline_access`) |
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
 jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
 (Doutrina é premium — fica só no perfil VadeFocus, fora deste plugin.)
 
-### As 8 modalidades de busca + qualificadas (tools do MCP)
+### As 8 modalidades de busca + qualificadas + jurimetria (tools do MCP)
 
 | Tool | Para quê |
 |---|---|
 | `buscar_semantica` | busca vetorial/densa por significado (padrão para perguntas conceituais) |
-| `buscar_hibrida` | fusão RRF (densa + FTS + trigram + CNJ + ontologia) — melhor relevância geral |
-| `buscar_fts` | full-text pt_unaccent, stemming PT, insensível a acento |
+| `buscar_hibrida` | fusão RRF (densa + FTS + trigram + CNJ + ontologia) — melhor relevância geral; em legislação serve por padrão só normas em vigor (`incluir_historico=true` traz revogadas) |
+| `buscar_fts` | full-text pt_unaccent, stemming PT, insensível a acento; citação numérica ("súmula 145 do STF") dispara lookup exato |
 | `buscar_regex` | regex POSIX (exige ≥3 caracteres literais para ancorar o índice) |
 | `buscar_por_cnj` | número de processo CNJ (exato ou por componentes) |
 | `buscar_por_ontologia` | ramo/sub-área OJBU via subárvore ltree (L1/L2/L3 TPU + temas transversais) |
-| `buscar_grafo` | grafo de citações `legal_edges` (quem cita uma súmula/tema; auditoria de lacunas) |
-| `buscar_jurimetria` | estatística agregada do corpus (contagens/distribuição por tribunal, ano, ramo) |
-| `consultar_qualificada` | precedentes qualificados de um órgão (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) |
+| `buscar_grafo` | grafo de citações `legal_edges` (quem cita uma súmula/tema; cadeia multi-hop com `max_hops`; auditoria de lacunas) |
+| `buscar_jurimetria` | navegação/facet por colunas estruturadas dos acórdãos (filtros tipados + `group_by`) |
+| `jurimetria_volume` | contagem EXATA de decisões por órgão × ano (read-model agregado, com envelope de honestidade) |
+| `jurimetria_relator` | quem mais relata num órgão (top-50 por volume; LGPD n<20 suprimido) |
+| `jurimetria_classe` | volume por classe processual CNJ de um órgão (+ `cobertura_classe_pct`) |
+| `jurimetria_orgao_julgador` | volume por câmara/turma/seção de um órgão |
+| `consultar_qualificada` | precedentes qualificados (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) com **`status_vigencia`** — canceladas saem marcadas; modo por matéria (`materia=`) |
 
 As buscas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem
-as famílias `jurisprudencia` + `legislacao` e são read-only.
+as famílias `jurisprudencia` + `legislacao` e são read-only. Os hits trazem o envelope
+de confiança `trust` (`{authority_tier, status_vigencia, trecho}`) — cheque a vigência
+antes de citar como amparo.
 
 ## Autenticação: OAuth 2.1 (padrão)
 

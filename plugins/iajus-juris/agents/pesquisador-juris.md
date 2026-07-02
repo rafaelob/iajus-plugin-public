@@ -28,11 +28,19 @@ preencha a lacuna de memória.
   temas transversais). Para "toda a jurisprudência de um ramo".
 - `buscar_grafo` - grafo de citações `legal_edges` (quem cita uma súmula/tema;
   auditoria de lacunas). Para mapear a rede de um precedente.
-- `buscar_jurimetria` - estatística agregada do corpus (contagens/distribuição por
-  tribunal, ano, ramo). Para perguntas quantitativas, não para o texto de um acórdão.
+- `buscar_jurimetria` - navegação/facet por colunas estruturadas dos acórdãos (filtros
+  tipados + `group_by`). Os buckets contam o campo PREENCHIDO, não o universo.
+- `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
+  `jurimetria_orgao_julgador` - contagens EXATAS do read-model agregado (volume por
+  órgão × ano; ranking de relatores com LGPD n<20; classes CNJ; câmaras/turmas).
+  **Prefira-as para perguntas quantitativas** - toda resposta traz o envelope de
+  honestidade (`as_of`, denominador, `coverage_pct`); taxas de resultado ainda "sem
+  cobertura" (nunca infira taxa de contagem).
 - `consultar_qualificada` - precedentes qualificados de um órgão (súmula, SV,
-  repercussão geral, tema repetitivo, IRDR, IRR, IAC, OJ). Use para "o entendimento
-  consolidado/vinculante".
+  repercussão geral, tema repetitivo, IRDR, IRR, IAC, OJ), com `status_vigencia`
+  marcado (canceladas sinalizadas, nunca ocultas por padrão) e modo por matéria
+  (`materia=`). Use para "o entendimento consolidado/vinculante" - e confira a
+  vigência antes de citar.
 
 Também há as tools de legislação (federal, estadual e municipal) expostas pelo mesmo MCP.
 Restrinja por **família** (`jurisprudencia` / `legislacao`) e por **órgão** quando a

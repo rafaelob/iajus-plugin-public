@@ -30,7 +30,7 @@ MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
 | Tenho **tipo + número** e quero a norma + **vigência** ("Lei 8078", "LC 95") | `buscar_norma_por_numero` | Resolve por `tipo` + `numero` (+ `ano`) e devolve o **`status`** (vigente / revogada). |
 | Listar normas de um tipo/ano | `listar_legislacao_federal` | Enumera (ex.: leis de 2023). |
 | Esse artigo foi **alterado/revogado**? Por qual norma e quando? | `obter_alteracoes_legislacao` | Histórico de alterações artigo por artigo (norma alteradora + data). |
-| Quais normas citam/alteram/são citadas por esta | `consultar_grafo_legislacao` | Relações entre normas (`cita_legislacao`, `altera_norma`). |
+| Quais normas citam/alteram/são citadas por esta; o que mudou **artigo a artigo** | `consultar_grafo_legislacao` | `norma_ref` canônico (ex. `LEI_8112_1990`) + `max_depth` (1-20, padrão 8). Retorna `cadeia_alteracoes` (quem alterou, recursivo), `dead_ends` (revogadas/caducadas alcançáveis), conversão MPV→LEI, `citacoes` (`cita` / `citada_por`) e **`alteracoes_dispositivo`** — eventos por dispositivo ("redação dada por", "revogado por", "regulamentado por") com `dispositivo_ref` + a norma alteradora. |
 | Busca conceitual/semântica no corpus de legislação | `buscar_semantica` / `buscar_fts` / `buscar_hibrida` | Passe `family="legislacao"`. Semântica casa por significado; FTS por expressão (use `phrase=true` p/ ordem exata). |
 | "Quais leis tratam de um ramo do direito" | `buscar_por_ontologia` | `l1_code` TPU + `family="legislacao"`. Ex.: `l1_code=1156` (Consumidor → CDC), `14` (Tributário), `899` (Civil → CC). |
 | Taxonomia OJBU de referência / classificar uma norma | `consultar_ontologia_juridica` / `classificar_norma` | Árvore de ramos (21 L1) e classificação de um texto normativo. |
@@ -47,6 +47,23 @@ Para a pergunta **"qual a norma chamada X / a Lei nº N, e está em vigor?"** pr
 elas retornam a **vigência (`status`)** junto com a norma e **substituem** os antigos
 `pesquisar_*` de lookup. **Para amparo jurídico, sirva apenas o que vier `status=vigente`** e
 sinalize explicitamente quando a norma estiver `revogada`.
+
+Vigência e amparo nas buscas (regras do motor):
+
+- **`buscar_hibrida` com `family="legislacao"` serve por padrão só normas em vigor**
+  (ou de vigência incerta/parcialmente alterada) e OCULTA as comprovadamente sem
+  vigência (revogada, não recepcionada, inconstitucional, vigência esgotada, suspensa).
+  Para pesquisa **histórica** (trazer também revogadas), passe `incluir_historico=true`
+  — e sinalize o status ao usuário. As demais modalidades não aplicam esse corte:
+  cheque `status_vigencia` no hit.
+- Cada hit de legislação traz o envelope `trust` `{authority_tier, status_vigencia,
+  trecho}` e o flag **`is_amending_only`** (norma que só existe para alterar/revogar
+  outra — não a cite como fonte substantiva do direito; cite a norma alterada
+  consolidada). Cheque-os antes de citar como amparo.
+- Para saber **o que mudou dentro da norma, artigo a artigo**, prefira
+  `consultar_grafo_legislacao` (bloco `alteracoes_dispositivo`) e
+  `obter_alteracoes_legislacao` — a redação vigente de um dispositivo específico vem de
+  `ler_dispositivo_legal`.
 
 ## Regras de citação (obrigatório)
 

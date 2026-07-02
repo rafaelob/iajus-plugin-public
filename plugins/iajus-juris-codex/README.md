@@ -1,6 +1,6 @@
 # iaJus — plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex que entrega as **3 skills** jurídicas iaJus + o servidor MCP remoto já
+Plugin Codex que entrega as **4 skills** jurídicas iaJus + o servidor MCP remoto já
 configurado. É o gêmeo Codex do plugin Claude Code `iajus-juris` (mesmas skills
 byte-idênticas, mesmo MCP remoto). Autentica por **OAuth 2.1 por padrão** (login no
 navegador, refresh automático); a chave `ik_*` continua disponível como **fallback
@@ -51,11 +51,11 @@ codex mcp login iajus
   `openid email profile offline_access`). Forma = **mapa direto de servidor** (sem
   wrapper `mcpServers`/`mcp_servers`) — a forma que o loader do Codex aceita sem
   ambiguidade de casing. Nenhum token literal em disco.
-- **3 skills** (`./skills/`): `pesquisar-jurisprudencia`, `consultar-legislacao`,
-  `consultar-legislacao-estadual`. Idênticas às do plugin Claude Code — cobrem
-  tribunais superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais
-  dos JEFs, administrativo (CARF) e legislação federal/estadual/municipal. (Doutrina é
-  premium, fica só no perfil VadeFocus.)
+- **4 skills** (`./skills/`): `pesquisar-jurisprudencia` (busca + jurimetria agregada),
+  `consultar-legislacao`, `consultar-legislacao-estadual` e `corpus-status`. Idênticas
+  às do plugin Claude Code — cobrem tribunais superiores, TJs, TRFs, TRTs, TREs,
+  Tribunais de Contas, Turmas Recursais dos JEFs, administrativo (CARF) e legislação
+  federal/estadual/municipal. (Doutrina é premium, fica só no perfil VadeFocus.)
 
 ## Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 
