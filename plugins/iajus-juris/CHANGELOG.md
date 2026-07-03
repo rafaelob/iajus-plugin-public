@@ -5,6 +5,42 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 iaJus — o plugin é o cliente fino.
 
+## [1.6.1] — 2026-07-03
+
+Documenta e habilita as duas tools de jurimetria já servidas no perfil geral `iajus`
+mas ausentes das skills, e conserta a regra de honestidade agora obsoleta.
+
+### Adicionado
+
+- **`jurimetria_resultado`** documentada e habilitada na skill `pesquisar-jurisprudencia`:
+  taxas de DESFECHO (provimento/improvimento) por órgão × ano, dos rollups
+  `agg_decisions_resultado(_cov)`, com **denominador duplo** rotulado (`share_over_known`
+  vs `share_over_all`) e `coverage_pct`, LGPD n<20 suprimido. Recorte obrigatório.
+- **`jurimetria_lag_publicacao`** documentada e habilitada na mesma skill: lag de
+  publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano, do
+  rollup `agg_decisions_lag_pub` — a ÚNICA métrica temporal servida hoje. Recorte
+  obrigatório.
+
+### Corrigido
+
+- **Regra de honestidade obsoleta** na skill `pesquisar-jurisprudencia`: o texto dizia
+  "taxas de resultado ainda não são servidas / `taxas_resultado: sem cobertura` / NUNCA
+  infira taxa" — mas `jurimetria_resultado` **passou a servir exatamente essas taxas**. A
+  regra agora orienta a usar `jurimetria_resultado` com o denominador duplo e o
+  `coverage_pct`, e separa "não é duração de processo" para o lag de publicação. As duas
+  variantes (`iajus-juris` e `iajus-juris-codex`) permanecem byte-idênticas; todas as
+  descrições de frontmatter seguem < 500 chars (a descrição não mudou — as tools novas
+  vivem no corpo + `allowed-tools`).
+
+### Diferido (dependência server-side)
+
+- **Grafo de citação de dispositivos e versões de qualificada** — `obter_dispositivos_citados`,
+  `quem_cita_dispositivo` e `obter_versoes_qualificada` NÃO entram nas skills ainda: o
+  allowlist curado do perfil `iajus` (`saas/mcp/profiles.py::IAJUS_TOOLS`) ainda não as
+  lista, então o prune curado as descartaria silenciosamente ("Unknown tool"). Documentá-las
+  agora referenciaria tools não-chamáveis. Entram na skill DEPOIS que o perfil server-side
+  passar a servi-las.
+
 ## [1.6.0] — 2026-07-02
 
 Documenta e habilita a superfície nova do MCP servida no perfil geral `iajus`:

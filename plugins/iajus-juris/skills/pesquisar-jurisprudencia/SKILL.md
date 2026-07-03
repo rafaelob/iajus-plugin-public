@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
 description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP iaJus — 8 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, grafo, jurimetria), jurimetria agregada (jurimetria_volume/relator/classe/orgao_julgador), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ, estatística de julgados ou entendimento atual de um tribunal. NÃO use para leis.
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_iajus-juris_iajus__buscar_grafo, mcp__iajus__buscar_jurimetria, mcp__plugin_iajus-juris_iajus__buscar_jurimetria, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__consultar_qualificada, mcp__plugin_iajus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_iajus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_iajus-juris_iajus__consultar_informativos_stj
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_iajus-juris_iajus__buscar_grafo, mcp__iajus__buscar_jurimetria, mcp__plugin_iajus-juris_iajus__buscar_jurimetria, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_iajus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_iajus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__consultar_qualificada, mcp__plugin_iajus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_iajus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_iajus-juris_iajus__consultar_informativos_stj
 ---
 
 # Pesquisar jurisprudência brasileira (iaJus)
@@ -44,6 +44,8 @@ uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
 | "Todos os acórdãos de um ramo do direito" | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU (ou L2/L3, ou `tema_transversal`). Ex.: `l1_code=287` (Penal), `899` (Civil), `9985` (Administrativo). |
 | Quem citou uma súmula/tema, ou o que um acórdão cita | `buscar_grafo` | `legal_edges` single-hop; `normalized_ref="Súmula 279"` traz quem aplicou. |
 | Pergunta QUANTITATIVA exata ("quantas decisões o TJRJ julgou por ano", "quem mais relata no órgão X", "quais classes/câmaras dominam") | `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` / `jurimetria_orgao_julgador` | Contagens EXATAS do read-model agregado, com envelope de honestidade. **Prefira-as para números** (ver seção Jurimetria agregada). |
+| TAXA DE DESFECHO ("qual a taxa de provimento do STJ", "o TJRJ provê mais agravos que apelações", "evolução do improvimento no TST") | `jurimetria_resultado` | Taxas de provimento/improvimento do rollup, com **denominador duplo** rotulado (`share_over_known` e `share_over_all`) e `coverage_pct` — nunca uma taxa sem denominador (ver seção Jurimetria agregada). |
+| LAG DE PUBLICAÇÃO ("quanto tempo o STJ leva para publicar após julgar", "evolução do lag do TST") | `jurimetria_lag_publicacao` | Intervalo em dias `data_publicacao − data_julgamento` (p50/p90) por órgão × ano. **NÃO é duração do processo** — só o lag publicação−julgamento (ver seção Jurimetria agregada). |
 | Navegação/facet por colunas estruturadas (listar acórdãos por relator/classe/UF; buckets ad-hoc com `group_by`) | `buscar_jurimetria` | Filtros tipados + `group_by` por bucket. Os buckets contam o campo PREENCHIDO, não o universo — nunca derive taxa de campo esparso. |
 | Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) | `consultar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** quando o usuário quer "o entendimento atual". |
 | **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas pelo tribunal) | `consultar_informativos_stf` / `consultar_informativos_stj` | Lê os informativos do STF / STJ — a síntese oficial dos julgados de destaque por edição. Use para "o que o STF/STJ decidiu de relevante recentemente" e para localizar a tese pela edição do informativo. |
@@ -65,7 +67,7 @@ Notas de uso:
   trecho literal ≥3 chars. Em erro, a tool devolve `{ "erro": "…", "resultados": [] }`
   (nunca stack trace) — leia a mensagem e ajuste.
 
-## Jurimetria agregada (4 tools dedicadas — contagens exatas)
+## Jurimetria agregada (6 tools dedicadas — contagens/taxas exatas)
 
 Para perguntas de VOLUME/ranking use estas tools (servidas do read-model agregado do
 Postgres, mantido por projector — nunca varrem a tabela quente; respostas exatas e
@@ -79,11 +81,19 @@ coverage_pct, truncado}`:
 | `jurimetria_relator` | `orgao` (OBRIGATÓRIO), `relator?` (substring, case-insensitive), `top` 1-50 (padrão 25) | Quem mais relata num órgão + período de atuação (`ano_min`/`ano_max`). Rollup top-50 por volume. **LGPD:** figura nominal com n<20 é suprimida ("amostra insuficiente"). |
 | `jurimetria_classe` | `orgao` (OBRIGATÓRIO), `ano?` ou `ano_de`/`ano_ate`, `top` 1-100 (padrão 25) | Volume por classe processual CNJ. O bucket `classe_cnj_code=-1` é a massa SEM classe resolvida; o envelope traz `cobertura_classe_pct`. Rótulos de código via `consultar_protocolo_classificacao`. |
 | `jurimetria_orgao_julgador` | `orgao` (OBRIGATÓRIO), `filtro?` (substring), `top` 1-100 (padrão 25) | Volume por câmara/turma/seção (unidade organizacional — sem supressão LGPD) + período de atuação. Ex.: "quais câmaras do TJRJ mais julgam?". |
+| `jurimetria_resultado` | `orgao?` e/ou recorte de ano (`ano?` ou `ano_de`/`ano_ate`). **Pelo menos um recorte é obrigatório.** | Taxas de DESFECHO (provimento/improvimento etc.) por órgão × ano, dos rollups `agg_decisions_resultado(_cov)`. Cada desfecho vem com **denominador duplo** rotulado: `share_over_known` (n/decididas — a fração ENTRE as decisões cujo desfecho o extractor determinou) E `share_over_all` (n/total). **LGPD:** recortes com <20 decisões conhecidas são suprimidos ("amostra insuficiente"). |
+| `jurimetria_lag_publicacao` | `orgao?` OU `ano?`. **Pelo menos um recorte é obrigatório.** | Lag de publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano, do rollup `agg_decisions_lag_pub`. É a ÚNICA métrica temporal servida hoje — **NÃO é duração do processo** (ajuizamento→trânsito). Órgãos sem `data_publicacao` (vários TJs) saem sem lag. |
 
 Regras de honestidade (obrigatório):
 
-- **Taxas de resultado (provimento etc.) ainda não são servidas** — o envelope diz
-  `taxas_resultado: "sem cobertura"`. NUNCA infira taxa a partir de contagens.
+- **Taxa de desfecho SÓ via `jurimetria_resultado`** — nunca infira provimento/improvimento
+  a partir de contagens de volume. A tool traz **denominador duplo** (`share_over_known` vs
+  `share_over_all`): reporte a taxa SEMPRE com o denominador, e o `coverage_pct`
+  (=100·conhecidas/total). Cobertura baixa = **não** é representativa (o extractor abstém em
+  dispositivo ambíguo — abstenção não é zero); diga "baixa cobertura", não uma taxa nua.
+- **Lag de publicação (`jurimetria_lag_publicacao`) NÃO é duração do processo** — é só o
+  intervalo publicação−julgamento. Quando `sem_cobertura` (coverage baixo) ou o órgão não
+  expõe `data_publicacao`, reporte "sem cobertura" e NÃO estime.
 - `aviso: "sem cobertura para o recorte"` = lacuna de ingestão/rollup, **não** volume
   zero no mundo real — reporte assim.
 - Reporte `as_of` (data do snapshot) quando o número embasar uma afirmação.

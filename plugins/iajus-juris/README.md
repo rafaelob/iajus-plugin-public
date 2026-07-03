@@ -1,7 +1,9 @@
 # iaJus — plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 1.6.0** — jurimetria agregada exata (`jurimetria_volume` / `jurimetria_relator`
-> / `jurimetria_classe` / `jurimetria_orgao_julgador`), grafo de legislação com alterações
+> **Versão 1.6.1** — jurimetria agregada exata (`jurimetria_volume` / `jurimetria_relator`
+> / `jurimetria_classe` / `jurimetria_orgao_julgador`), taxa de desfecho
+> (`jurimetria_resultado`, com denominador duplo) e lag de publicação
+> (`jurimetria_lag_publicacao`), grafo de legislação com alterações
 > **por dispositivo** (`alteracoes_dispositivo`) e vigência (`status_vigencia`) nas
 > qualificadas e nos hits de busca (envelope `trust`). Autenticação por **OAuth 2.1 por
 > padrão** (login no navegador, refresh automático); chave `ik_*` como **fallback

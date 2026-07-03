@@ -1,6 +1,6 @@
 {
   "name": "iajus-juris",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Acesso ao MCP remoto iaJus com milhões de acórdãos brasileiros (STF/STJ/TST/TSE/STM/TNU, TJs, TRFs, TRTs, TREs, Tribunais de Contas TCU+TCEs, JEFs, CARF) + legislação federal, estadual e municipal. Autentica por OAuth 2.1 (login no navegador, refresh automático); chave ik_* via IAJUS_API_TOKEN como fallback. Quatro skills (jurisprudência, legislação federal, estadual/municipal e estado do corpus) com 8 modalidades de busca + jurimetria agregada e vigência. Skills + MCP numa instalação.",
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
