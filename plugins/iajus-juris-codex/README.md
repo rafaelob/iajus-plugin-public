@@ -75,3 +75,23 @@ Build antigo do Codex sem `url` remoto: bridge stdio
 > `.agents/plugins/marketplace.json`. OAuth keys do Codex (`oauth_resource`/`scopes`)
 > e a forma de `.mcp.json` (mapa direto / wrapper `mcpServers` camelCase) verificadas
 > na fonte do `openai/codex` (`codex-rs/codex-mcp/src/plugin_config.rs`).
+
+## Antigravity 2.0 (Google): mesmo MCP remoto
+
+O mesmo servidor MCP remoto também conecta no Antigravity 2.0 (IDE e CLI) pelo arquivo
+compartilhado `~/.gemini/config/mcp_config.json` (o Antigravity usa a chave `serverUrl`,
+não `url`, para HTTP remoto). O iaJus autentica por **OAuth 2.1**: o Authorization Server
+em `app.iajus.com.br` suporta DCR, então o login OAuth dispara sozinho e você adiciona o
+servidor **sem token estático**:
+
+```json
+{ "mcpServers": { "iajus": { "serverUrl": "https://mcp.iajus.com.br/mcp" } } }
+```
+
+Salve e autentique em Settings, Customizations, Installed MCP Servers, Authenticate (uma
+vez por superfície). Se um build do Antigravity não enviar o token OAuth no HTTP direto
+e retornar `401`, use a ponte stdio `mcp-remote` com o Bearer por variável de ambiente
+(igual ao fallback `ik_*` acima): `npx -y mcp-remote https://mcp.iajus.com.br/mcp
+--header "Authorization: Bearer ${IAJUS_API_TOKEN}"`. **Nunca** cole a chave literal no
+arquivo. O passo a passo completo está no README do plugin Claude Code irmão
+(`plugins/iajus-juris/README.md`, seção Antigravity 2.0).

@@ -111,9 +111,59 @@ e-mail + `ik_*`; **nunca** credencial na URL). Fallback `ik_*`: `codex mcp add i
 --url https://mcp.iajus.com.br/mcp --bearer-token-env-var IAJUS_API_TOKEN`. Detalhes
 em `plugins/iajus-juris-codex/README.md`.
 
+## Antigravity 2.0 (Google): mesmo MCP remoto
+
+O Antigravity 2.0 (IDE e CLI) consome um MCP remoto pelo arquivo de configuração
+compartilhado `~/.gemini/config/mcp_config.json` (no Windows,
+`%USERPROFILE%\.gemini\config\mcp_config.json`). Também dá para chegar nele pela UI:
+painel do agente, menu MCP Servers, Manage MCP Servers, View raw config.
+
+Para HTTP remoto o Antigravity usa a chave `serverUrl` (não `url`) dentro de
+`mcpServers`. O iaJus autentica por **OAuth 2.1**: o Authorization Server em
+`app.iajus.com.br` suporta registro dinâmico de cliente (DCR), então o Antigravity
+descobre e faz o login sozinho quando o servidor precisa de OAuth. Adicione o servidor
+**sem token estático**:
+
+```json
+{
+  "mcpServers": {
+    "iajus": {
+      "serverUrl": "https://mcp.iajus.com.br/mcp"
+    }
+  }
+}
+```
+
+Salve o arquivo (o Antigravity recarrega sozinho; se não aparecer, vá em Settings,
+Customizations, Refresh) e faça a autenticação da superfície em Settings,
+Customizations, Installed MCP Servers, Authenticate. O login OAuth abre no navegador
+(mesma conta da aplicação); cada superfície (2.0, IDE, CLI) autentica uma vez.
+
+### Fallback `ik_*` (ponte stdio, quando o login OAuth não dispara)
+
+Alguns builds do Antigravity ainda tropeçam no envio do token OAuth no HTTP direto e
+respondem `401`. Nesse caso use a ponte stdio `mcp-remote` com o Bearer por variável
+de ambiente (requer Node/npx; **nunca** cole a chave literal no arquivo):
+
+```json
+{
+  "mcpServers": {
+    "iajus": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.iajus.com.br/mcp",
+               "--header", "Authorization: Bearer ${IAJUS_API_TOKEN}"]
+    }
+  }
+}
+```
+
+Defina `IAJUS_API_TOKEN` com a sua chave `ik_*` no ambiente antes de abrir o
+Antigravity. A chave é validada server-side (hash SHA-256); sem chave válida, `401`.
+
 ## Compatibilidade de clientes (autenticação)
 
 > **OAuth 2.1** (padrão, recomendado): Claude Code, Claude Desktop, claude.ai web,
-> ChatGPT (conector/Developer Mode), Codex. **Bearer `ik_*`** (fallback): Claude
-> Code/Desktop, Cursor, Gemini CLI, Codex (headless). A chave é validada server-side;
-> nunca trafega na URL nem em log. **Não cole a chave em commits ou chat.**
+> ChatGPT (conector/Developer Mode), Codex, Antigravity 2.0 (Google). **Bearer `ik_*`**
+> (fallback): Claude Code/Desktop, Cursor, Gemini CLI, Codex (headless), Antigravity
+> (ponte `mcp-remote`). A chave é validada server-side; nunca trafega na URL nem em log.
+> **Não cole a chave em commits ou chat.**
