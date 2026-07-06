@@ -167,3 +167,14 @@ Antigravity. A chave é validada server-side (hash SHA-256); sem chave válida, 
 > (fallback): Claude Code/Desktop, Cursor, Gemini CLI, Codex (headless), Antigravity
 > (ponte `mcp-remote`). A chave é validada server-side; nunca trafega na URL nem em log.
 > **Não cole a chave em commits ou chat.**
+
+## Privacidade e suporte
+
+- **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
+  categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
+- **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
+- **Editor:** iaJus / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
+- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio iaJus
+  (jurisprudência e legislação brasileira — registro público, normalizado e
+  classificado). O consumo de busca é autenticado por conta (OAuth) e validado
+  server-side; nenhuma tool retorna credenciais nem grava dados.

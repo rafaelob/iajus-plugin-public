@@ -95,3 +95,14 @@ e retornar `401`, use a ponte stdio `mcp-remote` com o Bearer por variável de a
 --header "Authorization: Bearer ${IAJUS_API_TOKEN}"`. **Nunca** cole a chave literal no
 arquivo. O passo a passo completo está no README do plugin Claude Code irmão
 (`plugins/iajus-juris/README.md`, seção Antigravity 2.0).
+
+## Privacidade e suporte
+
+- **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
+  categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
+- **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
+- **Editor:** iaJus / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
+- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio iaJus
+  (jurisprudência e legislação brasileira — registro público, normalizado e
+  classificado). O consumo de busca é autenticado por conta (OAuth) e validado
+  server-side; nenhuma tool retorna credenciais nem grava dados.
