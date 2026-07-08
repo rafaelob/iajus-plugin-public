@@ -1,4 +1,4 @@
-# iaJus — plugin Claude Code (jurisprudência + legislação BR)
+# IAJUS — plugin Claude Code (jurisprudência + legislação BR)
 
 > **Versão 1.6.1** — jurimetria agregada exata (`jurimetria_volume` / `jurimetria_relator`
 > / `jurimetria_classe` / `jurimetria_orgao_julgador`), taxa de desfecho
@@ -10,7 +10,7 @@
 > manual**. Compatível com 1.x. Ver `CHANGELOG.md`.
 
 Um plugin: você ganha **skills** que ensinam o agente a pesquisar/citar
-jurisprudência e legislação brasileira **+** o **servidor MCP remoto iaJus** já
+jurisprudência e legislação brasileira **+** o **servidor MCP remoto IAJUS** já
 configurado. Não precisa configurar o MCP na mão.
 
 O corpus cobre **milhões de acórdãos** nas famílias: **tribunais superiores**
@@ -67,7 +67,7 @@ guardado com segurança pelo Claude Code e **renovado automaticamente** (o AS an
 `offline_access`, que o Claude Code anexa ao escopo para refresh sem novo login).
 Nenhuma chave é digitada nem guardada por padrão.
 
-A autorização é por usuário (a conta iaJus), validada server-side. O "restrito" é
+A autorização é por usuário (a conta IAJUS), validada server-side. O "restrito" é
 imposto na **camada MCP** (os dados), não no repositório do marketplace (que só tem
 manifesto, **zero segredo**).
 
@@ -119,7 +119,7 @@ compartilhado `~/.gemini/config/mcp_config.json` (no Windows,
 painel do agente, menu MCP Servers, Manage MCP Servers, View raw config.
 
 Para HTTP remoto o Antigravity usa a chave `serverUrl` (não `url`) dentro de
-`mcpServers`. O iaJus autentica por **OAuth 2.1**: o Authorization Server em
+`mcpServers`. O IAJUS autentica por **OAuth 2.1**: o Authorization Server em
 `app.iajus.com.br` suporta registro dinâmico de cliente (DCR), então o Antigravity
 descobre e faz o login sozinho quando o servidor precisa de OAuth. Adicione o servidor
 **sem token estático**:
@@ -173,8 +173,8 @@ Antigravity. A chave é validada server-side (hash SHA-256); sem chave válida, 
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
-- **Editor:** iaJus / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
-- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio iaJus
+- **Editor:** IAJUS / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
+- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio IAJUS
   (jurisprudência e legislação brasileira — registro público, normalizado e
   classificado). O consumo de busca é autenticado por conta (OAuth) e validado
   server-side; nenhuma tool retorna credenciais nem grava dados.

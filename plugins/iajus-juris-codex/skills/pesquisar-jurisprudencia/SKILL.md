@@ -1,10 +1,10 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP iaJus — 8 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, grafo, jurimetria), jurimetria agregada (jurimetria_volume/relator/classe/orgao_julgador), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ, estatística de julgados ou entendimento atual de um tribunal. NÃO use para leis.
+description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS — 8 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, grafo, jurimetria), jurimetria agregada (jurimetria_volume/relator/classe/orgao_julgador), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ, estatística de julgados ou entendimento atual de um tribunal. NÃO use para leis.
 allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_iajus-juris_iajus__buscar_grafo, mcp__iajus__buscar_jurimetria, mcp__plugin_iajus-juris_iajus__buscar_jurimetria, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_iajus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_iajus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__consultar_qualificada, mcp__plugin_iajus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_iajus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_iajus-juris_iajus__consultar_informativos_stj
 ---
 
-# Pesquisar jurisprudência brasileira (iaJus)
+# Pesquisar jurisprudência brasileira (IAJUS)
 
 Você tem acesso ao servidor MCP `iajus`, que indexa jurisprudência brasileira
 (acórdãos colegiados desde 2000 em todos os tribunais — exceções: controle
@@ -181,3 +181,27 @@ recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si
   header `Authorization: Bearer` (canal CLI/privado). Um **401** indica sessão/chave
   ausente ou expirada — peça ao usuário para refazer o login ou revisar a chave
   configurada; **nunca** cole a chave em chat nem em commit.
+
+## Aprovação de ferramentas (sem fricção)
+
+Todas as tools do IAJUS são **somente-leitura** (marcadas `readOnlyHint`) — não escrevem
+nada, só pesquisam e citam. Ainda assim, alguns clientes pedem **uma aprovação por tool**
+na primeira chamada:
+
+- **Prefira a busca direta.** Para responder e citar, `buscar_hibrida` (melhor relevância
+  geral) e `buscar_semantica` (perguntas conceituais) já entregam ementa + `link_completo`
+  oficial de cada julgado — comece por elas. As demais modalidades (`buscar_fts`,
+  `buscar_regex`, `buscar_por_ontologia`, jurimetria…) são **refinamento**: acione-as
+  quando a busca direta vier fraca ou a pergunta pedir contagem/facet/forma literal.
+- **Abrir a íntegra:** cada resultado da busca já traz o `link_completo` (URL estável do
+  acórdão na fonte) e, quando disponível, o `inteiro_teor_url` (PDF/HTML da íntegra) — cite
+  esses links; NÃO é preciso outra tool para "abrir" o julgado. Em superfície de conector
+  (ex.: ChatGPT) o par `search`/`fetch` é o caminho canônico de leitura: `search` lista e
+  `fetch` traz o documento pleno pelo `id` do resultado, ambos somente-leitura.
+- **Se o cliente pedir aprovação por chamada:** oriente o usuário a **autorizar uma vez**
+  e marcar **"sempre permitir" / "lembrar nesta conversa"** — como as tools são
+  somente-leitura, é seguro liberar em bloco, e as buscas seguintes deixam de perguntar.
+  (No Claude Code, `/permissions` permite pré-aprovar as tools `mcp__iajus__*`; no ChatGPT,
+  a caixa de confirmação do conector oferece lembrar a escolha na conversa.) Se a caixa de
+  aprovação **não renderizar/travar**, é limitação da interface do cliente, não do IAJUS:
+  reabra a conversa/sessão ou reautentique em `/mcp`, e prefira a busca direta acima.

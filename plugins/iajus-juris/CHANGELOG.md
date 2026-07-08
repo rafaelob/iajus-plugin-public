@@ -1,9 +1,9 @@
-# Changelog — iaJus (plugin Claude Code público)
+# Changelog — IAJUS (plugin Claude Code público)
 
 Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [Keep a Changelog](https://keepachangelog.com/); versionamento
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
-iaJus — o plugin é o cliente fino.
+IAJUS — o plugin é o cliente fino.
 
 ## [1.6.1] — 2026-07-03
 

@@ -1,6 +1,6 @@
-# iaJus — plugin para OpenAI Codex (via marketplace)
+# IAJUS — plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex que entrega as **4 skills** jurídicas iaJus + o servidor MCP remoto já
+Plugin Codex que entrega as **4 skills** jurídicas IAJUS + o servidor MCP remoto já
 configurado. É o gêmeo Codex do plugin Claude Code `iajus-juris` (mesmas skills
 byte-idênticas, mesmo MCP remoto). Autentica por **OAuth 2.1 por padrão** (login no
 navegador, refresh automático); a chave `ik_*` continua disponível como **fallback
@@ -19,7 +19,7 @@ codex plugin marketplace add ./iajus-juris-codex     # caminho local extraído
 codex plugin add iajus-juris@iajus
 ```
 
-### Opção B — marketplace privado iaJus (git, para quem usa credential-helper)
+### Opção B — marketplace privado IAJUS (git, para quem usa credential-helper)
 
 ```bash
 # o catálogo é servido por git smart-HTTP privado (HTTP Basic: usuário = seu e-mail,
@@ -80,7 +80,7 @@ Build antigo do Codex sem `url` remoto: bridge stdio
 
 O mesmo servidor MCP remoto também conecta no Antigravity 2.0 (IDE e CLI) pelo arquivo
 compartilhado `~/.gemini/config/mcp_config.json` (o Antigravity usa a chave `serverUrl`,
-não `url`, para HTTP remoto). O iaJus autentica por **OAuth 2.1**: o Authorization Server
+não `url`, para HTTP remoto). O IAJUS autentica por **OAuth 2.1**: o Authorization Server
 em `app.iajus.com.br` suporta DCR, então o login OAuth dispara sozinho e você adiciona o
 servidor **sem token estático**:
 
@@ -101,8 +101,8 @@ arquivo. O passo a passo completo está no README do plugin Claude Code irmão
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
-- **Editor:** iaJus / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
-- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio iaJus
+- **Editor:** IAJUS / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
+- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio IAJUS
   (jurisprudência e legislação brasileira — registro público, normalizado e
   classificado). O consumo de busca é autenticado por conta (OAuth) e validado
   server-side; nenhuma tool retorna credenciais nem grava dados.

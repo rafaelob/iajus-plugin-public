@@ -1,10 +1,10 @@
 ---
 name: corpus-status
-description: 'Mostra o que a base iaJus contém AGORA via MCP (tool estatisticas_corpus_pg, lê o Postgres ao vivo): por família (jurisprudência/doutrina/legislação) total de unidades, nº de órgãos, faixa de anos e cobertura de embedding/FTS; por órgão contagem + anos; por qualificada e legislação por status. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do órgão X?", "quanto já está embedado?". Corpus VIVO — total 0 = cobertura em andamento.'
+description: 'Mostra o que a base IAJUS contém AGORA via MCP (tool estatisticas_corpus_pg, lê o Postgres ao vivo): por família (jurisprudência/doutrina/legislação) total de unidades, nº de órgãos, faixa de anos e cobertura de embedding/FTS; por órgão contagem + anos; por qualificada e legislação por status. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do órgão X?", "quanto já está embedado?". Corpus VIVO — total 0 = cobertura em andamento.'
 allowed-tools: mcp__iajus__estatisticas_corpus_pg, mcp__plugin_iajus-juris_iajus__estatisticas_corpus_pg
 ---
 
-# Estado do corpus iaJus AO VIVO (o que a base contém AGORA)
+# Estado do corpus IAJUS AO VIVO (o que a base contém AGORA)
 
 Você tem acesso ao servidor MCP `iajus`, que serve a tool **`estatisticas_corpus_pg`**
 — uma introspecção **ao vivo** do corpus, lida diretamente do **read-model Postgres**
@@ -21,7 +21,7 @@ reais e atuais, **o que a base contém neste momento**.
 
 Acione `estatisticas_corpus_pg` quando o usuário perguntar coisas como:
 
-- "**o que tem na base?**", "qual a cobertura atual do iaJus?";
+- "**o que tem na base?**", "qual a cobertura atual do IAJUS?";
 - "**quantos acórdãos do TJRJ** (ou de qualquer órgão) existem?";
 - "**cobrimos 2023-2026** do órgão X?", "de que ano a que ano vai o STJ?";
 - "**quanto já está embedado** / indexado (`_3s` / FTS)?";

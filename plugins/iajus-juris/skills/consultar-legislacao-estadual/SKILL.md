@@ -1,10 +1,10 @@
 ---
 name: consultar-legislacao-estadual
-description: Consulta legislação ESTADUAL e MUNICIPAL brasileira ao vivo (texto integral SP/MG/BA, DF resolve+ementa, RJ best-effort; dezenas de municípios) pelo MCP iaJus, na fonte oficial de cada UF/município. Acione quando o usuário pedir uma lei/decreto/norma de um ESTADO ou MUNICÍPIO, o texto íntegra, "lei estadual nº Y de SP", "decreto do RJ número Z", "lei municipal de Porto Alegre". A consulta é por UF (+ município) + tipo + número + ano. NÃO use para legislação FEDERAL nem para acórdãos/súmulas.
+description: Consulta legislação ESTADUAL e MUNICIPAL brasileira ao vivo (texto integral SP/MG/BA, DF resolve+ementa, RJ best-effort; dezenas de municípios) pelo MCP IAJUS, na fonte oficial de cada UF/município. Acione quando o usuário pedir uma lei/decreto/norma de um ESTADO ou MUNICÍPIO, o texto íntegra, "lei estadual nº Y de SP", "decreto do RJ número Z", "lei municipal de Porto Alegre". A consulta é por UF (+ município) + tipo + número + ano. NÃO use para legislação FEDERAL nem para acórdãos/súmulas.
 allowed-tools: mcp__iajus__consultar_legislacao_estadual, mcp__plugin_iajus-juris_iajus__consultar_legislacao_estadual, mcp__iajus__obter_texto_legislacao_estadual, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao_estadual, mcp__iajus__legislacao_estadual_status, mcp__plugin_iajus-juris_iajus__legislacao_estadual_status, mcp__iajus__consultar_legislacao_municipal, mcp__plugin_iajus-juris_iajus__consultar_legislacao_municipal, mcp__iajus__obter_texto_legislacao_municipal, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao_municipal, mcp__iajus__legislacao_municipal_status, mcp__plugin_iajus-juris_iajus__legislacao_municipal_status, mcp__iajus__cobertura_legislacao_uf, mcp__plugin_iajus-juris_iajus__cobertura_legislacao_uf
 ---
 
-# Consultar legislação estadual e municipal brasileira ao vivo (iaJus)
+# Consultar legislação estadual e municipal brasileira ao vivo (IAJUS)
 
 Você tem acesso ao servidor MCP `iajus`, que consulta **legislação estadual e municipal**
 brasileira **ao vivo** na fonte oficial de cada UF/município (assembleia legislativa,
