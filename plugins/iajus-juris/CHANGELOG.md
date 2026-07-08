@@ -5,6 +5,18 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS — o plugin é o cliente fino.
 
+## [1.7.1] — 2026-07-08
+
+Correção de conexão OAuth: o servidor MCP passa a anunciar os *scopes*
+suportados (`openid email profile offline_access`) no metadado de
+*protected-resource* (antes vinha vazio), para que clientes estritos
+(Claude.ai web, ChatGPT connector) completem a negociação OAuth com
+`offline_access` e obtenham *refresh token* — sem isso a sessão expirava e o
+cliente reconectava parcialmente, exibindo **poucas ferramentas** ou
+ferramentas "não autorizadas". Bump PATCH (correção; superfície de tool
+inalterada — as 45 ferramentas continuam iguais). Reinstale/atualize o plugin
+para o cliente re-negociar a conexão.
+
 ## [1.7.0] — 2026-07-08
 
 Sincroniza as skills com a **superfície MCP v2.0** consolidada no servidor: dois
