@@ -91,6 +91,66 @@ navegador (mesma conta da aplicação) e renova o token sozinho via `offline_acc
 https://mcp.iajus.com.br/mcp
 ```
 
+## Como liberar todas as ferramentas (autorizar por padrão)
+
+> **Uma linha honesta:** nenhum plugin consegue liberar as ferramentas
+> automaticamente no seu cliente — por segurança, a autorização é **sempre uma
+> configuração local sua**. Os passos abaixo fazem isso em segundos.
+
+### Claude Code
+
+1. **Confirme a conexão.** Rode `/mcp` e veja o servidor **`iajus`** listado com a
+   contagem de ferramentas ao lado. Se pedir login, é o OAuth — autentique no
+   navegador (mesma conta da aplicação) e volte.
+2. **"Não aparecem todas" é normal.** O **Tool Search** vem ligado por padrão e
+   carrega as ferramentas conforme o Claude precisa delas — só os nomes entram no
+   começo, o schema completo entra no uso. Não é bug: as ferramentas estão
+   conectadas (a contagem ao lado de `iajus` no `/mcp` confirma).
+3. **Para não aprovar a cada uso**, adicione ao seu `~/.claude/settings.json`
+   (global) ou ao `.claude/settings.local.json` (do projeto):
+
+   ```json
+   { "permissions": { "allow": ["mcp__plugin_iajus-juris_iajus__*"] } }
+   ```
+
+   > ⚠️ **Pegadinha do nome escopado.** Ferramenta de **plugin** usa o prefixo
+   > `mcp__plugin_<nome-do-plugin>_<nome-do-servidor>__<ferramenta>`. Aqui o plugin
+   > se chama `iajus-juris` e o servidor (no `.mcp.json`) se chama `iajus`, então o
+   > prefixo correto é **`plugin_iajus-juris_iajus`** — o `*` libera todas as
+   > ferramentas de uma vez. Usar o nome cru `iajus-juris` (ou só `iajus`) **não
+   > casa** e continua pedindo aprovação. Requer uma versão recente do Claude Code.
+
+### Claude.ai (web e desktop)
+
+Aqui o IAJUS entra como **conector MCP remoto** (não pelo `settings.json`):
+
+1. **Settings → Connectors → Add custom connector** e informe a URL do MCP remoto:
+   `https://mcp.iajus.com.br/mcp`.
+2. **Autentique** — o login OAuth abre no navegador (mesma conta da aplicação).
+3. **Habilite as ferramentas** na lista do conector: abra o conector `iajus` e
+   ligue as ferramentas que quer disponíveis (você pode habilitar todas). O autor
+   do plugin não controla essa lista — a aprovação é sua, na UI do conector.
+
+### Codex
+
+Instale o plugin Codex (gêmeo deste, `iajus-juris-codex`) e confirme que o MCP
+`iajus` autenticou (OAuth no navegador, ou `codex mcp login iajus`). Instalar **não**
+auto-aprova as chamadas: as suas configurações de aprovação continuam valendo. Para
+evitar confirmação por chamada, ajuste o **approval mode** do Codex — veja a doc
+oficial de approvals do Codex (<https://developers.openai.com/codex>). Passo a passo
+de instalação em `plugins/iajus-juris-codex/README.md`.
+
+### ChatGPT (conector / Developer Mode / Apps)
+
+As ferramentas IAJUS são **read-only** (marcadas com `readOnlyHint`), então o ChatGPT
+tende a pedir **menos** confirmação. Ainda assim, a aprovação no ChatGPT é **por
+ferramenta e por conversa**: ao usar uma ferramenta pela primeira vez numa conversa,
+o ChatGPT pede confirmação e você pode marcar **"lembrar"** para o resto **daquela**
+conversa (não persiste entre conversas). Se o IAJUS estiver publicado como **App
+aprovado pelo workspace**, o administrador aprova o App uma vez e o ChatGPT usa um
+snapshot congelado das ferramentas. O autor não consegue pré-aprovar por você — é o
+comportamento de segurança do próprio ChatGPT.
+
 ### Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 
 Se preferir a chave estática à OAuth, registre o servidor fora do plugin com o

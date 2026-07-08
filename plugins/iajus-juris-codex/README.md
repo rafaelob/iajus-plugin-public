@@ -44,6 +44,38 @@ plugin ou na primeira chamada a uma tool `iajus` (abre o navegador em
 codex mcp login iajus
 ```
 
+## Como liberar todas as ferramentas (autorizar por padrão)
+
+> **Uma linha honesta:** nenhum plugin consegue liberar as ferramentas
+> automaticamente no seu cliente — por segurança, a autorização é **sempre uma
+> configuração local sua**. Os passos abaixo fazem isso em segundos.
+
+### Codex
+
+1. **Confirme a conexão.** Após instalar, garanta que o MCP `iajus` autenticou —
+   o OAuth abre no navegador na primeira chamada, ou force com `codex mcp login
+   iajus`.
+2. **Instalar não auto-aprova.** As suas configurações de aprovação do Codex
+   continuam valendo depois de instalar o plugin — por isso o Codex pode pedir
+   confirmação a cada chamada de ferramenta.
+3. **Para evitar confirmação por chamada**, ajuste o **approval mode** do Codex
+   (em `~/.codex/config.toml`). A sintaxe exata dos modos de aprovação evolui —
+   consulte a doc oficial de approvals do Codex em
+   <https://developers.openai.com/codex> e escolha o modo que preferir. As
+   ferramentas IAJUS são **read-only**, então tendem a se encaixar bem em modos
+   menos restritivos.
+
+### ChatGPT (conector / Developer Mode / Apps)
+
+As ferramentas IAJUS são **read-only** (marcadas com `readOnlyHint`), então o
+ChatGPT tende a pedir **menos** confirmação. A aprovação no ChatGPT é **por
+ferramenta e por conversa**: na primeira vez que uma ferramenta é usada numa
+conversa, o ChatGPT pede confirmação e você pode marcar **"lembrar"** para o resto
+**daquela** conversa (não persiste entre conversas). Como **App aprovado pelo
+workspace**, o administrador aprova o App uma vez e o ChatGPT usa um snapshot
+congelado das ferramentas. O autor não consegue pré-aprovar por você — é o
+comportamento de segurança do próprio ChatGPT.
+
 ## O que o plugin configura
 
 - **MCP remoto `iajus`** (`./.mcp.json`): streamable-HTTP em
