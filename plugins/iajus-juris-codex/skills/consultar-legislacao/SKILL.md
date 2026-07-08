@@ -16,7 +16,7 @@ MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
 > `total: 0` para uma norma que deveria existir pode ser **cobertura em andamento**,
 > não inexistência — diga isso honestamente e não invente a norma. Para ver o que a
 > base de legislação contém AGORA (por esfera/status + cobertura de indexação), use a
-> skill **corpus-status** (`estatisticas_corpus_pg`).
+> skill **corpus-status** (`estatisticas_da_base`).
 
 ## Como consultar — escolha o caminho pela pergunta
 

@@ -5,6 +5,42 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS — o plugin é o cliente fino.
 
+## [1.7.0] — 2026-07-08
+
+Sincroniza as skills com a **superfície MCP v2.0** consolidada no servidor: dois
+renames de tool, e a consolidação da navegação por facet na família de jurimetria
+agregada. Bump MINOR (mudança de superfície de tool).
+
+### Mudado
+
+- **`buscar_grafo` → `buscar_por_citacoes`** — a busca de grafo de citações
+  (`legal_edges`: quem cita uma súmula/tema, o que um acórdão cita) foi renomeada no
+  servidor; o nome antigo vazava o detalhe de implementação "grafo". As skills
+  `pesquisar-jurisprudencia` (tabela de modalidades + boas práticas + `allowed-tools`) e
+  o agente `pesquisador-juris` passam a usar o novo nome. Comportamento idêntico.
+- **`estatisticas_corpus_pg` → `estatisticas_da_base`** — a introspecção ao vivo do
+  corpus foi renomeada (o sufixo `_pg` vazava o motor). A skill `corpus-status`
+  (`allowed-tools` + corpo) e as referências cruzadas em `pesquisar-jurisprudencia` e
+  `consultar-legislacao` apontam para o novo nome.
+
+### Removido
+
+- **`buscar_jurimetria` (navegação/facet por colunas)** sai das skills e do agente: a
+  navegação estruturada foi **consolidada** na família de jurimetria agregada exata já
+  documentada — `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
+  `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao` —
+  que respondem VOLUME, ranking, classe/câmara, taxa de desfecho (denominador duplo) e
+  lag de publicação, todas com o envelope de honestidade. Para números, use essas seis.
+
+### Notas
+
+- A contagem passa de "8 modalidades de busca" para **7** (semântica, híbrida, FTS,
+  regex, CNJ, ontologia, citações) + a família de **jurimetria agregada** + qualificadas.
+  As quatro `pesquisar_*` de lookup legadas (jurisprudência/indexed/tema/processo) já
+  não eram documentadas nas skills — o perfil público as esconde no servidor.
+- As duas variantes (`iajus-juris` e `iajus-juris-codex`) permanecem byte-idênticas nos
+  corpos das skills; todas as descrições de frontmatter seguem < 500 chars.
+
 ## [1.6.1] — 2026-07-03
 
 Documenta e habilita as duas tools de jurimetria já servidas no perfil geral `iajus`

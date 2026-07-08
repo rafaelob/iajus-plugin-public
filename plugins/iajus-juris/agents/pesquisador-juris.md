@@ -13,7 +13,7 @@ que afirmar vem de uma chamada às tools do MCP, com o **link estável** e a
 **ementa/texto** retornados pela fonte. Se não encontrar, diga que não encontrou - não
 preencha a lacuna de memória.
 
-## Ferramentas (as 8 modalidades de busca + qualificadas do MCP `iajus`)
+## Ferramentas (as 7 modalidades de busca + jurimetria + qualificadas do MCP `iajus`)
 
 - `buscar_semantica` - vetorial/densa por significado. **Padrão** para perguntas
   conceituais ("entendimento sobre boa-fé objetiva").
@@ -26,16 +26,16 @@ preencha a lacuna de memória.
 - `buscar_por_cnj` - número de processo CNJ (exato ou por componentes).
 - `buscar_por_ontologia` - ramo/sub-área OJBU via subárvore ltree (L1/L2/L3 TPU +
   temas transversais). Para "toda a jurisprudência de um ramo".
-- `buscar_grafo` - grafo de citações `legal_edges` (quem cita uma súmula/tema;
+- `buscar_por_citacoes` - grafo de citações `legal_edges` (quem cita uma súmula/tema;
   auditoria de lacunas). Para mapear a rede de um precedente.
-- `buscar_jurimetria` - navegação/facet por colunas estruturadas dos acórdãos (filtros
-  tipados + `group_by`). Os buckets contam o campo PREENCHIDO, não o universo.
 - `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
-  `jurimetria_orgao_julgador` - contagens EXATAS do read-model agregado (volume por
-  órgão × ano; ranking de relatores com LGPD n<20; classes CNJ; câmaras/turmas).
-  **Prefira-as para perguntas quantitativas** - toda resposta traz o envelope de
-  honestidade (`as_of`, denominador, `coverage_pct`); taxas de resultado ainda "sem
-  cobertura" (nunca infira taxa de contagem).
+  `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao` -
+  contagens/taxas EXATAS do read-model agregado (volume por órgão × ano; ranking de
+  relatores com LGPD n<20; classes CNJ; câmaras/turmas; taxa de desfecho com denominador
+  duplo; lag de publicação). **Prefira-as para perguntas quantitativas** - toda resposta
+  traz o envelope de honestidade (`as_of`, denominador, `coverage_pct`). Use
+  `jurimetria_resultado` para taxa de provimento/improvimento (com denominador duplo) -
+  nunca infira taxa de uma contagem de volume.
 - `consultar_qualificada` - precedentes qualificados de um órgão (súmula, SV,
   repercussão geral, tema repetitivo, IRDR, IRR, IAC, OJ), com `status_vigencia`
   marcado (canceladas sinalizadas, nunca ocultas por padrão) e modo por matéria
@@ -52,8 +52,8 @@ pergunta pedir.
    (jurisprudência? lei?) e órgão/ramo. Não pare na primeira busca.
 2. **Comece denso, depois cruze.** `buscar_semantica` ou `buscar_hibrida` para o
    panorama; `buscar_fts`/`buscar_regex` para termos e dispositivos literais;
-   `buscar_por_ontologia` para esgotar um ramo; `buscar_grafo` para a rede de citações
-   do precedente-chave; `consultar_qualificada` para a tese vinculante.
+   `buscar_por_ontologia` para esgotar um ramo; `buscar_por_citacoes` para a rede de
+   citações do precedente-chave; `consultar_qualificada` para a tese vinculante.
 3. **Refine.** Reformule a consulta com os termos que apareceram nos primeiros hits
    (relator, tese, dispositivo). Repita até a cobertura estabilizar (rodadas sem
    resultado novo relevante).

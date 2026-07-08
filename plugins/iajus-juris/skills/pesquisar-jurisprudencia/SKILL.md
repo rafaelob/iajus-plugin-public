@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS — 8 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, grafo, jurimetria), jurimetria agregada (jurimetria_volume/relator/classe/orgao_julgador), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ, estatística de julgados ou entendimento atual de um tribunal. NÃO use para leis.
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_iajus-juris_iajus__buscar_grafo, mcp__iajus__buscar_jurimetria, mcp__plugin_iajus-juris_iajus__buscar_jurimetria, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_iajus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_iajus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__consultar_qualificada, mcp__plugin_iajus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_iajus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_iajus-juris_iajus__consultar_informativos_stj
+description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS — 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), jurimetria agregada exata (volume/relator/classe/órgão julgador/resultado/lag), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ, estatística de julgados ou entendimento atual de um tribunal. NÃO use para leis.
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_iajus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_iajus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__consultar_qualificada, mcp__plugin_iajus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_iajus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_iajus-juris_iajus__consultar_informativos_stj
 ---
 
 # Pesquisar jurisprudência brasileira (IAJUS)
@@ -20,7 +20,7 @@ memória.**
 > **cobertura em andamento**, não "não existe": avise o usuário e ofereça uma fonte
 > alternativa (ex.: tribunal superior). Para conferir o que a base contém AGORA
 > (por órgão/ano/família + quanto já está embedado), use a skill **corpus-status**
-> (`estatisticas_corpus_pg`).
+> (`estatisticas_da_base`).
 
 > **Cobertura TJ-RJ (atual):** os acórdãos do TJ-RJ no corpus são hoje
 > predominantemente **cíveis**; as Câmaras Criminais (1ª a 8ª + Seção Criminal)
@@ -29,7 +29,7 @@ memória.**
 > precedente: avise o usuário e ofereça os tribunais superiores (STJ/STF) para a
 > tese criminal. (Demais tribunais e o TJ-RJ cível não têm essa ressalva.)
 
-## Escolha da modalidade (8 tools de busca + qualificadas)
+## Escolha da modalidade (7 tools de busca + jurimetria + qualificadas)
 
 Comece pela modalidade certa para a pergunta. As buscas retornam um envelope
 uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
@@ -42,11 +42,10 @@ uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
 | Padrão literal / forma de citação ("Súmula 7", "art. 1.228") | `buscar_regex` | Regex POSIX; **exija ≥3 caracteres literais** no padrão (âncora do índice). |
 | Número de processo CNJ | `buscar_por_cnj` | `numero` completo = casamento exato; ou componentes (ano, tribunal, origem). |
 | "Todos os acórdãos de um ramo do direito" | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU (ou L2/L3, ou `tema_transversal`). Ex.: `l1_code=287` (Penal), `899` (Civil), `9985` (Administrativo). |
-| Quem citou uma súmula/tema, ou o que um acórdão cita | `buscar_grafo` | `legal_edges` single-hop; `normalized_ref="Súmula 279"` traz quem aplicou. |
+| Quem citou uma súmula/tema, ou o que um acórdão cita | `buscar_por_citacoes` | `legal_edges` single-hop; `normalized_ref="Súmula 279"` traz quem aplicou. |
 | Pergunta QUANTITATIVA exata ("quantas decisões o TJRJ julgou por ano", "quem mais relata no órgão X", "quais classes/câmaras dominam") | `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` / `jurimetria_orgao_julgador` | Contagens EXATAS do read-model agregado, com envelope de honestidade. **Prefira-as para números** (ver seção Jurimetria agregada). |
 | TAXA DE DESFECHO ("qual a taxa de provimento do STJ", "o TJRJ provê mais agravos que apelações", "evolução do improvimento no TST") | `jurimetria_resultado` | Taxas de provimento/improvimento do rollup, com **denominador duplo** rotulado (`share_over_known` e `share_over_all`) e `coverage_pct` — nunca uma taxa sem denominador (ver seção Jurimetria agregada). |
 | LAG DE PUBLICAÇÃO ("quanto tempo o STJ leva para publicar após julgar", "evolução do lag do TST") | `jurimetria_lag_publicacao` | Intervalo em dias `data_publicacao − data_julgamento` (p50/p90) por órgão × ano. **NÃO é duração do processo** — só o lag publicação−julgamento (ver seção Jurimetria agregada). |
-| Navegação/facet por colunas estruturadas (listar acórdãos por relator/classe/UF; buckets ad-hoc com `group_by`) | `buscar_jurimetria` | Filtros tipados + `group_by` por bucket. Os buckets contam o campo PREENCHIDO, não o universo — nunca derive taxa de campo esparso. |
 | Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) | `consultar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** quando o usuário quer "o entendimento atual". |
 | **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas pelo tribunal) | `consultar_informativos_stf` / `consultar_informativos_stj` | Lê os informativos do STF / STJ — a síntese oficial dos julgados de destaque por edição. Use para "o que o STF/STJ decidiu de relevante recentemente" e para localizar a tese pela edição do informativo. |
 
@@ -174,7 +173,7 @@ recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si
 - Comece restrito (tema + tribunal + faixa de ano) e amplie só se vier vazio.
 - Para "qual o entendimento atual", prefira **precedentes qualificados** (súmula /
   repercussão geral / tema repetitivo) a um acórdão isolado: use `consultar_qualificada`
-  (entendimento consolidado do órgão) e/ou `buscar_grafo` para ver quem o aplicou.
+  (entendimento consolidado do órgão) e/ou `buscar_por_citacoes` para ver quem o aplicou.
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
 - **Autenticação:** o cliente MCP autentica por você — via **login OAuth** (claude.ai /
   ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no
