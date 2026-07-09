@@ -3,7 +3,7 @@
   "name": "iajus-juris",
   "displayName": "IAJUS — Jurisprudência & Legislação BR",
   "description": "Acesso ao MCP remoto IAJUS (jurisprudência brasileira STF/STJ/TST/TCU/TJs/TRFs/TRTs/TREs, legislação federal, estadual e municipal) mais quatro skills — jurisprudência, legislação federal, legislação estadual/municipal ao vivo e estado do corpus — com 7 modalidades de busca, jurimetria agregada exata (volume/relator/classe/órgão julgador/resultado/lag), vigência (status_vigencia) e grafo de alterações por dispositivo. OAuth 2.1 por padrão; chave ik_* como fallback (ver README).",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "author": { "name": "IAJUS / Celeris", "email": "contato@iajus.com.br" },
   "homepage": "https://iajus.com.br",
   "repository": "https://github.com/rafaelob/iajus-plugin-public",

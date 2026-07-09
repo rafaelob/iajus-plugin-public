@@ -5,6 +5,18 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS — o plugin é o cliente fino.
 
+## [1.7.2] — 2026-07-08
+
+Correção de compatibilidade com clientes Claude: a superfície geral do MCP
+(`mcp.iajus.com.br/mcp`) deixou de servir os componentes visuais do ChatGPT
+App (`buscar_juris_widget`, `search`, `fetch` e o metadado MCP-Apps `ui.*`).
+Clientes Claude passaram a validar o domínio de UI contra o sandbox
+`{hash}.claudemcpcontent.com` e algumas pesquisas falhavam com
+"Invalid ui.domain format". Os widgets continuam disponíveis apenas na
+superfície dedicada do ChatGPT App. A skill de pesquisa não referencia mais
+`buscar_juris_widget` (em clientes comuns a busca é a `buscar_hibrida`).
+Superfície geral: 42 ferramentas.
+
 ## [1.7.1] — 2026-07-08
 
 Correção de conexão OAuth: o servidor MCP passa a anunciar os *scopes*
