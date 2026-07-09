@@ -17,6 +17,21 @@ ferramentas "não autorizadas". Bump PATCH (correção; superfície de tool
 inalterada — as 45 ferramentas continuam iguais). Reinstale/atualize o plugin
 para o cliente re-negociar a conexão.
 
+### Corrigido (cobertura de skills)
+
+- **As skills passam a pré-autorizar as 4 tools novas do servidor** que ficaram
+  de fora da 1.7.0: `obter_versoes_qualificada` (histórico de redação de
+  súmula/tema), `obter_dispositivos_citados` e `quem_cita_dispositivo` (grafo de
+  citações CIT-04) e `jurimetria_desfecho_cruzado` (taxa de desfecho cruzada por
+  eixo). Todas entram na skill `pesquisar-jurisprudencia` nos DOIS aliases
+  (`mcp__iajus__*` e `mcp__plugin_iajus-juris_iajus__*`). A skill também passa a
+  cobrir `buscar_juris_widget` (busca híbrida na superfície de conector). Uma
+  tool que existe no servidor mas não aparece em nenhum `allowed-tools` de skill
+  não vem pré-permitida ao cliente (o sintoma "poucas tools / não autorizadas");
+  um novo *gate* offline (`tests/saas/test_plugin_skills_tool_coverage.py`)
+  trava zero-stale + cobertura total + ambos os aliases para nunca mais
+  regredir.
+
 ## [1.7.0] — 2026-07-08
 
 Sincroniza as skills com a **superfície MCP v2.0** consolidada no servidor: dois
