@@ -5,6 +5,10 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS — o plugin é o cliente fino.
 
+## 1.7.3 - 2026-07-10
+
+- Metadados: separadores tipograficos normalizados (sem travessao) nos manifests e catalogos (Claude + Codex). Sem mudanca de tools.
+
 ## [1.7.2] — 2026-07-08
 
 Correção de compatibilidade com clientes Claude: a superfície geral do MCP
