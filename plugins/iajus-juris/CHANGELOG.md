@@ -5,10 +5,6 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS — o plugin é o cliente fino.
 
-## 1.7.3 - 2026-07-10
-
-- Metadados: separadores tipograficos normalizados (sem travessao) nos manifests e catalogos (Claude + Codex). Sem mudanca de tools.
-
 ## [2.0.0] — 2026-07-10
 
 Corte MCP v3: renomeacao da superficie de tools para o vocabulario final (``buscar_*`` busca ranqueada, ``obter_*`` fetch de um recurso, ``listar_*`` enumeracao, ``jurimetria_*`` agregados). Bump MAJOR porque nomes de tool mudam (quebra clientes que chamavam os nomes antigos). Contagem final de tools por perfil: iajus 34 · vadefocus 32.
@@ -44,6 +40,13 @@ De-para das tools que este plugin referencia:
 | `obter_texto_legislacao_municipal` | `obter_texto_norma` |
 | `pesquisar_legislacao` | `buscar_dispositivos` |
 | `quem_cita_dispositivo` | `buscar_citantes_dispositivo` |
+
+Guia completo de migração (50 entradas, consolidações por `esfera`, política de
+aliases): `MIGRATION.md` na raiz deste repositório.
+
+## [1.7.3] — 2026-07-10
+
+- Metadados: separadores tipograficos normalizados (sem travessao) nos manifests e catalogos (Claude + Codex). Sem mudanca de tools.
 
 ## [1.7.2] — 2026-07-08
 
