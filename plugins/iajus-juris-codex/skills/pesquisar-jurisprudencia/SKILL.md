@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
 description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS — 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), jurimetria agregada exata (volume/relator/classe/órgão julgador/resultado/lag), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ, estatística de julgados ou entendimento atual de um tribunal. NÃO use para leis.
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__quem_cita_dispositivo, mcp__plugin_iajus-juris_iajus__quem_cita_dispositivo, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_iajus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_iajus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__jurimetria_desfecho_cruzado, mcp__plugin_iajus-juris_iajus__jurimetria_desfecho_cruzado, mcp__iajus__consultar_qualificada, mcp__plugin_iajus-juris_iajus__consultar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_iajus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_iajus-juris_iajus__consultar_informativos_stj
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_iajus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_iajus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__jurimetria_desfecho_cruzado, mcp__plugin_iajus-juris_iajus__jurimetria_desfecho_cruzado, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj
 ---
 
 # Pesquisar jurisprudência brasileira (IAJUS)
@@ -20,7 +20,7 @@ memória.**
 > **cobertura em andamento**, não "não existe": avise o usuário e ofereça uma fonte
 > alternativa (ex.: tribunal superior). Para conferir o que a base contém AGORA
 > (por órgão/ano/família + quanto já está embedado), use a skill **corpus-status**
-> (`estatisticas_da_base`).
+> (`obter_estatisticas_base`).
 
 > **Cobertura TJ-RJ (atual):** os acórdãos do TJ-RJ no corpus são hoje
 > predominantemente **cíveis**; as Câmaras Criminais (1ª a 8ª + Seção Criminal)
@@ -44,13 +44,13 @@ uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
 | "Todos os acórdãos de um ramo do direito" | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU (ou L2/L3, ou `tema_transversal`). Ex.: `l1_code=287` (Penal), `899` (Civil), `9985` (Administrativo). |
 | Quem citou uma súmula/tema, ou o que um acórdão cita | `buscar_por_citacoes` | `legal_edges` single-hop; `normalized_ref="Súmula 279"` traz quem aplicou. |
 | Quais dispositivos legais um acórdão cita | `obter_dispositivos_citados` | Leitor do grafo de citações (CIT-04): lista os artigos/dispositivos que uma decisão invoca, para conferir o amparo legal aplicado. |
-| Quais julgados aplicam um dispositivo legal | `quem_cita_dispositivo` | O inverso (CIT-04): dado um dispositivo (ex. art. 1.228 do CC), traz os julgados que o aplicaram, medindo o quanto ele é usado. |
+| Quais julgados aplicam um dispositivo legal | `buscar_citantes_dispositivo` | O inverso (CIT-04): dado um dispositivo (ex. art. 1.228 do CC), traz os julgados que o aplicaram, medindo o quanto ele é usado. |
 | A redação de uma súmula/tema mudou? Histórico de versões | `obter_versoes_qualificada` | Versões da redação de uma súmula/tema/precedente (o enunciado mudou, quando e por quê), útil ao amparar num precedente cujo texto foi alterado. |
 | Pergunta QUANTITATIVA exata ("quantas decisões o TJRJ julgou por ano", "quem mais relata no órgão X", "quais classes/câmaras dominam") | `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` / `jurimetria_orgao_julgador` | Contagens EXATAS do read-model agregado, com envelope de honestidade. **Prefira-as para números** (ver seção Jurimetria agregada). |
 | TAXA DE DESFECHO ("qual a taxa de provimento do STJ", "o TJRJ provê mais agravos que apelações", "evolução do improvimento no TST") | `jurimetria_resultado` | Taxas de provimento/improvimento do rollup, com **denominador duplo** rotulado (`share_over_known` e `share_over_all`) e `coverage_pct` — nunca uma taxa sem denominador (ver seção Jurimetria agregada). |
 | LAG DE PUBLICAÇÃO ("quanto tempo o STJ leva para publicar após julgar", "evolução do lag do TST") | `jurimetria_lag_publicacao` | Intervalo em dias `data_publicacao − data_julgamento` (p50/p90) por órgão × ano. **NÃO é duração do processo** — só o lag publicação−julgamento (ver seção Jurimetria agregada). |
-| Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) | `consultar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** quando o usuário quer "o entendimento atual". |
-| **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas pelo tribunal) | `consultar_informativos_stf` / `consultar_informativos_stj` | Lê os informativos do STF / STJ — a síntese oficial dos julgados de destaque por edição. Use para "o que o STF/STJ decidiu de relevante recentemente" e para localizar a tese pela edição do informativo. |
+| Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) | `buscar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** quando o usuário quer "o entendimento atual". |
+| **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas pelo tribunal) | `buscar_informativos_stf` / `buscar_informativos_stj` | Lê os informativos do STF / STJ — a síntese oficial dos julgados de destaque por edição. Use para "o que o STF/STJ decidiu de relevante recentemente" e para localizar a tese pela edição do informativo. |
 
 Notas de uso:
 - **Filtro de órgão difere por modalidade:** só `buscar_semantica` / `buscar_hibrida`
@@ -81,7 +81,7 @@ coverage_pct, truncado}`:
 |---|---|---|
 | `jurimetria_volume` | `orgao?` e/ou `ano?` (ou `ano_de`/`ano_ate`); `top` 1-200 (padrão 50). **Pelo menos um recorte é obrigatório.** | Volume por órgão × ano. Ex.: `jurimetria_volume(orgao="tjrj")` → série anual do TJRJ; `jurimetria_volume(ano=2024, top=20)` → maiores órgãos em 2024. |
 | `jurimetria_relator` | `orgao` (OBRIGATÓRIO), `relator?` (substring, case-insensitive), `top` 1-50 (padrão 25) | Quem mais relata num órgão + período de atuação (`ano_min`/`ano_max`). Rollup top-50 por volume. **LGPD:** figura nominal com n<20 é suprimida ("amostra insuficiente"). |
-| `jurimetria_classe` | `orgao` (OBRIGATÓRIO), `ano?` ou `ano_de`/`ano_ate`, `top` 1-100 (padrão 25) | Volume por classe processual CNJ. O bucket `classe_cnj_code=-1` é a massa SEM classe resolvida; o envelope traz `cobertura_classe_pct`. Rótulos de código via `consultar_protocolo_classificacao`. |
+| `jurimetria_classe` | `orgao` (OBRIGATÓRIO), `ano?` ou `ano_de`/`ano_ate`, `top` 1-100 (padrão 25) | Volume por classe processual CNJ. O bucket `classe_cnj_code=-1` é a massa SEM classe resolvida; o envelope traz `cobertura_classe_pct`. Rótulos de código via `obter_protocolo_classificacao`. |
 | `jurimetria_orgao_julgador` | `orgao` (OBRIGATÓRIO), `filtro?` (substring), `top` 1-100 (padrão 25) | Volume por câmara/turma/seção (unidade organizacional — sem supressão LGPD) + período de atuação. Ex.: "quais câmaras do TJRJ mais julgam?". |
 | `jurimetria_resultado` | `orgao?` e/ou recorte de ano (`ano?` ou `ano_de`/`ano_ate`). **Pelo menos um recorte é obrigatório.** | Taxas de DESFECHO (provimento/improvimento etc.) por órgão × ano, dos rollups `agg_decisions_resultado(_cov)`. Cada desfecho vem com **denominador duplo** rotulado: `share_over_known` (n/decididas — a fração ENTRE as decisões cujo desfecho o extractor determinou) E `share_over_all` (n/total). **LGPD:** recortes com <20 decisões conhecidas são suprimidos ("amostra insuficiente"). |
 | `jurimetria_lag_publicacao` | `orgao?` OU `ano?`. **Pelo menos um recorte é obrigatório.** | Lag de publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano, do rollup `agg_decisions_lag_pub`. É a ÚNICA métrica temporal servida hoje — **NÃO é duração do processo** (ajuizamento→trânsito). Órgãos sem `data_publicacao` (vários TJs) saem sem lag. |
@@ -105,7 +105,7 @@ Regras de honestidade (obrigatório):
 
 ## Campos canônicos novos (taxonomia + matéria + autoria)
 
-- **`consultar_qualificada` devolve a taxonomia CANÔNICA do precedente:** `tipo_canonico`
+- **`buscar_qualificada` devolve a taxonomia CANÔNICA do precedente:** `tipo_canonico`
   (o tipo padronizado), `tipo_label` (rótulo PT-BR pronto para exibição) e `tipo_familia`
   (a família qualitativa: vinculante / editorial / …). Use-os para agrupar e rotular os
   precedentes por tipo, em vez de inferir do texto da ementa.
@@ -120,11 +120,11 @@ Regras de honestidade (obrigatório):
   `trust: {authority_tier, status_vigencia, trecho}`: `authority_tier` gradua a autoridade
   do órgão/tipo; **cheque `status_vigencia` antes de citar qualificada/legislação como
   amparo** — ato não-vigente vem sinalizado, nunca oculto.
-- **Vigência nas qualificadas (`consultar_qualificada`)** — cada resultado traz
+- **Vigência nas qualificadas (`buscar_qualificada`)** — cada resultado traz
   `status_vigencia` (`vigente` / `cancelada` / …); canceladas/superadas saem **MARCADAS**
   (vigentes primeiro, com `aviso` quando nada vigente casa). `incluir_canceladas=false`
   oculta-as. Além do lookup por número, há o modo **navegar por matéria**:
-  `consultar_qualificada(materia="Direito Tributário", tipo="sumula")`.
+  `buscar_qualificada(materia="Direito Tributário", tipo="sumula")`.
 - **Citação numérica dispara lookup exato** — em `buscar_fts`/`buscar_semantica`, uma
   consulta que cita "súmula 145 do STF", "súmula vinculante 11", "OJ 191" ou "tema 1234"
   prependa o casamento EXATO por número (sinalizado em `signals.qualificada_numero`),
@@ -167,7 +167,7 @@ recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si
   acórdão pelo art. 941 do CPC) e ao `revisor` quando vier; nas **qualificadas** apresente
   `tipo_label` (o tipo) e `materia` (a matéria/ramo) para situar o precedente.
 - **Confira a vigência antes de amparar:** ao citar súmula/tema/qualificada, verifique
-  `status_vigencia` (no hit `trust` ou em `consultar_qualificada`) e sinalize
+  `status_vigencia` (no hit `trust` ou em `buscar_qualificada`) e sinalize
   explicitamente quando o ato estiver cancelado/superado — nunca o apresente como vigente.
 - Se a busca **não** retornar resultado relevante (`total: 0` ou hits fracos),
   **diga isso honestamente** — não preencha a lacuna com um precedente fabricado.
@@ -176,7 +176,7 @@ recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si
 
 - Comece restrito (tema + tribunal + faixa de ano) e amplie só se vier vazio.
 - Para "qual o entendimento atual", prefira **precedentes qualificados** (súmula /
-  repercussão geral / tema repetitivo) a um acórdão isolado: use `consultar_qualificada`
+  repercussão geral / tema repetitivo) a um acórdão isolado: use `buscar_qualificada`
   (entendimento consolidado do órgão) e/ou `buscar_por_citacoes` para ver quem o aplicou.
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
 - **Autenticação:** o cliente MCP autentica por você — via **login OAuth** (claude.ai /

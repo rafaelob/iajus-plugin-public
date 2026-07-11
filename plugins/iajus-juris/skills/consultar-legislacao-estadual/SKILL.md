@@ -1,7 +1,7 @@
 ---
 name: consultar-legislacao-estadual
 description: Consulta legislação ESTADUAL e MUNICIPAL brasileira ao vivo (texto integral SP/MG/BA, DF resolve+ementa, RJ best-effort; dezenas de municípios) pelo MCP IAJUS, na fonte oficial de cada UF/município. Acione quando o usuário pedir uma lei/decreto/norma de um ESTADO ou MUNICÍPIO, o texto íntegra, "lei estadual nº Y de SP", "decreto do RJ número Z", "lei municipal de Porto Alegre". A consulta é por UF (+ município) + tipo + número + ano. NÃO use para legislação FEDERAL nem para acórdãos/súmulas.
-allowed-tools: mcp__iajus__consultar_legislacao_estadual, mcp__plugin_iajus-juris_iajus__consultar_legislacao_estadual, mcp__iajus__obter_texto_legislacao_estadual, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao_estadual, mcp__iajus__legislacao_estadual_status, mcp__plugin_iajus-juris_iajus__legislacao_estadual_status, mcp__iajus__consultar_legislacao_municipal, mcp__plugin_iajus-juris_iajus__consultar_legislacao_municipal, mcp__iajus__obter_texto_legislacao_municipal, mcp__plugin_iajus-juris_iajus__obter_texto_legislacao_municipal, mcp__iajus__legislacao_municipal_status, mcp__plugin_iajus-juris_iajus__legislacao_municipal_status, mcp__iajus__cobertura_legislacao_uf, mcp__plugin_iajus-juris_iajus__cobertura_legislacao_uf
+allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_iajus-juris_iajus__obter_cobertura_legislacao, mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_iajus-juris_iajus__obter_cobertura_legislacao, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_iajus-juris_iajus__obter_cobertura_legislacao
 ---
 
 # Consultar legislação estadual e municipal brasileira ao vivo (IAJUS)
@@ -16,11 +16,11 @@ autenticação. Não há credencial nem host novos.
 
 ## Comece pela cobertura: o que a UF cobre
 
-Para uma UF que você não conhece, chame **`cobertura_legislacao_uf`** (`uf="SP"`) primeiro:
+Para uma UF que você não conhece, chame **`obter_cobertura_legislacao`** (`uf="SP"`) primeiro:
 ela lista, sem fan-out lento, o estado + os municípios cobertos naquela UF e a prontidão de
 cada um. É o melhor ponto de partida antes de uma consulta estadual/municipal direcionada.
 
-`legislacao_estadual_status` (estados) e `legislacao_municipal_status` (municípios) dão a
+`obter_cobertura_legislacao` (estados) e `obter_cobertura_legislacao` (municípios) dão a
 prontidão detalhada por fonte.
 
 ## Cobertura estadual por UF (prontidão real)
@@ -32,7 +32,7 @@ prontidão detalhada por fonte.
   + link oficial de forma confiável; o inteiro teor vem via SINJ-DF na maioria dos casos,
   mas é best-effort — o campo `tem_texto_integral` por consulta avisa se o texto veio).
 - **Não confirmada** (`unconfirmed`): adaptador existe, mas a resolução ao vivo ainda não
-  foi confirmada — sempre confira com `legislacao_estadual_status` e, se falhar, **diga que
+  foi confirmada — sempre confira com `obter_cobertura_legislacao` e, se falhar, **diga que
   a UF ainda não está confirmada**.
 - **Best-effort** (`stub`): **RJ** (a base da ALERJ é Lotus Notes/Domino com busca
   full-text imprecisa — a maioria das consultas por número NÃO resolve; quando resolve, o
@@ -55,13 +55,13 @@ textual livre).
 
 | Necessidade | Tool | Argumentos |
 |---|---|---|
-| Mapa de cobertura de uma UF (estado + municípios) | `cobertura_legislacao_uf` | `uf` |
-| Metadados de uma norma ESTADUAL (link oficial, ementa, data) | `consultar_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
-| Texto íntegra de uma norma ESTADUAL | `obter_texto_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
-| Prontidão estadual por UF | `legislacao_estadual_status` | (sem argumentos) |
-| Metadados de uma norma MUNICIPAL | `consultar_legislacao_municipal` | `uf`, `municipio`, `tipo`, `numero`, `ano` |
-| Texto íntegra de uma norma MUNICIPAL | `obter_texto_legislacao_municipal` | `uf`, `municipio`, `tipo`, `numero`, `ano` |
-| Prontidão municipal | `legislacao_municipal_status` | (sem argumentos) |
+| Mapa de cobertura de uma UF (estado + municípios) | `obter_cobertura_legislacao` | `uf` |
+| Metadados de uma norma ESTADUAL (link oficial, ementa, data) | `buscar_norma_fonte_oficial` | `uf`, `tipo`, `numero`, `ano` |
+| Texto íntegra de uma norma ESTADUAL | `obter_texto_norma` | `uf`, `tipo`, `numero`, `ano` |
+| Prontidão estadual por UF | `obter_cobertura_legislacao` | (sem argumentos) |
+| Metadados de uma norma MUNICIPAL | `buscar_norma_fonte_oficial` | `uf`, `municipio`, `tipo`, `numero`, `ano` |
+| Texto íntegra de uma norma MUNICIPAL | `obter_texto_norma` | `uf`, `municipio`, `tipo`, `numero`, `ano` |
+| Prontidão municipal | `obter_cobertura_legislacao` | (sem argumentos) |
 
 Notas de uso:
 - **`uf` é sempre obrigatória; para municipal, `municipio` também.** Sem isso a consulta é
@@ -85,7 +85,7 @@ Notas de uso:
 
 ## Boas práticas
 
-- Comece por `cobertura_legislacao_uf` para a UF; ajuste a expectativa (ready vs best-effort
+- Comece por `obter_cobertura_legislacao` para a UF; ajuste a expectativa (ready vs best-effort
   vs federated) antes de prometer um resultado.
 - Confirme a norma com `consultar_legislacao_*` (link + data); só então `obter_texto_*` se o
   usuário quiser o inteiro teor.

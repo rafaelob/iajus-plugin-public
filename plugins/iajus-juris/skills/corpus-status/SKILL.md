@@ -1,12 +1,12 @@
 ---
 name: corpus-status
-description: 'Mostra o que a base IAJUS contém AGORA via MCP (tool estatisticas_da_base, lê o Postgres ao vivo): por família (jurisprudência/doutrina/legislação) total de unidades, nº de órgãos, faixa de anos e cobertura de embedding/FTS; por órgão contagem + anos; por qualificada e legislação por status. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do órgão X?", "quanto já está embedado?". Corpus VIVO — total 0 = cobertura em andamento.'
-allowed-tools: mcp__iajus__estatisticas_da_base, mcp__plugin_iajus-juris_iajus__estatisticas_da_base
+description: 'Mostra o que a base IAJUS contém AGORA via MCP (tool obter_estatisticas_base, lê o Postgres ao vivo): por família (jurisprudência/doutrina/legislação) total de unidades, nº de órgãos, faixa de anos e cobertura de embedding/FTS; por órgão contagem + anos; por qualificada e legislação por status. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do órgão X?", "quanto já está embedado?". Corpus VIVO — total 0 = cobertura em andamento.'
+allowed-tools: mcp__iajus__obter_estatisticas_base, mcp__plugin_iajus-juris_iajus__obter_estatisticas_base
 ---
 
 # Estado do corpus IAJUS AO VIVO (o que a base contém AGORA)
 
-Você tem acesso ao servidor MCP `iajus`, que serve a tool **`estatisticas_da_base`**
+Você tem acesso ao servidor MCP `iajus`, que serve a tool **`obter_estatisticas_base`**
 — uma introspecção **ao vivo** do corpus, lida diretamente do **read-model Postgres**
 que as buscas consultam (não um snapshot estático). Use-a para responder, com números
 reais e atuais, **o que a base contém neste momento**.
@@ -19,7 +19,7 @@ reais e atuais, **o que a base contém neste momento**.
 
 ## Quando usar
 
-Acione `estatisticas_da_base` quando o usuário perguntar coisas como:
+Acione `obter_estatisticas_base` quando o usuário perguntar coisas como:
 
 - "**o que tem na base?**", "qual a cobertura atual do IAJUS?";
 - "**quantos acórdãos do TJRJ** (ou de qualquer órgão) existem?";
@@ -36,7 +36,7 @@ Esta skill é só para o **panorama quantitativo / de cobertura** do corpus.
 
 ## A tool
 
-`estatisticas_da_base` é **read-only**, retorna JSON e aceita:
+`obter_estatisticas_base` é **read-only**, retorna JSON e aceita:
 
 | Argumento | Valores | Efeito |
 |---|---|---|
@@ -72,13 +72,13 @@ O que cada seção traz:
 
 ## Exemplos de chamada
 
-- Panorama geral: `estatisticas_da_base()` (= `secao="tudo"`).
-- Só as famílias e a cobertura de embedding: `estatisticas_da_base(secao="familias")`.
+- Panorama geral: `obter_estatisticas_base()` (= `secao="tudo"`).
+- Só as famílias e a cobertura de embedding: `obter_estatisticas_base(secao="familias")`.
 - Maiores órgãos de jurisprudência por volume:
-  `estatisticas_da_base(secao="orgaos", family="jurisprudencia", top=30)`.
+  `obter_estatisticas_base(secao="orgaos", family="jurisprudencia", top=30)`.
 - Espécies de qualificada (vigentes/canceladas):
-  `estatisticas_da_base(secao="qualificadas")`.
-- Legislação por esfera e status: `estatisticas_da_base(secao="legislacao")`.
+  `obter_estatisticas_base(secao="qualificadas")`.
+- Legislação por esfera e status: `obter_estatisticas_base(secao="legislacao")`.
 
 **Autenticação:** o cliente MCP autentica por você — via **login OAuth** (claude.ai /
 ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no

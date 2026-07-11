@@ -2,8 +2,8 @@
 
 > **Versão 1.7.0** — superfície MCP v2.0: a busca de citações agora é
 > `buscar_por_citacoes` (antes `buscar_grafo`) e a introspecção do corpus é
-> `estatisticas_da_base` (antes `estatisticas_corpus_pg`); a navegação por facet
-> `buscar_jurimetria` foi consolidada na família de jurimetria agregada exata
+> `obter_estatisticas_base` (antes `estatisticas_corpus_pg`); a navegação por facet
+> `jurimetria_volume` foi consolidada na família de jurimetria agregada exata
 > (`jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
 > `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao`).
 > Mantém grafo de legislação com alterações **por dispositivo**
@@ -28,7 +28,7 @@ municipal**.
 | `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 7 modalidades + as 6 tools de **jurimetria agregada** (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
 | `skills/consultar-legislacao/` | como localizar leis/artigos **federais** por termo, tema (ontologia) ou citação literal, com texto íntegra, vigência e grafo de alterações (inclusive **por dispositivo**) |
 | `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** ao vivo na fonte oficial (UF [+ município] + tipo + número + ano) |
-| `skills/corpus-status/` | o que a base contém AGORA (`estatisticas_da_base`): por família/órgão/qualificada/esfera, com faixa de anos e cobertura de indexação |
+| `skills/corpus-status/` | o que a base contém AGORA (`obter_estatisticas_base`): por família/órgão/qualificada/esfera, com faixa de anos e cobertura de indexação |
 | `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email profile offline_access`) |
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
@@ -52,7 +52,7 @@ jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins
 | `jurimetria_orgao_julgador` | volume por câmara/turma/seção de um órgão |
 | `jurimetria_resultado` | taxa de desfecho (provimento/improvimento) por órgão × ano, com denominador duplo e `coverage_pct` |
 | `jurimetria_lag_publicacao` | lag de publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano |
-| `consultar_qualificada` | precedentes qualificados (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) com **`status_vigencia`** — canceladas saem marcadas; modo por matéria (`materia=`) |
+| `buscar_qualificada` | precedentes qualificados (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) com **`status_vigencia`** — canceladas saem marcadas; modo por matéria (`materia=`) |
 
 As buscas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem
 as famílias `jurisprudencia` + `legislacao` e são read-only. Os hits trazem o envelope
