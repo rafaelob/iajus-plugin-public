@@ -23,11 +23,13 @@ memória.**
 > (`obter_estatisticas_base`).
 
 > **Cobertura TJ-RJ (atual):** os acórdãos do TJ-RJ no corpus são hoje
-> predominantemente **cíveis**; as Câmaras Criminais (1ª a 8ª + Seção Criminal)
-> ainda estão em ingestão. Para matéria **criminal** do TJ-RJ, trate um `total: 0`
-> ou recall fraco como **lacuna de cobertura em andamento**, não como ausência de
-> precedente: avise o usuário e ofereça os tribunais superiores (STJ/STF) para a
-> tese criminal. (Demais tribunais e o TJ-RJ cível não têm essa ressalva.)
+> predominantemente **cíveis**; a matéria **criminal** (Câmaras Criminais 1ª a 8ª +
+> Seção Criminal) está **apenas parcialmente ingerida** e segue em coleta.
+> **Sempre rode a busca primeiro** - não recuse a consulta criminal de antemão.
+> Só **se** ela voltar `total: 0` ou recall fraco, trate como **lacuna de cobertura
+> em andamento** (não como ausência de precedente): avise o usuário e ofereça os
+> tribunais superiores (STJ/STF) para a tese criminal. (Demais tribunais e o TJ-RJ
+> cível não têm essa ressalva.)
 
 ## Escolha da modalidade (7 tools de busca + jurimetria + qualificadas)
 
