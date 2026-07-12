@@ -5,6 +5,20 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.1.0] - 2026-07-12
+
+Cinco subagentes especialistas e o icone IAJUS. Bump MINOR: adiciona capacidades sem quebrar nenhuma tool existente.
+
+### Adicionado
+
+- Cinco subagentes que orquestram as skills e as tools do MCP para tarefas maiores (o Claude Code os descobre em `agents/`):
+  - **pesquisador-juris** (aprimorado): pesquisa juridica multi-modalidade com honestidade de fonte.
+  - **memorialista-juris**: monta memorial de pesquisa, parecer e relatorio a partir das buscas, com citacao verificavel de cada tese.
+  - **legislacao-juris**: consulta legislacao federal, estadual e municipal, vigencia (status_vigencia) e grafo de alteracoes por dispositivo.
+  - **jurimetria-juris**: agregados exatos (volume, relator, classe, orgao julgador, resultado, lag) sem inventar numero.
+  - **conferente-citacoes**: confere cada citacao de acordao ou norma contra a fonte antes de fechar o texto.
+- Icone do plugin (`assets/iajus-icon-512.png`, Asterisco de Origem navy+ouro).
+
 ## [2.0.0] - 2026-07-10
 
 Corte MCP v3: renomeacao da superficie de tools para o vocabulario final (``buscar_*`` busca ranqueada, ``obter_*`` fetch de um recurso, ``listar_*`` enumeracao, ``jurimetria_*`` agregados). Bump MAJOR porque nomes de tool mudam (quebra clientes que chamavam os nomes antigos). Contagem final de tools por perfil: iajus 34 · vadefocus 32.
