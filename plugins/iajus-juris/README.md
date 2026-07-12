@@ -1,6 +1,6 @@
-# IAJUS — plugin Claude Code (jurisprudência + legislação BR)
+# IAJUS - plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 1.7.0** — superfície MCP v2.0: a busca de citações agora é
+> **Versão 1.7.0** - superfície MCP v2.0: a busca de citações agora é
 > `buscar_por_citacoes` (antes `buscar_grafo`) e a introspecção do corpus é
 > `obter_estatisticas_base` (antes `estatisticas_corpus_pg`); a navegação por facet
 > `jurimetria_volume` foi consolidada na família de jurimetria agregada exata
@@ -18,7 +18,7 @@ configurado. Não precisa configurar o MCP na mão.
 O corpus cobre **milhões de acórdãos** nas famílias: **tribunais superiores**
 (STF/STJ/TST/TSE/STM/TNU), **TJs** (estaduais), **TRFs**, **TRTs**, **TREs**,
 **Tribunais de Contas** (TCU + TCEs), **Turmas Recursais dos JEFs** e
-**jurisprudência administrativa** (CARF) — mais **legislação federal, estadual e
+**jurisprudência administrativa** (CARF) - mais **legislação federal, estadual e
 municipal**.
 
 ## O que vem no plugin
@@ -33,14 +33,14 @@ municipal**.
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
 jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
-(Doutrina é premium — fica só no perfil VadeFocus, fora deste plugin.)
+(Doutrina é premium - fica só no perfil VadeFocus, fora deste plugin.)
 
 ### As 7 modalidades de busca + jurimetria agregada + qualificadas (tools do MCP)
 
 | Tool | Para quê |
 |---|---|
 | `buscar_semantica` | busca vetorial/densa por significado (padrão para perguntas conceituais) |
-| `buscar_hibrida` | fusão RRF (densa + FTS + trigram + CNJ + ontologia) — melhor relevância geral; em legislação serve por padrão só normas em vigor (`incluir_historico=true` traz revogadas) |
+| `buscar_hibrida` | fusão RRF (densa + FTS + trigram + CNJ + ontologia) - melhor relevância geral; em legislação serve por padrão só normas em vigor (`incluir_historico=true` traz revogadas) |
 | `buscar_fts` | full-text pt_unaccent, stemming PT, insensível a acento; citação numérica ("súmula 145 do STF") dispara lookup exato |
 | `buscar_regex` | regex POSIX (exige ≥3 caracteres literais para ancorar o índice) |
 | `buscar_por_cnj` | número de processo CNJ (exato ou por componentes) |
@@ -52,11 +52,11 @@ jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins
 | `jurimetria_orgao_julgador` | volume por câmara/turma/seção de um órgão |
 | `jurimetria_resultado` | taxa de desfecho (provimento/improvimento) por órgão × ano, com denominador duplo e `coverage_pct` |
 | `jurimetria_lag_publicacao` | lag de publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano |
-| `buscar_qualificada` | precedentes qualificados (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) com **`status_vigencia`** — canceladas saem marcadas; modo por matéria (`materia=`) |
+| `buscar_qualificada` | precedentes qualificados (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) com **`status_vigencia`** - canceladas saem marcadas; modo por matéria (`materia=`) |
 
 As buscas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem
 as famílias `jurisprudencia` + `legislacao` e são read-only. Os hits trazem o envelope
-de confiança `trust` (`{authority_tier, status_vigencia, trecho}`) — cheque a vigência
+de confiança `trust` (`{authority_tier, status_vigencia, trecho}`) - cheque a vigência
 antes de citar como amparo.
 
 ## Autenticação: OAuth 2.1 (padrão)
@@ -94,16 +94,16 @@ https://mcp.iajus.com.br/mcp
 ## Como liberar todas as ferramentas (autorizar por padrão)
 
 > **Uma linha honesta:** nenhum plugin consegue liberar as ferramentas
-> automaticamente no seu cliente — por segurança, a autorização é **sempre uma
+> automaticamente no seu cliente - por segurança, a autorização é **sempre uma
 > configuração local sua**. Os passos abaixo fazem isso em segundos.
 
 ### Claude Code
 
 1. **Confirme a conexão.** Rode `/mcp` e veja o servidor **`iajus`** listado com a
-   contagem de ferramentas ao lado. Se pedir login, é o OAuth — autentique no
+   contagem de ferramentas ao lado. Se pedir login, é o OAuth - autentique no
    navegador (mesma conta da aplicação) e volte.
 2. **"Não aparecem todas" é normal.** O **Tool Search** vem ligado por padrão e
-   carrega as ferramentas conforme o Claude precisa delas — só os nomes entram no
+   carrega as ferramentas conforme o Claude precisa delas - só os nomes entram no
    começo, o schema completo entra no uso. Não é bug: as ferramentas estão
    conectadas (a contagem ao lado de `iajus` no `/mcp` confirma).
 3. **Para não aprovar a cada uso**, adicione ao seu `~/.claude/settings.json`
@@ -116,7 +116,7 @@ https://mcp.iajus.com.br/mcp
    > ⚠️ **Pegadinha do nome escopado.** Ferramenta de **plugin** usa o prefixo
    > `mcp__plugin_<nome-do-plugin>_<nome-do-servidor>__<ferramenta>`. Aqui o plugin
    > se chama `iajus-juris` e o servidor (no `.mcp.json`) se chama `iajus`, então o
-   > prefixo correto é **`plugin_iajus-juris_iajus`** — o `*` libera todas as
+   > prefixo correto é **`plugin_iajus-juris_iajus`** - o `*` libera todas as
    > ferramentas de uma vez. Usar o nome cru `iajus-juris` (ou só `iajus`) **não
    > casa** e continua pedindo aprovação. Requer uma versão recente do Claude Code.
 
@@ -126,17 +126,17 @@ Aqui o IAJUS entra como **conector MCP remoto** (não pelo `settings.json`):
 
 1. **Settings → Connectors → Add custom connector** e informe a URL do MCP remoto:
    `https://mcp.iajus.com.br/mcp`.
-2. **Autentique** — o login OAuth abre no navegador (mesma conta da aplicação).
+2. **Autentique** - o login OAuth abre no navegador (mesma conta da aplicação).
 3. **Habilite as ferramentas** na lista do conector: abra o conector `iajus` e
    ligue as ferramentas que quer disponíveis (você pode habilitar todas). O autor
-   do plugin não controla essa lista — a aprovação é sua, na UI do conector.
+   do plugin não controla essa lista - a aprovação é sua, na UI do conector.
 
 ### Codex
 
 Instale o plugin Codex (gêmeo deste, `iajus-juris-codex`) e confirme que o MCP
 `iajus` autenticou (OAuth no navegador, ou `codex mcp login iajus`). Instalar **não**
 auto-aprova as chamadas: as suas configurações de aprovação continuam valendo. Para
-evitar confirmação por chamada, ajuste o **approval mode** do Codex — veja a doc
+evitar confirmação por chamada, ajuste o **approval mode** do Codex - veja a doc
 oficial de approvals do Codex (<https://developers.openai.com/codex>). Passo a passo
 de instalação em `plugins/iajus-juris-codex/README.md`.
 
@@ -148,7 +148,7 @@ ferramenta e por conversa**: ao usar uma ferramenta pela primeira vez numa conve
 o ChatGPT pede confirmação e você pode marcar **"lembrar"** para o resto **daquela**
 conversa (não persiste entre conversas). Se o IAJUS estiver publicado como **App
 aprovado pelo workspace**, o administrador aprova o App uma vez e o ChatGPT usa um
-snapshot congelado das ferramentas. O autor não consegue pré-aprovar por você — é o
+snapshot congelado das ferramentas. O autor não consegue pré-aprovar por você - é o
 comportamento de segurança do próprio ChatGPT.
 
 ### Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
@@ -169,7 +169,7 @@ cole a chave em commits ou chat.**
 Plugin Codex equivalente (OAuth por padrão). Caminho **sem git** (ZIP): extraia o
 pacote e `codex plugin marketplace add ./iajus-juris-codex` → `codex plugin add
 iajus-juris@iajus`. Caminho **git privado**: `codex plugin marketplace add
-https://dist.iajus.com.br/marketplace.git` (HTTP Basic via git credential-helper —
+https://dist.iajus.com.br/marketplace.git` (HTTP Basic via git credential-helper -
 e-mail + `ik_*`; **nunca** credencial na URL). Fallback `ik_*`: `codex mcp add iajus
 --url https://mcp.iajus.com.br/mcp --bearer-token-env-var IAJUS_API_TOKEN`. Detalhes
 em `plugins/iajus-juris-codex/README.md`.
@@ -236,8 +236,8 @@ Antigravity. A chave é validada server-side (hash SHA-256); sem chave válida, 
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
-- **Editor:** IAJUS / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
+- **Editor:** IAJUS / Celeris (CVO Alliance Ltda.) - <https://iajus.com.br>.
 - **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio IAJUS
-  (jurisprudência e legislação brasileira — registro público, normalizado e
+  (jurisprudência e legislação brasileira - registro público, normalizado e
   classificado). O consumo de busca é autenticado por conta (OAuth) e validado
   server-side; nenhuma tool retorna credenciais nem grava dados.

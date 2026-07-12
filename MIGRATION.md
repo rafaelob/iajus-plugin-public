@@ -1,4 +1,4 @@
-# Migração para o MCP v3 (plugin 2.0.0) — guia de-para
+# Migração para o MCP v3 (plugin 2.0.0) - guia de-para
 
 Em 2026-07-10 a superfície de tools do MCP IAJUS foi renomeada para o vocabulário
 final v3. O plugin **2.0.0** já usa os nomes novos. Este guia cobre quem chama as
@@ -17,10 +17,10 @@ Convenção de prefixos por semântica:
 
 Contagem de tools por perfil após o corte: **iajus 34 · vadefocus 32**.
 
-## Compatibilidade — nomes antigos continuam funcionando (por ora)
+## Compatibilidade - nomes antigos continuam funcionando (por ora)
 
 O servidor mantém um **middleware de alias**: chamadas `tools/call` com nome
-antigo são roteadas para a tool nova, com resposta idêntica — nenhum cliente
+antigo são roteadas para a tool nova, com resposta idêntica - nenhum cliente
 quebra no corte. Os nomes antigos NÃO aparecem mais em `tools/list`.
 
 **Prazo de deprecação: os aliases são mantidos por 1 release MAJOR.** Migre as
@@ -71,7 +71,7 @@ As famílias por esfera viraram uma tool única; passe `esfera`
 
 ## Como migrar
 
-1. Atualize o plugin para **2.0.0** (reinstale pelo marketplace) — as skills já
+1. Atualize o plugin para **2.0.0** (reinstale pelo marketplace) - as skills já
    pré-autorizam os nomes novos nos dois aliases de namespace.
 2. Se você chama tools por nome em código próprio, troque pelos nomes novos da
    tabela acima; nas consolidadas, adicione `esfera` se dependia da variante.

@@ -11,26 +11,26 @@ decretos, MPVs, leis complementares, emendas constitucionais, decretos-lei), com
 íntegra do Planalto** e rastreamento de alterações artigo por artigo via Senado. Use o
 MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
 
-> **Corpus VIVO e em crescimento:** a base de legislação é ingerida continuamente —
+> **Corpus VIVO e em crescimento:** a base de legislação é ingerida continuamente -
 > normas e dispositivos novos aparecem automaticamente, sem mudança de skill. Um
 > `total: 0` para uma norma que deveria existir pode ser **cobertura em andamento**,
-> não inexistência — diga isso honestamente e não invente a norma. Para ver o que a
+> não inexistência - diga isso honestamente e não invente a norma. Para ver o que a
 > base de legislação contém AGORA (por esfera/status + cobertura de indexação), use a
 > skill **corpus-status** (`obter_estatisticas_base`).
 
-## Como consultar — escolha o caminho pela pergunta
+## Como consultar - escolha o caminho pela pergunta
 
 | Necessidade | Tool | Como |
 |---|---|---|
 | Já sei a norma (tipo + número + ano) e quero metadados + link oficial | `buscar_norma_fonte_oficial` | Resolve por `tipo` (LEI, DECRETO, LC, MPV, EC…), `numero`, `ano`. Retorna ementa, data, `link_completo` oficial. |
 | Quero o **texto íntegra** de uma norma ou de um artigo | `obter_texto_norma` / `obter_texto_norma` | Texto pleno; a variante `_markdown` traz a estrutura hierárquica (Título/Capítulo/Art./§). |
 | Quero a redação de UM dispositivo específico ("art. 5º, II") | `obter_dispositivo_legal` | Isola o dispositivo (artigo, parágrafo, inciso) com a redação vigente. |
-| Não sei o número — busca por nome/tema ("CDC", "Lei Geral de Proteção de Dados") | `buscar_norma_fonte_oficial` | Busca por termo/tema na legislação federal. |
+| Não sei o número - busca por nome/tema ("CDC", "Lei Geral de Proteção de Dados") | `buscar_norma_fonte_oficial` | Busca por termo/tema na legislação federal. |
 | Tenho o **nome/apelido** da norma e quero a norma + **vigência** ("CLT", "Código de Defesa do Consumidor") | `buscar_norma_por_nome` | Resolve a norma pelo nome/apelido e devolve o **`status`** (vigente / revogada). **Para amparo, sirva só `vigente`.** |
 | Tenho **tipo + número** e quero a norma + **vigência** ("Lei 8078", "LC 95") | `buscar_norma_por_numero` | Resolve por `tipo` + `numero` (+ `ano`) e devolve o **`status`** (vigente / revogada). |
 | Listar normas de um tipo/ano | `listar_normas` | Enumera (ex.: leis de 2023). |
 | Esse artigo foi **alterado/revogado**? Por qual norma e quando? | `obter_alteracoes_norma` | Histórico de alterações artigo por artigo (norma alteradora + data). |
-| Quais normas citam/alteram/são citadas por esta; o que mudou **artigo a artigo** | `obter_grafo_norma` | `norma_ref` canônico (ex. `LEI_8112_1990`) + `max_depth` (1-20, padrão 8). Retorna `cadeia_alteracoes` (quem alterou, recursivo), `dead_ends` (revogadas/caducadas alcançáveis), conversão MPV→LEI, `citacoes` (`cita` / `citada_por`) e **`alteracoes_dispositivo`** — eventos por dispositivo ("redação dada por", "revogado por", "regulamentado por") com `dispositivo_ref` + a norma alteradora. |
+| Quais normas citam/alteram/são citadas por esta; o que mudou **artigo a artigo** | `obter_grafo_norma` | `norma_ref` canônico (ex. `LEI_8112_1990`) + `max_depth` (1-20, padrão 8). Retorna `cadeia_alteracoes` (quem alterou, recursivo), `dead_ends` (revogadas/caducadas alcançáveis), conversão MPV→LEI, `citacoes` (`cita` / `citada_por`) e **`alteracoes_dispositivo`** - eventos por dispositivo ("redação dada por", "revogado por", "regulamentado por") com `dispositivo_ref` + a norma alteradora. |
 | Busca conceitual/semântica no corpus de legislação | `buscar_semantica` / `buscar_fts` / `buscar_hibrida` | Passe `family="legislacao"`. Semântica casa por significado; FTS por expressão (use `phrase=true` p/ ordem exata). |
 | "Quais leis tratam de um ramo do direito" | `buscar_por_ontologia` | `l1_code` TPU + `family="legislacao"`. Ex.: `l1_code=1156` (Consumidor → CDC), `14` (Tributário), `899` (Civil → CC). |
 | Taxonomia OJBU de referência / classificar uma norma | `obter_ontologia_juridica` / `obter_classificacao_tipo` | Árvore de ramos (21 L1) e classificação de um texto normativo. |
@@ -54,15 +54,15 @@ Vigência e amparo nas buscas (regras do motor):
   (ou de vigência incerta/parcialmente alterada) e OCULTA as comprovadamente sem
   vigência (revogada, não recepcionada, inconstitucional, vigência esgotada, suspensa).
   Para pesquisa **histórica** (trazer também revogadas), passe `incluir_historico=true`
-  — e sinalize o status ao usuário. As demais modalidades não aplicam esse corte:
+  - e sinalize o status ao usuário. As demais modalidades não aplicam esse corte:
   cheque `status_vigencia` no hit.
 - Cada hit de legislação traz o envelope `trust` `{authority_tier, status_vigencia,
   trecho}` e o flag **`is_amending_only`** (norma que só existe para alterar/revogar
-  outra — não a cite como fonte substantiva do direito; cite a norma alterada
+  outra - não a cite como fonte substantiva do direito; cite a norma alterada
   consolidada). Cheque-os antes de citar como amparo.
 - Para saber **o que mudou dentro da norma, artigo a artigo**, prefira
   `obter_grafo_norma` (bloco `alteracoes_dispositivo`) e
-  `obter_alteracoes_norma` — a redação vigente de um dispositivo específico vem de
+  `obter_alteracoes_norma` - a redação vigente de um dispositivo específico vem de
   `obter_dispositivo_legal`.
 
 ## Regras de citação (obrigatório)
@@ -71,7 +71,7 @@ Vigência e amparo nas buscas (regras do motor):
   cite o `link_completo` (URL oficial do Planalto) e **nunca invente** número de lei,
   redação de artigo ou link.
 - Se o dispositivo estiver **revogado/alterado** (visto em `obter_alteracoes_norma`
-  ou no grafo `altera_norma`), **diga isso explicitamente** — não apresente texto
+  ou no grafo `altera_norma`), **diga isso explicitamente** - não apresente texto
   revogado como vigente; aponte a norma alteradora e a data.
 - Preserve a grafia e os diacríticos exatamente como na fonte (UTF-8).
 - Se a norma não estiver na base (ex.: `total: 0`, norma não federal, MPV convertida que
@@ -81,14 +81,14 @@ Vigência e amparo nas buscas (regras do motor):
 
 ## Boas práticas
 
-- Para "qual o texto do art. X da lei Y", vá direto a `obter_dispositivo_legal` — é o
+- Para "qual o texto do art. X da lei Y", vá direto a `obter_dispositivo_legal` - é o
   caminho mais preciso para um único dispositivo.
 - Para "qual lei regula X" sem saber o nome, comece por `buscar_norma_fonte_oficial` ou
   `buscar_semantica` (`family="legislacao"`); confirme com `buscar_norma_fonte_oficial`.
-- Antes de afirmar vigência, rode `obter_alteracoes_norma` — leis antigas mudam de
+- Antes de afirmar vigência, rode `obter_alteracoes_norma` - leis antigas mudam de
   redação artigo a artigo.
-- **Autenticação:** o cliente MCP autentica por você — via **login OAuth** (claude.ai /
+- **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
   ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no
   header `Authorization: Bearer` (canal CLI/privado). Um **401** indica sessão/chave
-  ausente ou expirada — peça ao usuário para refazer o login ou revisar a chave; **nunca**
+  ausente ou expirada - peça ao usuário para refazer o login ou revisar a chave; **nunca**
   cole a chave em chat nem em commit.

@@ -1,4 +1,4 @@
-# IAJUS — plugin para OpenAI Codex (via marketplace)
+# IAJUS - plugin para OpenAI Codex (via marketplace)
 
 Plugin Codex que entrega as **4 skills** jurídicas IAJUS + o servidor MCP remoto já
 configurado. É o gêmeo Codex do plugin Claude Code `iajus-juris` (mesmas skills
@@ -8,7 +8,7 @@ manual** (Bearer).
 
 ## Instalação
 
-### Opção A — ZIP, sem git (recomendado para a maioria)
+### Opção A - ZIP, sem git (recomendado para a maioria)
 
 1. Baixe e extraia o pacote `iajus-juris-codex` (um marketplace local pronto, com
    `.agents/plugins/marketplace.json` + `plugins/iajus-juris-codex/`).
@@ -19,11 +19,11 @@ codex plugin marketplace add ./iajus-juris-codex     # caminho local extraído
 codex plugin add iajus-juris@iajus
 ```
 
-### Opção B — marketplace privado IAJUS (git, para quem usa credential-helper)
+### Opção B - marketplace privado IAJUS (git, para quem usa credential-helper)
 
 ```bash
 # o catálogo é servido por git smart-HTTP privado (HTTP Basic: usuário = seu e-mail,
-# senha = sua chave ik_*). Configure a credencial no git credential-helper —
+# senha = sua chave ik_*). Configure a credencial no git credential-helper -
 # NUNCA coloque usuário/senha na URL (vaza em config/history/logs).
 codex plugin marketplace add https://dist.iajus.com.br/marketplace.git
 codex plugin add iajus-juris@iajus
@@ -35,7 +35,7 @@ codex plugin add iajus-juris@iajus
 ## Runtime: OAuth na primeira chamada
 
 O `.mcp.json` declara o servidor com `oauth_resource` + `scopes` e **sem** token
-estático, então o Codex dispara o **login OAuth** automaticamente — no install do
+estático, então o Codex dispara o **login OAuth** automaticamente - no install do
 plugin ou na primeira chamada a uma tool `iajus` (abre o navegador em
 `app.iajus.com.br`, guarda o token no store do Codex, renova sozinho via
 `offline_access`). Se o login não disparar sozinho, force com:
@@ -47,19 +47,19 @@ codex mcp login iajus
 ## Como liberar todas as ferramentas (autorizar por padrão)
 
 > **Uma linha honesta:** nenhum plugin consegue liberar as ferramentas
-> automaticamente no seu cliente — por segurança, a autorização é **sempre uma
+> automaticamente no seu cliente - por segurança, a autorização é **sempre uma
 > configuração local sua**. Os passos abaixo fazem isso em segundos.
 
 ### Codex
 
-1. **Confirme a conexão.** Após instalar, garanta que o MCP `iajus` autenticou —
+1. **Confirme a conexão.** Após instalar, garanta que o MCP `iajus` autenticou -
    o OAuth abre no navegador na primeira chamada, ou force com `codex mcp login
    iajus`.
 2. **Instalar não auto-aprova.** As suas configurações de aprovação do Codex
-   continuam valendo depois de instalar o plugin — por isso o Codex pode pedir
+   continuam valendo depois de instalar o plugin - por isso o Codex pode pedir
    confirmação a cada chamada de ferramenta.
 3. **Para evitar confirmação por chamada**, ajuste o **approval mode** do Codex
-   (em `~/.codex/config.toml`). A sintaxe exata dos modos de aprovação evolui —
+   (em `~/.codex/config.toml`). A sintaxe exata dos modos de aprovação evolui -
    consulte a doc oficial de approvals do Codex em
    <https://developers.openai.com/codex> e escolha o modo que preferir. As
    ferramentas IAJUS são **read-only**, então tendem a se encaixar bem em modos
@@ -73,7 +73,7 @@ ferramenta e por conversa**: na primeira vez que uma ferramenta é usada numa
 conversa, o ChatGPT pede confirmação e você pode marcar **"lembrar"** para o resto
 **daquela** conversa (não persiste entre conversas). Como **App aprovado pelo
 workspace**, o administrador aprova o App uma vez e o ChatGPT usa um snapshot
-congelado das ferramentas. O autor não consegue pré-aprovar por você — é o
+congelado das ferramentas. O autor não consegue pré-aprovar por você - é o
 comportamento de segurança do próprio ChatGPT.
 
 ## O que o plugin configura
@@ -81,11 +81,11 @@ comportamento de segurança do próprio ChatGPT.
 - **MCP remoto `iajus`** (`./.mcp.json`): streamable-HTTP em
   `https://mcp.iajus.com.br/mcp`, **OAuth 2.1** (`oauth_resource` RFC 8707 + `scopes`
   `openid email profile offline_access`). Forma = **mapa direto de servidor** (sem
-  wrapper `mcpServers`/`mcp_servers`) — a forma que o loader do Codex aceita sem
+  wrapper `mcpServers`/`mcp_servers`) - a forma que o loader do Codex aceita sem
   ambiguidade de casing. Nenhum token literal em disco.
 - **4 skills** (`./skills/`): `pesquisar-jurisprudencia` (busca + jurimetria agregada),
   `consultar-legislacao`, `consultar-legislacao-estadual` e `corpus-status`. Idênticas
-  às do plugin Claude Code — cobrem tribunais superiores, TJs, TRFs, TRTs, TREs,
+  às do plugin Claude Code - cobrem tribunais superiores, TJs, TRFs, TRTs, TREs,
   Tribunais de Contas, Turmas Recursais dos JEFs, administrativo (CARF) e legislação
   federal/estadual/municipal. (Doutrina é premium, fica só no perfil VadeFocus.)
 
@@ -133,8 +133,8 @@ arquivo. O passo a passo completo está no README do plugin Claude Code irmão
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
-- **Editor:** IAJUS / Celeris (CVO Alliance Ltda.) — <https://iajus.com.br>.
+- **Editor:** IAJUS / Celeris (CVO Alliance Ltda.) - <https://iajus.com.br>.
 - **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio IAJUS
-  (jurisprudência e legislação brasileira — registro público, normalizado e
+  (jurisprudência e legislação brasileira - registro público, normalizado e
   classificado). O consumo de busca é autenticado por conta (OAuth) e validado
   server-side; nenhuma tool retorna credenciais nem grava dados.

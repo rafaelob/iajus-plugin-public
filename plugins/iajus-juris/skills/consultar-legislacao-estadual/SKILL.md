@@ -23,7 +23,7 @@ servidor devolver**:
 
 - Se o servidor retornar a norma, cite-a com o `link_completo` oficial.
 - Se o servidor retornar `erro`/`aviso` (norma não localizada na fonte, fonte fora do ar,
-  deadline excedido), **repasse esse resultado honesto do servidor** — o vazio vem do
+  deadline excedido), **repasse esse resultado honesto do servidor** - o vazio vem do
   servidor, nunca de você prejulgar a UF.
 
 Não invente a norma e não afirme "essa UF ainda não é coberta": a decisão de cobertura é do
@@ -42,11 +42,11 @@ Sem argumentos, `obter_cobertura_legislacao` devolve a prontidão de todas as 27
 Todas têm adaptador nativo e resolvem ao vivo. A prontidão diz **quanto texto vem**, não se
 a UF é servida:
 
-- **`ready`** (texto integral verificado ao vivo — 6 UFs):
+- **`ready`** (texto integral verificado ao vivo - 6 UFs):
   **BA** (LegislaBahia), **GO** (Legisla Goiás API v2), **MG** (ALMG API v2), **MS**
   (SECOGE/Domino), **RO** (SAPL REST), **SP** (ALESP). Resolve + ementa + texto integral.
 - **`resolve_ementa`** (resolve + ementa + link oficial confiáveis; inteiro teor best-effort,
-  às vezes só em PDF — as 21 demais UFs, incluindo **DF** (CLDF PLE + SINJ), **RJ** (SAOE/Casa
+  às vezes só em PDF - as 21 demais UFs, incluindo **DF** (CLDF PLE + SINJ), **RJ** (SAOE/Casa
   Civil), **CE**, **PE**, **RN**, **SC**, **AP**, **ES**, **SE**, **MT**, **MA**, **PA**,
   **PR**, **RS**, **AC**, **AL**, **AM**, **PB**, **PI**, **RR**, **TO** (estas 7 via SAPL
   Interlegis)). O campo `tem_texto_integral` por consulta avisa se o texto integral veio.
@@ -55,7 +55,7 @@ a UF é servida:
 > é sobre a robustez do **texto integral**, não sobre existência de cobertura: mesmo uma UF
 > `resolve_ementa` resolve a norma + ementa + link oficial. Se uma consulta pontual não
 > resolver, repasse o `erro`/`aviso` do servidor e diga honestamente que a norma não foi
-> localizada na fonte — sem prejulgar a UF inteira.
+> localizada na fonte - sem prejulgar a UF inteira.
 
 ## Como consultar
 
@@ -79,7 +79,7 @@ Notas de uso:
   identificam a norma. Esta consulta **não** faz busca por tema/assunto: se o usuário só
   descreve o assunto, peça (ou ajude a descobrir) tipo/número/ano.
 - A consulta é **ao vivo**: pode ser mais lenta e depende da fonte oficial. Se a fonte
-  estiver fora do ar ou não retornar a norma, o campo `erro`/`aviso` diz isso —
+  estiver fora do ar ou não retornar a norma, o campo `erro`/`aviso` diz isso -
   **repasse ao usuário**, não invente.
 
 ## Regras de citação (obrigatório)
@@ -89,7 +89,7 @@ Notas de uso:
   e **nunca invente** número, redação ou link.
 - Deixe claro que a fonte é **estadual** ou **municipal** e de **qual UF/município**.
 - Preserve grafia e diacríticos exatamente como na fonte (UTF-8).
-- Se a norma não for encontrada, **diga isso** repassando o `erro`/`aviso` do servidor —
+- Se a norma não for encontrada, **diga isso** repassando o `erro`/`aviso` do servidor -
   uma consulta pontual pode não resolver mesmo numa UF coberta.
 
 ## Boas práticas
@@ -99,8 +99,8 @@ Notas de uso:
   best-effort) antes de prometer o inteiro teor.
 - Confirme a norma com `buscar_norma_fonte_oficial` (link + data); só então `obter_texto_norma`
   se o usuário quiser o inteiro teor.
-- **Autenticação:** o cliente MCP autentica por você — via **login OAuth** (claude.ai /
+- **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
   ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no
   header `Authorization: Bearer` (canal CLI/privado). Um **401** indica sessão/chave
-  ausente ou expirada — peça ao usuário para refazer o login ou revisar a chave; **nunca**
+  ausente ou expirada - peça ao usuário para refazer o login ou revisar a chave; **nunca**
   cole a chave em chat nem em commit.
