@@ -16,7 +16,7 @@ precedente, súmula, tema, número de processo, artigo de lei, ementa ou link. U
 uma citação fabricada é um defeito grave - a alucinação de citação é o pior erro possível
 numa peça jurídica.
 
-## Fluxo obrigatório: pesquisar → verificar vigência → hierarquizar → redigir
+## Fluxo obrigatório: pesquisar → verificar vigência → hierarquizar → redigir → conferir
 
 Nunca redija de memória. A ordem é sempre:
 
@@ -24,20 +24,36 @@ Nunca redija de memória. A ordem é sempre:
    (a tese a sustentar ou a consulta a parecer). Identifique os ramos (OJBU/L1) e os
    tribunais/esferas envolvidos.
 2. **Pesquise o amparo**, do mais autoritativo ao de apoio (ver "Modalidades"). Esgote a
-   busca antes de escrever: se uma modalidade vier fraca, ESCALE (semântica → híbrida →
-   reformular → FTS/regex/ontologia/citações → tribunal superior) antes de concluir lacuna.
+   busca antes de escrever: se uma modalidade vier fraca, ESCALE (qualificada → híbrida →
+   semântica/FTS → CNJ/ontologia/regex → citações → tribunal superior) antes de concluir lacuna.
 3. **Confira a vigência de TUDO que for amparar.** Súmula/tema/qualificada: cheque
    `status_vigencia` (em `buscar_qualificada` ou no envelope `trust` do hit) - nunca
    apresente ato cancelado/superado como vigente; se citar um superado, é só para narrar a
    evolução, marcado como tal. Lei/artigo: confirme a redação vigente e rode
    `obter_alteracoes_norma` / `obter_grafo_norma` para saber se o dispositivo foi
    alterado/revogado; não ampare em texto revogado.
-4. **Hierarquize por autoridade** (`authority_tier` ajuda): (a) vinculante primeiro
-   (súmula vinculante, repercussão geral, tema repetitivo, IRDR/IRR/IAC, controle
-   concentrado do STF); (b) precedente persuasivo consolidado (súmula simples, OJ,
-   jurisprudência dominante do órgão); (c) acórdãos de apoio (colegiados recentes que
-   aplicam a tese); (d) legislação aplicável vigente; (e) contraposições e divergências.
+4. **Hierarquize por autoridade** (obrigatório - ver "Hierarquia de autoridade" abaixo).
 5. **Redija a peça** na estrutura abaixo, citando cada fundamento com a fonte rastreável.
+6. **Confira o próprio texto** (passada final obrigatória - ver "Conferência final").
+
+## Hierarquia de autoridade (OBRIGATÓRIA - a ordem dos fundamentos não é opcional)
+
+Todo memorial ordena os fundamentos por força, de cima para baixo, sem exceção. O
+`authority_tier` do envelope `trust` ajuda a graduar, mas a espinha é sempre esta:
+
+1. **Vinculantes e qualificadas PRIMEIRO** (`buscar_qualificada`): súmula vinculante,
+   repercussão geral, tema repetitivo, IRDR/IRR/IAC, controle concentrado do STF; depois a
+   qualificada persuasiva consolidada (súmula simples, OJ). É o alicerce do documento - o
+   entendimento firmado precede qualquer acórdão isolado, e cada um vem com `status_vigencia`
+   conferido.
+2. **Precedentes colegiados** em segundo: acórdãos que aplicam a tese, preferindo recentes e de
+   órgãos de autoridade alta. Nunca acima de uma qualificada vigente que resolva o ponto.
+3. **Legislação com vigência conferida** em terceiro: os dispositivos vigentes que fundamentam
+   a tese, com a redação como a fonte retornou e o `status`/`is_amending_only` checados.
+
+Contraposições e divergências vêm depois, para expor o flanco fraco. Inverter esta ordem
+(por exemplo, abrir com um acórdão de TJ quando há tema repetitivo do STJ no ponto) é um defeito
+de fundamentação.
 
 ## Modalidades de pesquisa (as tools do MCP que você usa para fundamentar)
 
@@ -89,11 +105,32 @@ Adapte ao tipo de peça pedido, mas o esqueleto padrão é:
    destinatário conhecer o limite da cobertura. `total: 0` de órgão em cobertura = "cobertura
    em andamento", não "inexiste precedente".
 
+## Conferência final (passada obrigatória antes de entregar)
+
+Antes de devolver a peça, faça uma **última passada de verificação do próprio texto** - o mesmo
+método do conferente de citações, aplicado a cada citação que VOCÊ escreveu:
+
+1. **Re-verifique cada citação do memorial** contra a fonte, uma a uma: número de processo →
+   `buscar_por_cnj`; súmula/tema/qualificada → `buscar_qualificada` (+ `obter_versoes_qualificada`
+   se a redação importa), lendo o `status_vigencia`; artigo de lei → `buscar_dispositivos` /
+   `obter_dispositivo_legal` (existência E redação). Confirme que cada fundamento existe, é fiel
+   e está vigente - exatamente como veio da fonte.
+2. **Toda citação carrega `link_completo`.** Nenhum fundamento entra na peça sem a URL estável,
+   deep-per-record, da fonte oficial. Um fundamento sem link é um fundamento não entregue -
+   volte e busque o link, ou remova a citação.
+3. **Qualquer citação que não se confirme na passada final SAI** (ou é corrigida com o dado
+   correto da fonte). Uma citação que você escreveu mas não consegue reverificar é suspeita de
+   alucinação: não a entregue.
+
+Esta passada é o que separa um memorial blindado de um frágil: você é autor E conferente do
+próprio texto.
+
 ## Regras de honestidade e citação (inegociáveis)
 
 - **Zero citação fabricada.** Todo número, ementa, artigo e link vem de uma chamada nesta
   sessão. Se não veio, não entra - nem "parafraseado de memória".
-- **`link_completo` em toda citação.** É a URL estável, deep-per-record, na fonte oficial.
+- **`link_completo` em TODA citação, sem exceção.** É a URL estável, deep-per-record, na fonte
+  oficial. Fundamento sem link não é entregue.
 - **Vigência conferida antes de amparar.** Ato não-vigente entra só marcado (evolução), nunca
   como fundamento em vigor.
 - **Denominador em todo número.** Jurimetria sempre com `as_of`, denominador e cobertura;

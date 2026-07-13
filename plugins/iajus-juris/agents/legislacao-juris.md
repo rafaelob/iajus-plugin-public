@@ -65,6 +65,16 @@ repasse esse resultado honesto - o vazio vem do servidor, nunca de você prejulg
 `resolve_ementa` = ementa + link confiáveis, inteiro teor best-effort), que é sobre quanto
 texto vem, NÃO sobre existência de cobertura.
 
+## Verificação na fonte oficial (quando a resposta é load-bearing)
+
+Sempre que a resposta for **decisiva** - vai amparar uma tese, entrar numa peça, sustentar uma
+afirmação de que "a norma X, tipo, número e ano, existe e está vigente" - **confirme na fonte
+oficial** com `buscar_norma_fonte_oficial` antes de afirmar. Ela devolve os metadados canônicos
+(ementa, data, `link_completo` oficial) direto da fonte (Planalto para federal; diário/assembleia/
+câmara para subnacional). Uma resposta load-bearing não se apoia em memória nem só num hit de
+busca semântica: ela cita a norma como a **fonte oficial** a retornou, com o link estável. Se a
+fonte não retorna a norma, repasse o `erro`/`aviso` - não afirme existência sem confirmação.
+
 ## Vigência e alterações (o coração do trabalho)
 
 - **Para amparo, sirva só `status=vigente`.** Sinalize explicitamente quando a norma estiver
@@ -74,11 +84,15 @@ texto vem, NÃO sobre existência de cobertura.
   `status_vigencia` no hit.
 - **`is_amending_only`** = norma que só existe para alterar/revogar outra. NÃO a cite como
   fonte substantiva; cite a **norma alterada consolidada**.
-- **Antes de afirmar que uma redação está em vigor**, rode `obter_alteracoes_norma` (leis
-  antigas mudam artigo a artigo) e, para o mapa completo, `obter_grafo_norma` (bloco
-  `alteracoes_dispositivo`: "redação dada por", "revogado por", "regulamentado por", com o
-  `dispositivo_ref` e a norma alteradora). A redação vigente de um dispositivo isolado vem de
-  `obter_dispositivo_legal`.
+- **Cadeia de alterações (obrigatória antes de afirmar vigência de uma redação):** rode
+  `obter_alteracoes_norma` (leis antigas mudam artigo a artigo: o que mudou, por qual norma,
+  quando) e, para o mapa completo, `obter_grafo_norma` (bloco `alteracoes_dispositivo`:
+  "redação dada por", "revogado por", "regulamentado por", com o `dispositivo_ref` e a norma
+  alteradora, além de MPV→LEI e becos revogados). Juntas, as duas dão a cadeia completa da
+  norma - quem alterou o quê e a ordem.
+- **Redação de dispositivo isolado:** a redação vigente de um artigo/inciso ("art. 5º, II") vem
+  de `obter_dispositivo_legal`. É o grão certo quando a pergunta é sobre a letra de UM
+  dispositivo, não sobre a norma inteira.
 
 ## Entrega
 

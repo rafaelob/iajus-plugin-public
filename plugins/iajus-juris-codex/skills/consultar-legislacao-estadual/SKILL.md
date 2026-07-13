@@ -82,6 +82,31 @@ Notas de uso:
   estiver fora do ar ou não retornar a norma, o campo `erro`/`aviso` diz isso -
   **repasse ao usuário**, não invente.
 
+## Método (execute você mesmo - o caminho subnacional difere do federal)
+
+A legislação estadual/municipal resolve **por identidade** (UF [+ município] + tipo +
+número + ano), NÃO por busca textual livre de tema. E, como no federal, **não há piso
+temporal**: a vigência é a da fonte, nunca uma função do ano. O fluxo:
+
+1. **Ajuste a expectativa pela cobertura.** Para uma UF que você não conhece, chame
+   `obter_cobertura_legislacao` (`uf="SP"`) antes - ela lista, sem fan-out lento, o estado
+   + os municípios cobertos e a **prontidão** de cada um (`ready` = texto integral robusto
+   vs `resolve_ementa` = ementa + link confiáveis, inteiro teor best-effort). Assim você
+   sabe se pode prometer o inteiro teor ou só ementa + link antes de consultar.
+2. **Resolva a norma por identidade.** Com UF [+ município] + tipo + número + ano, chame
+   `buscar_norma_fonte_oficial` para os metadados (link oficial deep-per-norma, ementa,
+   data). Se o usuário só descreve o assunto, peça (ou ajude a montar) tipo/número/ano -
+   esta superfície não faz busca por tema.
+3. **Leia o texto vigente.** Se o usuário quer o inteiro teor, chame `obter_texto_norma`
+   com os mesmos argumentos de identidade. Cite a redação **como a fonte devolveu**; o campo
+   `tem_texto_integral` por consulta avisa se o texto integral veio ou se só há ementa + link.
+4. **Repasse o vazio honesto.** Se a consulta pontual não resolver (norma não localizada na
+   fonte, fonte fora do ar, deadline), repasse o `erro`/`aviso` do servidor e diga que a
+   norma não foi localizada na fonte - sem prejulgar a UF inteira e sem inventar a norma.
+
+Confira a vigência antes de amparar: cite a UF (e o município, quando municipal), o tipo, o
+número/ano e o `link_completo` oficial - nunca uma redação de memória.
+
 ## Regras de citação (obrigatório)
 
 - Cite a **UF** (e o **município**, quando municipal), o tipo, o número/ano e a redação

@@ -5,6 +5,28 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.2.0] - 2026-07-13
+
+Roster de subagentes reorientado para PESQUISA JURÍDICA (decisão do operador) e skills com o método inline. Bump MINOR: adiciona e substitui capacidades de agente sem quebrar nenhuma tool.
+
+### Adicionado
+
+- **elaborador-tese**: constrói e sustenta uma tese jurídica (enunciado, cadeia de fundamentos com qualificada vigente + norma + precedentes, grau de solidez honesto, pontos de ataque previsíveis).
+- **refutador-tese**: advogado do diabo; testa uma tese com jurisprudência contrária real, vigência dos fundamentos, distinguishing e sinais de superação, e devolve veredicto de resistência.
+- **precedentes-vinculantes**: mapeia o precedente qualificado aplicável (súmula, SV, RG, repetitivo, IRDR/IRR/IAC, OJ) com vigência conferida.
+- **processo-juris**: dossiê de um processo a partir do número CNJ (decisões, contexto do órgão, rede de citações).
+- README na raiz do marketplace (o que é o plugin, instalação por cliente, conta OAuth).
+
+### Mudado
+
+- **pesquisador-juris, conferente-citacoes, legislacao-juris, memorialista-juris** aprimorados: ordem canônica de escalonamento de busca, envelope de honestidade, verificação de dispositivo e de vigência, hierarquia de autoridade obrigatória no memorial.
+- As 4 skills (`pesquisar-jurisprudencia`, `consultar-legislacao`, `consultar-legislacao-estadual`, `corpus-status`) agora carregam o MÉTODO completo inline, para hosts que executam skills sem subagentes (ChatGPT e Codex).
+
+### Removido
+
+- **jurimetria-juris** (agente): removido por decisão do operador; as tools `jurimetria_*` continuam disponíveis e os agentes de pesquisa as usam diretamente para toda pergunta quantitativa.
+- `MIGRATION.md` da raiz do marketplace (política de aliases resumida inline neste changelog, versão 2.0.0).
+
 ## [2.1.0] - 2026-07-12
 
 Cinco subagentes especialistas e o icone IAJUS. Bump MINOR: adiciona capacidades sem quebrar nenhuma tool existente.
@@ -55,8 +77,9 @@ De-para das tools que este plugin referencia:
 | `pesquisar_legislacao` | `buscar_dispositivos` |
 | `quem_cita_dispositivo` | `buscar_citantes_dispositivo` |
 
-Guia completo de migração (50 entradas, consolidações por `esfera`, política de
-aliases): `MIGRATION.md` na raiz deste repositório.
+Política de aliases: o servidor mantém middleware de compatibilidade e chamadas com
+nome antigo seguem funcionando por 1 release major; migre para os nomes novos antes
+da 3.0.0. O de-para acima cobre as renomeações que afetam este plugin.
 
 ## [1.7.3] - 2026-07-10
 

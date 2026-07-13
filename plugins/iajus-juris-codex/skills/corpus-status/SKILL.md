@@ -34,6 +34,24 @@ Para o **texto** de um acórdão/lei ou para **pesquisar** conteúdo, use as out
 (`pesquisar-jurisprudencia`, `consultar-legislacao`, `consultar-legislacao-estadual`).
 Esta skill é só para o **panorama quantitativo / de cobertura** do corpus.
 
+## Qual tool de estatística para qual pergunta
+
+`obter_estatisticas_base` é a porta de entrada - o panorama geral do read-model. Mas há
+duas tools irmãs, exatas, para recortes específicos (ambas servidas pelo mesmo MCP; as
+skills que as detalham estão entre parênteses):
+
+| Pergunta | Tool | Onde detalhada |
+|---|---|---|
+| "o que tem na base?", cobertura por família/órgão/qualificada/legislação, quanto está embedado | `obter_estatisticas_base` | esta skill |
+| "quantos acórdãos por ano no órgão X" (contagem EXATA de volume, com envelope de honestidade e `as_of`) | `jurimetria_volume` | `pesquisar-jurisprudencia` |
+| mapa de cobertura de legislação estadual/municipal por UF (estado + municípios + prontidão) | `obter_cobertura_legislacao` | `consultar-legislacao-estadual` |
+
+Regra prática: `obter_estatisticas_base` responde "o que existe e quanto está indexado";
+para uma **série anual de volume de julgados** com o contexto de honestidade completo,
+`jurimetria_volume` é a fonte exata; para **prontidão de legislação por UF**,
+`obter_cobertura_legislacao`. Não estenda esta skill para juris fina ou legislação por UF -
+aponte para a skill irmã.
+
 ## A tool
 
 `obter_estatisticas_base` é **read-only**, retorna JSON e aceita:
@@ -68,7 +86,11 @@ O que cada seção traz:
 - **Nenhuma lista é hardcoded** - todo órgão / família / espécie vem de um `GROUP BY`
   sobre os dados vivos. Se um órgão novo não aparece, ele ainda não foi ingerido (não é
   bug da tool).
-- Reporte os números **como vieram** da tool; não estime nem arredonde para impressionar.
+- **Contrato de honestidade: reporte os números do read-model como vieram.** Não estime,
+  não arredonde para impressionar, não extrapole além do que a tool devolveu, não some
+  contagens de recortes que possam se sobrepor. Quando o usuário quiser um número que a
+  tool não mede (ex.: uma taxa, uma projeção), diga o que a base mede e o que não mede -
+  e encaminhe à tool exata (`jurimetria_volume` para volume de julgados por ano).
 
 ## Exemplos de chamada
 

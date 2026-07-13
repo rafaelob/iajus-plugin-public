@@ -71,6 +71,49 @@ Notas de uso:
   trecho literal ≥3 chars. Em erro, a tool devolve `{ "erro": "…", "resultados": [] }`
   (nunca stack trace) - leia a mensagem e ajuste.
 
+## Método do pesquisador (execute você mesmo - não delegue)
+
+Uma pesquisa jurídica de verdade quase nunca é UMA chamada: é uma varredura que
+escala de modalidade até a cobertura estabilizar. Conduza-a você mesmo, nesta ordem.
+
+1. **Priorize o CONTEÚDO consolidado antes do acórdão comum.** Para "qual o
+   entendimento atual / a tese firmada", comece por `buscar_qualificada` (súmula, SV,
+   repercussão geral, tema repetitivo, IRDR, IRR, IAC, OJ): o precedente qualificado
+   vence um acórdão isolado, e você o cita com a vigência já conferida. Só depois desça
+   ao acórdão individual (busca semântica/híbrida) para exemplificar a aplicação da tese.
+2. **Escale a modalidade em vez de cair no vazio.** Uma busca fraca (`total: 0`, ou
+   hits cujo `trust.trecho` não responde) NÃO é sinal de parar - é sinal de escalar,
+   nesta ordem, antes de reportar lacuna:
+   - `buscar_semantica` → **`buscar_hibrida`** com a MESMA consulta (a fusão RRF resgata
+     o que a densa isolada perdeu);
+   - **reformule** com os termos que apareceram nos primeiros hits (relator, tese,
+     dispositivo citado, número de tema) - a segunda consulta quase sempre é melhor;
+   - **troque de modalidade pela forma da pergunta:** termo técnico literal →
+     `buscar_fts`; citação de súmula/artigo → `buscar_regex` (ou a citação numérica
+     dispara o lookup exato); ramo inteiro → `buscar_por_ontologia`; precisão por número
+     de processo → `buscar_por_cnj`; rede de um precedente → `buscar_por_citacoes`
+     (quem aplicou uma súmula/tema) e `obter_dispositivos_citados` (o que um acórdão cita);
+   - **suba na hierarquia de autoridade:** se um TJ/TRF vier vazio para a tese, tente o
+     tribunal superior (STJ/STF) - a tese firmada costuma estar lá.
+3. **Refine até a cobertura estabilizar** (rodadas sem resultado novo relevante) e cruze
+   as modalidades: densa/híbrida para o panorama, FTS/regex para termos e dispositivos
+   literais, ontologia para esgotar um ramo, citações para a rede do precedente-chave.
+4. **Envelope de honestidade.** Reporte o vazio como vazio, com o motivo: um `total: 0`
+   de órgão/ano em cobertura é **cobertura em andamento**, não "o precedente não existe"
+   (diga isso e ofereça a fonte superior); um filtro rejeitado (`tribunal` numa modalidade
+   que só aceita `orgao_code`) pede reenvio, não descarte do resultado; um
+   `{ "erro": … }` pede ajuste do argumento. Nunca preencha a lacuna com um precedente
+   plausível porém fabricado.
+5. **Passada de conferência anti-alucinação (obrigatória antes de entregar).** Toda
+   citação que você entregar precisa ter vindo de uma chamada REAL nesta sessão, com o
+   `link_completo` que a fonte retornou. Antes de fechar a resposta, confira cada citação:
+   - **existe?** o precedente/norma com aquele número/tema/tipo voltou de uma chamada;
+   - **é fiel?** o enunciado, o órgão, o redator, a data que você afirma batem com a fonte;
+   - **está vigente?** cheque `status_vigencia` (no `trust` ou em `buscar_qualificada`) -
+     súmula cancelada/superada e artigo revogado saem MARCADOS, nunca como amparo vigente.
+   Um número, ementa, relator ou link só entra na resposta se veio da tool. Sem retorno,
+   é NÃO LOCALIZADA (possível alucinação) - reporte assim, nunca "provavelmente existe".
+
 ## Jurimetria agregada (6 tools dedicadas - contagens/taxas exatas)
 
 Para perguntas de VOLUME/ranking use estas tools (servidas do read-model agregado do
@@ -200,9 +243,8 @@ na primeira chamada:
   quando a busca direta vier fraca ou a pergunta pedir contagem/facet/forma literal.
 - **Abrir a íntegra:** cada resultado da busca já traz o `link_completo` (URL estável do
   acórdão na fonte) e, quando disponível, o `inteiro_teor_url` (PDF/HTML da íntegra) - cite
-  esses links; NÃO é preciso outra tool para "abrir" o julgado. Em superfície de conector
-  (ex.: ChatGPT) o par `search`/`fetch` é o caminho canônico de leitura: `search` lista e
-  `fetch` traz o documento pleno pelo `id` do resultado, ambos somente-leitura.
+  esses links; NÃO é preciso outra tool para "abrir" o julgado. A leitura do documento é o
+  próprio hit da busca (ementa + trecho + links); não há tool separada de "abrir".
 - **Se o cliente pedir aprovação por chamada:** oriente o usuário a **autorizar uma vez**
   e marcar **"sempre permitir" / "lembrar nesta conversa"** - como as tools são
   somente-leitura, é seguro liberar em bloco, e as buscas seguintes deixam de perguntar.

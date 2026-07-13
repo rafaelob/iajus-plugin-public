@@ -48,28 +48,54 @@ preencha a lacuna de memória com um precedente plausível porém fabricado.
 Também há as tools de legislação (federal, estadual e municipal) no mesmo MCP. Restrinja por
 **família** (`jurisprudencia` / `legislacao`) e por **órgão** quando a pergunta pedir.
 
-## Escalada de modalidade (regra dura, para nunca cair no vazio)
+## Ordem de escalonamento (regra dura, para nunca cair no vazio)
+
+A varredura tem uma **ordem canônica de ferramentas**: comece pelo entendimento consolidado,
+depois abra o recall, depois feche a precisão, e por fim mapeie a vizinhança do precedente.
+Siga esta ordem antes de reportar qualquer lacuna:
+
+1. **`buscar_qualificada` primeiro** - o entendimento CONSOLIDADO do tema (súmula, SV,
+   repercussão geral, tema repetitivo, IRDR, IRR, IAC, OJ). Se a pergunta tem uma tese firmada,
+   ela quase sempre está aqui, com `status_vigencia` marcado. É o alicerce de autoridade da
+   pesquisa: resolva-o antes de sair procurando acórdão isolado.
+2. **`buscar_hibrida`** - a fusão RRF (densa + FTS + trigram + CNJ + ontologia). A melhor
+   relevância geral para o panorama do tema; é a segunda parada depois de firmar a tese.
+3. **`buscar_semantica` / `buscar_fts` para RECALL** - abra a cobertura: `buscar_semantica`
+   para o conceito ("boa-fé objetiva"), `buscar_fts` para o termo técnico literal
+   ("tipicidade conglobante", `phrase=true` exige a ordem). Reformule com os termos que
+   apareceram nos primeiros hits (relator, tese, dispositivo, número de tema) - a segunda
+   consulta costuma superar a primeira.
+4. **`buscar_por_cnj` / `buscar_por_ontologia` para PRECISÃO** - feche o recorte:
+   `buscar_por_cnj` quando há número de processo; `buscar_por_ontologia` para esgotar um ramo
+   inteiro (subárvore ltree L1/L2/L3 + temas transversais). Use `buscar_regex` para forma
+   literal (nº de artigo, "Súmula 7").
+5. **`buscar_por_citacoes` para VIZINHANÇA** - mapeie a rede do precedente-chave: quem cita
+   uma súmula/tema, quais acórdãos aplicam a tese, onde estão as lacunas da rede.
+6. **Suba na hierarquia de autoridade:** se um TJ/TRF vier vazio para a tese, tente o
+   tribunal superior (STJ/STF) - a tese firmada costuma estar lá.
+7. **Só então** reporte a lacuna, e faça-o HONESTAMENTE (ver "Envelope de honestidade").
 
 Uma busca "fraca" (`total: 0`, ou hits com `trust.trecho` que não respondem a pergunta) NÃO
-é sinal de parar - é sinal de **escalar**, nesta ordem, antes de reportar lacuna:
+é sinal de parar - é sinal de avançar ao próximo passo da ordem acima.
 
-1. **`buscar_semantica` → `buscar_hibrida`** com a MESMA consulta (a fusão RRF resgata o que
-   a densa isolada perdeu).
-2. **Reformule a consulta** com os termos que apareceram nos primeiros hits (relator, tese,
-   dispositivo citado, número de tema) - a segunda consulta quase sempre é melhor que a
-   primeira.
-3. **Troque de modalidade pela forma da pergunta:** termo técnico literal → `buscar_fts`;
-   citação de súmula/artigo → `buscar_regex` ou a citação numérica dispara lookup exato;
-   ramo inteiro → `buscar_por_ontologia`; rede de um precedente → `buscar_por_citacoes`.
-4. **Suba na hierarquia de autoridade:** se um TJ/TRF vier vazio para a tese, tente o
-   tribunal superior (STJ/STF) - a tese firmada costuma estar lá.
-5. **Só então** reporte a lacuna, e faça-o HONESTAMENTE (ver abaixo).
+## Pergunta quantitativa → tools `jurimetria_*`, nunca contagem de hits
 
-## Como ler o envelope de resposta
+Se a pergunta (ou parte dela) é **quantitativa** - "quantas decisões o TJRJ julga por ano",
+"quem mais relata no STJ", "qual a taxa de provimento de agravos no TST", "quanto o STF demora
+para publicar" - responda com as tools `jurimetria_*`, que leem o read-model agregado com o
+envelope de honestidade (`as_of`, denominador, cobertura). Taxa de desfecho só via
+`jurimetria_resultado` (denominador duplo). Nunca infira uma taxa ou um volume de uma contagem
+de hits de busca: uma pergunta de número tem ferramenta própria.
+
+## Envelope de honestidade (o vazio tem que ser explicado, nunca preenchido)
+
+Quando uma busca não retorna nada, reporte **o quê** e **por quê** - honestamente, com o sinal
+que o servidor devolveu - em vez de completar a lacuna com um precedente plausível de memória:
 
 - **`total: 0`** de um órgão/ano que já está em cobertura = **cobertura em andamento**, NÃO
-  "o precedente não existe". Diga isso e ofereça a fonte alternativa (superior). Confirme o
-  que a base tem AGORA com a skill `corpus-status` (`obter_estatisticas_base`).
+  "o precedente não existe". Diga isso, diga quais modalidades você já escalou, e ofereça a
+  fonte alternativa (tribunal superior). Confirme o que a base tem AGORA com a skill
+  `corpus-status` (`obter_estatisticas_base`).
 - **`filtros_ignorados` / argumento rejeitado:** o filtro de órgão difere por modalidade -
   só `buscar_semantica`/`buscar_hibrida` aceitam `tribunal` (ex. `"STF"`); as demais filtram
   por `orgao_code` (slug minúsculo, ex. `"stf"`). Passar `tribunal` às literais faz a tool
@@ -80,14 +106,20 @@ Uma busca "fraca" (`total: 0`, ou hits com `trust.trecho` que não respondem a p
   gradua a autoridade do órgão/tipo; **cheque `status_vigencia` antes de citar como amparo**
   - ato não-vigente vem sinalizado, nunca oculto.
 
+A regra de ouro: se não achou, **diga que não achou e por quê** (cobertura em andamento? termo
+sem match? recorte estreito demais?), distinguindo "não está na base" de "a busca não localizou".
+Uma lacuna honesta e rastreável vale mais que uma citação inventada; nunca invente para tapar
+o buraco.
+
 ## Método
 
 1. **Planeje a varredura.** Decomponha a pergunta em sub-temas e identifique família
-   (jurisprudência? lei?) e órgão/ramo. Não pare na primeira busca.
-2. **Comece denso, depois cruze.** `buscar_semantica`/`buscar_hibrida` para o panorama;
-   `buscar_fts`/`buscar_regex` para termos e dispositivos literais; `buscar_por_ontologia`
-   para esgotar um ramo; `buscar_por_citacoes` para a rede do precedente-chave;
-   `buscar_qualificada` para a tese vinculante.
+   (jurisprudência? lei?) e órgão/ramo. Separe o que é qualitativo (precedente/tese) do que é
+   quantitativo (número → tools `jurimetria_*`). Não pare na primeira busca.
+2. **Siga a ordem de escalonamento.** Tese consolidada primeiro (`buscar_qualificada`); depois
+   `buscar_hibrida` para o panorama; `buscar_semantica`/`buscar_fts` para recall;
+   `buscar_por_cnj`/`buscar_por_ontologia`/`buscar_regex` para precisão;
+   `buscar_por_citacoes` para a rede do precedente-chave.
 3. **Refine** até a cobertura estabilizar (rodadas sem resultado novo relevante).
 4. **Priorize autoridade.** Para "qual o entendimento atual", precedente qualificado
    (súmula / SV / RG / tema repetitivo) vence acórdão isolado - e confira a vigência.
