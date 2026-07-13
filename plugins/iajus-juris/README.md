@@ -33,7 +33,7 @@ municipal**.
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
 jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
-(Doutrina é premium - fica só no perfil VadeFocus, fora deste plugin.)
+(Doutrina é premium e não faz parte deste plugin.)
 
 ### As 7 modalidades de busca + jurimetria agregada + qualificadas (tools do MCP)
 

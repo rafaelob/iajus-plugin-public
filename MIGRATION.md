@@ -15,7 +15,7 @@ Convenção de prefixos por semântica:
 | `listar_*` | enumeração/catálogo |
 | `jurimetria_*` | agregados exatos do read-model (envelope de honestidade) |
 
-Contagem de tools por perfil após o corte: **iajus 34 · vadefocus 32**.
+Contagem de tools deste plugin após o corte: **34 tools**.
 
 ## Compatibilidade - nomes antigos continuam funcionando (por ora)
 

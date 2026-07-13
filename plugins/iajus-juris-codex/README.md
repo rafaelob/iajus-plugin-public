@@ -87,7 +87,7 @@ comportamento de segurança do próprio ChatGPT.
   `consultar-legislacao`, `consultar-legislacao-estadual` e `corpus-status`. Idênticas
   às do plugin Claude Code - cobrem tribunais superiores, TJs, TRFs, TRTs, TREs,
   Tribunais de Contas, Turmas Recursais dos JEFs, administrativo (CARF) e legislação
-  federal/estadual/municipal. (Doutrina é premium, fica só no perfil VadeFocus.)
+  federal/estadual/municipal. (Doutrina é premium e não faz parte deste plugin.)
 
 ## Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 

@@ -21,7 +21,7 @@ Cinco subagentes especialistas e o icone IAJUS. Bump MINOR: adiciona capacidades
 
 ## [2.0.0] - 2026-07-10
 
-Corte MCP v3: renomeacao da superficie de tools para o vocabulario final (``buscar_*`` busca ranqueada, ``obter_*`` fetch de um recurso, ``listar_*`` enumeracao, ``jurimetria_*`` agregados). Bump MAJOR porque nomes de tool mudam (quebra clientes que chamavam os nomes antigos). Contagem final de tools por perfil: iajus 34 · vadefocus 32.
+Corte MCP v3: renomeacao da superficie de tools para o vocabulario final (``buscar_*`` busca ranqueada, ``obter_*`` fetch de um recurso, ``listar_*`` enumeracao, ``jurimetria_*`` agregados). Bump MAJOR porque nomes de tool mudam (quebra clientes que chamavam os nomes antigos). Contagem final de tools deste plugin: 34 tools.
 
 ### Mudado
 
