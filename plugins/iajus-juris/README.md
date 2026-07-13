@@ -77,7 +77,7 @@ manifesto, **zero segredo**).
 ## Instalar
 
 ```text
-/plugin marketplace add github.com/rafaelob/iajus-plugin-public   # repo público do marketplace (cliente)
+/plugin marketplace add https://github.com/rafaelob/iajus-plugin-public   # repo público do marketplace (cliente)
 /plugin install iajus-juris@iajus
 /plugin enable iajus-juris@iajus
 /reload-plugins                              # conecta o MCP iajus; o Claude abre o login OAuth no navegador

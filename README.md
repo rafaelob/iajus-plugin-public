@@ -27,7 +27,7 @@ codex plugin add iajus-juris@iajus
 ### Claude Code (comandos, um de cada vez)
 
 ```text
-/plugin marketplace add github.com/rafaelob/iajus-plugin-public
+/plugin marketplace add https://github.com/rafaelob/iajus-plugin-public
 /plugin install iajus-juris@iajus
 /plugin enable iajus-juris@iajus
 /reload-plugins
