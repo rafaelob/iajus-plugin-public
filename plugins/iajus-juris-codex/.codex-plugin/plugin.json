@@ -7,6 +7,8 @@
   "interface": {
     "displayName": "IAJUS - Jurisprudência & Legislação BR",
     "shortDescription": "Jurisprudência e legislação brasileira pelo MCP remoto IAJUS (OAuth 2.1; ik_* como fallback).",
-    "category": "Productivity"
+    "category": "Productivity",
+    "composerIcon": "./assets/iajus-icon-512.png",
+    "logo": "./assets/iajus-icon-512.png"
   }
 }
