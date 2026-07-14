@@ -1,9 +1,10 @@
 # IAJUS - plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 1.7.0** - superfície MCP v2.0: a busca de citações agora é
-> `buscar_por_citacoes` (antes `buscar_grafo`) e a introspecção do corpus é
-> `obter_estatisticas_base` (antes `estatisticas_corpus_pg`); a navegação por facet
-> `jurimetria_volume` foi consolidada na família de jurimetria agregada exata
+> **Versão 2.2.0** - roster de subagentes reorientado para **pesquisa jurídica**
+> (elaborador-tese, refutador-tese, precedentes-vinculantes, processo-juris) com o
+> método inline, sem quebrar nenhuma tool. A superfície MCP mantém a busca de citações
+> `buscar_por_citacoes`, a introspecção do corpus `obter_estatisticas_base` e a
+> jurimetria agregada exata
 > (`jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
 > `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao`).
 > Mantém grafo de legislação com alterações **por dispositivo**
