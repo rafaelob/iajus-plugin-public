@@ -4,104 +4,74 @@ description: 'Mostra o que a base IAJUS contém AGORA via MCP (tool obter_estati
 allowed-tools: mcp__iajus__obter_estatisticas_base, mcp__plugin_iajus-juris_iajus__obter_estatisticas_base
 ---
 
-# Estado do corpus IAJUS AO VIVO (o que a base contém AGORA)
+# Estado do corpus IAJUS ao vivo (o que a base contém AGORA)
 
-Você tem acesso ao servidor MCP `iajus`, que serve a tool **`obter_estatisticas_base`**
-- uma introspecção **ao vivo** do corpus, lida diretamente do **read-model Postgres**
-que as buscas consultam (não um snapshot estático). Use-a para responder, com números
-reais e atuais, **o que a base contém neste momento**.
+## Role
 
-> **O corpus é VIVO e cresce continuamente.** A base é ingerida o tempo todo: tribunais,
-> anos, acervos e espécies de qualificada **novos aparecem aqui (e na busca)
-> automaticamente, sem mudança de ferramenta ou de skill**. Por isso um `total: 0`
-> para um tribunal/ano que já está em cobertura significa **cobertura em andamento**, não
-> "não existe" - diga isso ao usuário em vez de afirmar ausência de dados.
+Introspector do corpus IAJUS: responde, com números reais e atuais, o que a base contém
+NESTE momento, lendo o read-model Postgres ao vivo (o mesmo que as buscas consultam) pela
+tool `obter_estatisticas_base` do MCP `iajus`.
 
-## Quando usar
+## Goal
 
-Acione `obter_estatisticas_base` quando o usuário perguntar coisas como:
+Dar o panorama quantitativo/de cobertura do corpus (por família, tribunal, qualificada,
+esfera) como o read-model o reporta - não um snapshot estático nem uma estimativa.
 
-- "**o que tem na base?**", "qual a cobertura atual do IAJUS?";
-- "**quantos acórdãos do TJRJ** (ou de qualquer tribunal) existem?";
-- "**cobrimos 2023-2026** do tribunal X?", "de que ano a que ano vai o STJ?";
-- "quantas **súmulas / temas de repercussão geral / IRDR** existem, e quantos estão
-  vigentes?";
-- "quantas normas de **legislação** por esfera (federal/estadual/municipal) e por
-  status (vigente/revogada)?", "**quantos estados e municípios** a base cobre?".
+## Success criteria
 
-Para o **texto** de um acórdão/lei ou para **pesquisar** conteúdo, use as outras skills
-(`pesquisar-jurisprudencia`, `consultar-legislacao`, `consultar-legislacao-estadual`).
-Esta skill é só para o **panorama quantitativo / de cobertura** do corpus.
+- Os números vêm de `obter_estatisticas_base` desta sessão, reportados como vieram.
+- `total: 0` / contagem baixa de tribunal/ano em cobertura tratado como cobertura em
+  andamento, não ausência definitiva.
 
-## Qual tool de estatística para qual pergunta
+## Constraints (invariantes)
 
-`obter_estatisticas_base` é a porta de entrada - o panorama geral do read-model. Mas há
-duas tools irmãs, exatas, para recortes específicos (ambas servidas pelo mesmo MCP; as
-skills que as detalham estão entre parênteses):
+- Esta skill é só o panorama quantitativo/de cobertura. Para o TEXTO de um acórdão/lei ou
+  para PESQUISAR conteúdo, use as skills `pesquisar-jurisprudencia` /
+  `consultar-legislacao` / `consultar-legislacao-estadual`.
+- NEVER estime, arredonde para impressionar, extrapole além do retornado, nem some
+  contagens de recortes que possam se sobrepor.
+- Nenhuma lista é hardcoded (tudo vem de `GROUP BY` sobre dados vivos): tribunal novo que
+  não aparece ainda não foi ingerido, não é bug da tool.
 
-| Pergunta | Tool | Onde detalhada |
-|---|---|---|
-| "o que tem na base?", cobertura por acervo/tribunal/qualificada/legislação | `obter_estatisticas_base` | esta skill |
-| "quantos acórdãos por ano no tribunal X" (contagem EXATA de volume, com envelope de honestidade e `as_of`) | `jurimetria_volume` | `pesquisar-jurisprudencia` |
-| mapa de cobertura de legislação estadual/municipal por UF (estado + municípios + prontidão) | `obter_cobertura_legislacao` | `consultar-legislacao-estadual` |
+## Tool routing
 
-Regra prática: `obter_estatisticas_base` responde "o que existe na base, por acervo";
-para uma **série anual de volume de julgados** com o contexto de honestidade completo,
-`jurimetria_volume` é a fonte exata; para **prontidão de legislação por UF**,
-`obter_cobertura_legislacao`. Não estenda esta skill para juris fina ou legislação por UF -
-aponte para a skill irmã.
+`obter_estatisticas_base` (read-only, JSON). Argumentos:
 
-## A tool
+- `secao` - `tudo` (padrão) | `familias` | `orgaos` | `qualificadas` | `legislacao`.
+  Comece por `tudo`. (`secao="orgaos"` = lista de tribunais.)
+- `family` - `jurisprudencia` | `doutrina` | `legislacao`: escopa só a lista de tribunais.
+- `top` - inteiro 1-500 (padrão 60): limita a lista de tribunais (ordem por volume).
 
-`obter_estatisticas_base` é **read-only**, retorna JSON e aceita:
+Chaves do payload: `familias` (decisões/tribunais/normas/artigos_livros_doutrina, com
+`ano_min`/`ano_max`); `tribunais` (por tribunal: `decisoes`, `ano_min`/`ano_max`);
+`qualificadas` (por `especie`: `quantidade`, `vigentes`, `canceladas`, `tribunais`);
+`legislacao` (por esfera, por status, e `cobertura_territorial` União/`estados_df`/`municipios`);
+`as_of` (carimbo de atualidade de cada seção).
 
-| Argumento | Valores | Efeito |
-|---|---|---|
-| `secao` | `tudo` (padrão), `familias`, `orgaos`, `qualificadas`, `legislacao` | Que parte do panorama retornar. Comece por `tudo` para uma visão geral. (`secao="orgaos"` retorna a lista de **tribunais**.) |
-| `family` | `jurisprudencia`, `doutrina`, `legislacao` | Escopa **só a lista de tribunais** a um acervo. |
-| `top` | inteiro 1-500 (padrão 60) | Limita a lista de **tribunais** (ordenada por volume decrescente). |
+Perguntas quantitativas MAIS finas têm tool própria noutra skill: série anual EXATA de
+volume → `jurimetria_volume` (`pesquisar-jurisprudencia`); prontidão de legislação por UF →
+`obter_cobertura_legislacao` (`consultar-legislacao-estadual`). Encaminhe, não estenda esta
+skill.
 
-O que cada seção traz (chaves do payload):
+## Grounding budget
 
-- **`familias`** - por acervo: jurisprudência traz **`decisoes`** e **`tribunais`**;
-  legislação traz **`normas`**; doutrina traz **`artigos_livros_doutrina`**. Todos com
-  `ano_min`/`ano_max`.
-- **`tribunais`** (resposta de `secao="orgaos"`) - por tribunal (top N por volume):
-  `tribunal`, `decisoes`, `ano_min`/`ano_max` (a **faixa de anos coberta** daquele
-  tribunal). É a seção para "quantos acórdãos do tribunal X" e "cobrimos 2023-2026?".
-- **`qualificadas`** - por **`especie`** (súmula, SV, tema RG, IRDR, IAC…):
-  `quantidade`, **`vigentes`** e **`canceladas`**, e nº de `tribunais`.
-- **`legislacao`** - normas **por esfera** (federal/estadual/municipal/…), **por
-  status de vigência** (vigente/revogada/desconhecida) e a **`cobertura_territorial`**:
-  União (normas federais), **`estados_df`** e **`municipios`** cobertos.
-- **`as_of`** - o carimbo de atualidade de cada seção (rollup ou `"live"`).
+Normalmente UMA chamada resolve o panorama. Chamadas extras só para escopar uma seção
+(`secao=`/`family=`/`top=`), não para reformular a mesma pergunta.
 
-## Como interpretar (honestidade > preencher lacuna)
+## Output
 
-- **`total: 0` ou contagem baixa para um tribunal/ano em cobertura = cobertura em
-  andamento**, não ausência definitiva. Avise o usuário e, quando fizer sentido,
-  ofereça uma fonte alternativa (ex.: tribunal superior para a tese).
-- **Nenhuma lista é hardcoded** - todo tribunal / acervo / espécie vem de um `GROUP BY`
-  sobre os dados vivos. Se um tribunal novo não aparece, ele ainda não foi ingerido (não
-  é bug da tool).
-- **Contrato de honestidade: reporte os números do read-model como vieram.** Não estime,
-  não arredonde para impressionar, não extrapole além do que a tool devolveu, não some
-  contagens de recortes que possam se sobrepor. Quando o usuário quiser um número que a
-  tool não mede (ex.: uma taxa, uma projeção), diga o que a base mede e o que não mede -
-  e encaminhe à tool exata (`jurimetria_volume` para volume de julgados por ano).
+Os números do read-model como vieram, com o `as_of` da seção. Quando o usuário quer um
+número que a tool não mede (uma taxa, uma projeção), diga o que a base mede e o que não
+mede, e encaminhe à tool exata.
 
-## Exemplos de chamada
+## Stop rules
 
-- Panorama geral: `obter_estatisticas_base()` (= `secao="tudo"`).
-- Só os acervos (decisões / normas / doutrina): `obter_estatisticas_base(secao="familias")`.
-- Maiores tribunais por volume de decisões:
-  `obter_estatisticas_base(secao="orgaos", family="jurisprudencia", top=30)`.
-- Espécies de qualificada (vigentes/canceladas):
-  `obter_estatisticas_base(secao="qualificadas")`.
-- Legislação por esfera, status e território: `obter_estatisticas_base(secao="legislacao")`.
+Pare quando o panorama pedido estiver reportado com o `as_of`. `total: 0` de tribunal/ano
+em cobertura = cobertura em andamento; diga isso e, quando fizer sentido, ofereça a fonte
+alternativa - não afirme ausência definitiva.
 
-**Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
-ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no
-header `Authorization: Bearer` (canal CLI/privado). Um **401** indica sessão/chave
-ausente ou expirada - peça ao usuário para refazer o login ou revisar a chave; **nunca**
-cole a chave em chat nem em commit.
+## Autenticação
+
+O cliente MCP autentica por você - OAuth no navegador (primeiro uso) ou chave `ik_*` no
+header `Authorization: Bearer`. Um `401` = sessão/chave ausente ou expirada: refaça o login
+ou revise a chave; nunca cole a chave em chat nem em commit.

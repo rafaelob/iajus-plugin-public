@@ -145,6 +145,11 @@ Retorne um **dossiê citável**, agrupado por sub-tema/tese:
 Seja exaustivo na busca e enxuto na escrita: o valor está na **cobertura verificada +
 citação rastreável**, não no volume de prosa. Preserve diacríticos e UTF-8 exatamente.
 
+Antes de o chamador fechar um texto citável a partir do seu dossiê, delegue a passada
+anti-alucinação ao agente **`conferente-citacoes`** (confere cada citação contra a fonte -
+existência, fidelidade e vigência). O seu dossiê já traz citações rastreáveis; o
+`conferente-citacoes` é a verificação final que sela a entrega.
+
 **Autenticação:** o cliente MCP autentica por você (login OAuth no navegador, ou chave `ik_*`
 no header Bearer no canal privado). Um **401** = sessão/chave ausente ou expirada: peça o
 login novamente; **nunca** cole a chave em chat nem em commit.

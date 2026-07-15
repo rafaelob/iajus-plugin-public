@@ -100,6 +100,15 @@ O que cada seção traz (chaves do payload):
   `obter_estatisticas_base(secao="qualificadas")`.
 - Legislação por esfera, status e território: `obter_estatisticas_base(secao="legislacao")`.
 
+## Subagentes IAJUS (Claude Code)
+
+Esta skill é uma introspecção direta - normalmente você chama `obter_estatisticas_base`
+você mesmo e reporta os números. No **Claude Code**, quando o panorama do corpus é o
+primeiro passo de uma tarefa maior, os subagentes de pesquisa consomem esta skill: o
+**`pesquisador-juris`** confere a cobertura antes de escalar a busca, e o
+**`legislacao-juris`** confere a prontidão de legislação por esfera/UF. Em clientes **sem
+subagentes** (claude.ai web, ChatGPT, Codex), execute a introspecção você mesmo.
+
 **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
 ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no
 header `Authorization: Bearer` (canal CLI/privado). Um **401** indica sessão/chave

@@ -29,8 +29,7 @@ MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
 | Tenho o **nome/apelido** da norma e quero a norma + **vigência** ("CLT", "Código de Defesa do Consumidor") | `buscar_norma_por_nome` | Resolve a norma pelo nome/apelido e devolve o **`status`** (vigente / revogada). **Para amparo, sirva só `vigente`.** |
 | Tenho **tipo + número** e quero a norma + **vigência** ("Lei 8078", "LC 95") | `buscar_norma_por_numero` | Resolve por `tipo` + `numero` (+ `ano`) e devolve o **`status`** (vigente / revogada). |
 | Listar normas de um tipo/ano | `listar_normas` | Enumera (ex.: leis de 2023). |
-| Esse artigo foi **alterado/revogado**? Por qual norma e quando? | `obter_alteracoes_norma` | Histórico de alterações artigo por artigo (norma alteradora + data). |
-| Quais normas citam/alteram/são citadas por esta; o que mudou **artigo a artigo** | `obter_grafo_norma` | `norma_ref` canônico (ex. `LEI_8112_1990`) + `max_depth` (1-20, padrão 8). Retorna `cadeia_alteracoes` (quem alterou, recursivo), `dead_ends` (revogadas/caducadas alcançáveis), conversão MPV→LEI, `citacoes` (`cita` / `citada_por`) e **`alteracoes_dispositivo`** - eventos por dispositivo ("redação dada por", "revogado por", "regulamentado por") com `dispositivo_ref` + a norma alteradora. |
+| Esse artigo foi **alterado/revogado**? O que mudou artigo a artigo? | `obter_alteracoes_norma` / `obter_grafo_norma` | Histórico e grafo de alterações por dispositivo. Detalhe: `references/grafo-alteracoes.md`. |
 | Busca conceitual/semântica no corpus de legislação | `buscar_semantica` / `buscar_fts` / `buscar_hibrida` | Passe `family="legislacao"`. Semântica casa por significado; FTS por expressão (use `phrase=true` p/ ordem exata). |
 | "Quais leis tratam de um ramo do direito" | `buscar_por_ontologia` | `l1_code` TPU + `family="legislacao"`. Ex.: `l1_code=1156` (Consumidor → CDC), `14` (Tributário), `899` (Civil → CC). |
 | Taxonomia OJBU de referência / classificar uma norma | `obter_ontologia_juridica` / `obter_classificacao_tipo` | Árvore de ramos (21 L1) e classificação de um texto normativo. |
@@ -48,7 +47,7 @@ elas retornam a **vigência (`status`)** junto com a norma e **substituem** os a
 `pesquisar_*` de lookup. **Para amparo jurídico, sirva apenas o que vier `status=vigente`** e
 sinalize explicitamente quando a norma estiver `revogada`.
 
-Vigência e amparo nas buscas (regras do motor):
+Vigência e amparo nas buscas (síntese - detalhe em `references/grafo-alteracoes.md`):
 
 - **`buscar_hibrida` com `family="legislacao"` serve por padrão só normas em vigor**
   (ou de vigência incerta/parcialmente alterada) e OCULTA as comprovadamente sem
@@ -60,17 +59,24 @@ Vigência e amparo nas buscas (regras do motor):
   trecho}` e o flag **`is_amending_only`** (norma que só existe para alterar/revogar
   outra - não a cite como fonte substantiva do direito; cite a norma alterada
   consolidada). Cheque-os antes de citar como amparo.
-- Para saber **o que mudou dentro da norma, artigo a artigo**, prefira
-  `obter_grafo_norma` (bloco `alteracoes_dispositivo`) e
-  `obter_alteracoes_norma` - a redação vigente de um dispositivo específico vem de
-  `obter_dispositivo_legal`.
 
-## Método do especialista em legislação (execute você mesmo)
+## Referência detalhada
+
+- **`references/grafo-alteracoes.md`** - a modelagem de alterações artigo por artigo
+  (§11): `obter_alteracoes_norma`, o grafo completo de `obter_grafo_norma`
+  (`cadeia_alteracoes`, `dead_ends`, conversão MPV→LEI, `citacoes`,
+  `alteracoes_dispositivo`) e a regra dura de vigência/amparo (`is_amending_only`,
+  redação vigente por `obter_dispositivo_legal`). Consulte para "esse artigo foi
+  alterado/revogado?" e "o que mudou dentro da norma?".
+
+## Método do especialista em legislação
 
 Legislação **não tem piso temporal**: toda norma recepcionada pela CF-1988 e vigente está
 em escopo, de qualquer ano (um decreto-lei dos anos 1950 ainda em vigor está em escopo). A
 vigência decide-se pelo **status da fonte** (`status`/`status_vigencia`), NUNCA pelo ano.
-Não presuma que uma norma antiga "não existe na base" por ser antiga. O fluxo de trabalho:
+Não presuma que uma norma antiga "não existe na base" por ser antiga. Numa tarefa grande
+(dossiê normativo, parecer que amarra várias normas), delegue ao subagente
+`legislacao-juris` (ver Subagentes); num cliente sem subagentes, execute você mesmo:
 
 1. **Nome ou número → texto vigente.** Se o usuário dá o **apelido** ("CLT", "CDC", "Lei
    Maria da Penha"), resolva por `buscar_norma_por_nome`; se dá **tipo + número**
@@ -83,13 +89,10 @@ Não presuma que uma norma antiga "não existe na base" por ser antiga. O fluxo 
    caminho mais preciso para um único dispositivo. Para varrer os dispositivos de uma norma
    por tema/termo, use `buscar_dispositivos` (grão dispositivo).
 3. **Vigência e cadeia de alterações (o coração do trabalho).** Antes de afirmar que uma
-   redação está em vigor, rode `obter_alteracoes_norma` (leis antigas mudam artigo a artigo:
-   norma alteradora + data) e, para o mapa completo, `obter_grafo_norma` (bloco
-   `alteracoes_dispositivo`: "redação dada por", "revogado por", "regulamentado por", com o
-   `dispositivo_ref` e a norma alteradora; mais `cadeia_alteracoes` recursiva, conversão
-   MPV→LEI e `citacoes`). **Para amparo, sirva só `status=vigente`**; sinalize
-   explicitamente `revogada`/`nao_recepcionada`. Norma `is_amending_only` (que só existe
-   para alterar outra) não é fonte substantiva - cite a norma alterada consolidada.
+   redação está em vigor, rode `obter_alteracoes_norma` e, para o mapa completo,
+   `obter_grafo_norma` (bloco `alteracoes_dispositivo`). **Para amparo, sirva só
+   `status=vigente`**; sinalize `revogada`/`nao_recepcionada`; norma `is_amending_only`
+   não é fonte substantiva. Detalhe completo em `references/grafo-alteracoes.md`.
 4. **Verificação na fonte oficial quando load-bearing.** Quando o número/data/ementa de uma
    norma sustentam a resposta, confirme os metadados com `buscar_norma_fonte_oficial`
    (resolve por `tipo`/`numero`/`ano`, devolve ementa, data e `link_completo` oficial do
@@ -108,6 +111,20 @@ Não presuma que uma norma antiga "não existe na base" por ser antiga. O fluxo 
   não resolve), **diga isso** em vez de improvisar.
 - A cobertura aqui é **federal**; legislação estadual/municipal tem skill própria
   (`consultar-legislacao-estadual`) e jurisprudência também (`pesquisar-jurisprudencia`).
+
+## Subagentes IAJUS (Claude Code)
+
+No **Claude Code**, delegue uma tarefa normativa grande a subagentes especializados
+(invoque via Task/subagent pelo nome). Em clientes **sem subagentes** (claude.ai web,
+ChatGPT, Codex), **execute você mesmo o método acima** - não delegue.
+
+- **`legislacao-juris`** - norma aplicável (federal, estadual ou municipal), vigência
+  (`status_vigencia`) e grafo de alterações por dispositivo, num só dossiê normativo.
+- **`memorialista-juris`** - montar parecer ou peça que amarra várias normas + jurisprudência,
+  com citação verificável de cada fundamento.
+- **`conferente-citacoes`** - **feche a entrega com ele** (anti-alucinação): confere cada
+  artigo/norma citado contra a fonte, incluindo se a redação bate e se o dispositivo está
+  vigente, antes do texto final.
 
 ## Boas práticas
 

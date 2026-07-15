@@ -38,43 +38,53 @@ uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
 
 | Pergunta do usuário | Tool | Por quê |
 |---|---|---|
-| Tema/conceito ("o que decidiram sobre dano moral por inscrição indevida") | `buscar_semantica` | Vetorial/densa - casa por significado, não por palavra. **Padrão para perguntas conceituais.** |
+| Tema/conceito ("o que decidiram sobre dano moral por inscrição indevida") | `buscar_semantica` | Vetorial/densa - casa por significado. **Padrão para perguntas conceituais.** |
 | Quer o melhor resultado geral (relevância máxima) | `buscar_hibrida` | Funde semântica + FTS + trigram + CNJ + ontologia via RRF, com boost de classificação. |
 | Expressão exata / termo técnico literal ("usucapião extraordinária") | `buscar_fts` | Full-text pt_unaccent, stemming PT, insensível a acento; `phrase=true` exige a ordem. |
 | Padrão literal / forma de citação ("Súmula 7", "art. 1.228") | `buscar_regex` | Regex POSIX; **exija ≥3 caracteres literais** no padrão (âncora do índice). |
 | Número de processo CNJ | `buscar_por_cnj` | `numero` completo = casamento exato; ou componentes (ano, tribunal, origem). |
-| "Todos os acórdãos de um ramo do direito" | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU (ou L2/L3, ou `tema_transversal`). Ex.: `l1_code=287` (Penal), `899` (Civil), `9985` (Administrativo). |
+| "Todos os acórdãos de um ramo do direito" | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU (ou L2/L3, ou `tema_transversal`). Códigos em `references/ontologia-ojbu.md`. |
 | Quem citou uma súmula/tema, ou o que um acórdão cita | `buscar_por_citacoes` | `legal_edges` single-hop; `normalized_ref="Súmula 279"` traz quem aplicou. |
-| Quais dispositivos legais um acórdão cita | `obter_dispositivos_citados` | Leitor do grafo de citações (CIT-04): lista os artigos/dispositivos que uma decisão invoca, para conferir o amparo legal aplicado. |
-| Quais julgados aplicam um dispositivo legal | `buscar_citantes_dispositivo` | O inverso (CIT-04): dado um dispositivo (ex. art. 1.228 do CC), traz os julgados que o aplicaram, medindo o quanto ele é usado. |
-| A redação de uma súmula/tema mudou? Histórico de versões | `obter_versoes_qualificada` | Versões da redação de uma súmula/tema/precedente (o enunciado mudou, quando e por quê), útil ao amparar num precedente cujo texto foi alterado. |
-| Pergunta QUANTITATIVA exata ("quantas decisões o TJRJ julgou por ano", "quem mais relata no órgão X", "quais classes/câmaras dominam") | `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` / `jurimetria_orgao_julgador` | Contagens EXATAS do read-model agregado, com envelope de honestidade. **Prefira-as para números** (ver seção Jurimetria agregada). |
-| TAXA DE DESFECHO ("qual a taxa de provimento do STJ", "o TJRJ provê mais agravos que apelações", "evolução do improvimento no TST") | `jurimetria_resultado` | Taxas de provimento/improvimento do rollup, com **denominador duplo** rotulado (`share_over_known` e `share_over_all`) e `coverage_pct` - nunca uma taxa sem denominador (ver seção Jurimetria agregada). |
-| LAG DE PUBLICAÇÃO ("quanto tempo o STJ leva para publicar após julgar", "evolução do lag do TST") | `jurimetria_lag_publicacao` | Intervalo em dias `data_publicacao − data_julgamento` (p50/p90) por órgão × ano. **NÃO é duração do processo** - só o lag publicação−julgamento (ver seção Jurimetria agregada). |
-| Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) | `buscar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** quando o usuário quer "o entendimento atual". |
-| **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas pelo tribunal) | `buscar_informativos_stf` / `buscar_informativos_stj` | Lê os informativos do STF / STJ - a síntese oficial dos julgados de destaque por edição. Use para "o que o STF/STJ decidiu de relevante recentemente" e para localizar a tese pela edição do informativo. |
+| Quais dispositivos legais um acórdão cita | `obter_dispositivos_citados` | Leitor do grafo de citações (CIT-04): lista os artigos que a decisão invoca. |
+| Quais julgados aplicam um dispositivo legal | `buscar_citantes_dispositivo` | O inverso (CIT-04): dado um dispositivo, traz os julgados que o aplicaram. |
+| A redação de uma súmula/tema mudou? Histórico de versões | `obter_versoes_qualificada` | Versões da redação de uma súmula/tema/precedente (mudou, quando e por quê). |
+| Pergunta QUANTITATIVA exata (volume, ranking de relator/classe/câmara) | `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` / `jurimetria_orgao_julgador` | Contagens EXATAS do read-model agregado, com envelope de honestidade. Detalhe: `references/jurimetria.md`. |
+| TAXA DE DESFECHO ("taxa de provimento do STJ", "provê mais agravos que apelações") | `jurimetria_resultado` / `jurimetria_desfecho_cruzado` | Taxas com **denominador duplo** e `coverage_pct` - nunca uma taxa sem denominador. Detalhe: `references/jurimetria.md`. |
+| LAG DE PUBLICAÇÃO ("quanto o STJ leva para publicar após julgar") | `jurimetria_lag_publicacao` | Dias `data_publicacao − data_julgamento` (p50/p90). **NÃO é duração do processo.** Detalhe: `references/jurimetria.md`. |
+| Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, repetitivo, IRDR, IRR, IAC, OJ) | `buscar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** para "o entendimento atual". |
+| **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas) | `buscar_informativos_stf` / `buscar_informativos_stj` | A síntese oficial dos julgados de destaque por edição. |
 
 Notas de uso:
 - **Filtro de órgão difere por modalidade:** só `buscar_semantica` / `buscar_hibrida`
   aceitam `tribunal` (ex.: `"STF"`). As demais (`buscar_regex`, `buscar_fts`,
-  `buscar_por_ontologia`) filtram por **`orgao_code`** - o slug minúsculo do órgão
-  (ex.: `"stf"`, `"stj"`). **Não** passe `tribunal` para essas: a tool rejeita o
-  argumento. (`buscar_por_cnj` recebe `tribunal` como componente CNJ.)
+  `buscar_por_ontologia`) filtram por **`orgao_code`** - o slug minúsculo (ex.: `"stf"`).
+  **Não** passe `tribunal` para essas: a tool rejeita o argumento. (`buscar_por_cnj`
+  recebe `tribunal` como componente CNJ.)
 - **Recorte de ano difere:** `buscar_semantica` aceita `ano` (UM ano exato);
   `buscar_hibrida` (e regex/FTS/ontologia) aceitam `ano_min`/`ano_max` (faixa).
-  Ambas aceitam `tribunal`, `ramo_l1` (código OJBU L1 para escopar o ramo),
-  `space` (`default` = text-embedding-3-small; `premium` = gemini) e `k` (1-100,
-  padrão 20).
-- `buscar_semantica` para a intenção temática; **se vier fraco, escale para
-  `buscar_hibrida`** (mesma consulta) antes de desistir.
+  Ambas aceitam `tribunal`, `ramo_l1` (código OJBU L1), `space` (`default` =
+  text-embedding-3-small; `premium` = gemini) e `k` (1-100, padrão 20).
 - `buscar_regex` recusa padrões só de metacaracteres (ex.: `^[A-Z]+$`); inclua um
   trecho literal ≥3 chars. Em erro, a tool devolve `{ "erro": "…", "resultados": [] }`
   (nunca stack trace) - leia a mensagem e ajuste.
 
-## Método do pesquisador (execute você mesmo - não delegue)
+## Referências detalhadas (consulte quando precisar do detalhe)
+
+- **`references/jurimetria.md`** - assinatura exata das 7 tools `jurimetria_*` e as
+  regras de honestidade completas (denominador duplo, `coverage_pct`, LGPD n<20, lag ≠
+  duração de processo). Consulte para QUALQUER pergunta de volume/ranking/taxa/lag.
+- **`references/ontologia-ojbu.md`** - os 21 códigos `l1_code` TPU e os 5 temas
+  transversais. Consulte ao usar `buscar_por_ontologia`.
+- **`references/campos-e-trust.md`** - taxonomia canônica das qualificadas
+  (`tipo_canonico`/`tipo_label`/`materia`), autoria do acórdão (`redator_acordao`), o
+  envelope `trust` e a vigência (`status_vigencia`). Consulte ao rotular/citar.
+
+## Método do pesquisador (5 passos)
 
 Uma pesquisa jurídica de verdade quase nunca é UMA chamada: é uma varredura que
-escala de modalidade até a cobertura estabilizar. Conduza-a você mesmo, nesta ordem.
+escala de modalidade até a cobertura estabilizar. Numa tarefa grande (dossiê,
+multi-busca), delegue ao subagente `pesquisador-juris` (ver seção Subagentes); num
+cliente sem subagentes, conduza-a você mesmo, nesta ordem.
 
 1. **Priorize o CONTEÚDO consolidado antes do acórdão comum.** Para "qual o
    entendimento atual / a tese firmada", comece por `buscar_qualificada` (súmula, SV,
@@ -113,91 +123,7 @@ escala de modalidade até a cobertura estabilizar. Conduza-a você mesmo, nesta 
      súmula cancelada/superada e artigo revogado saem MARCADOS, nunca como amparo vigente.
    Um número, ementa, relator ou link só entra na resposta se veio da tool. Sem retorno,
    é NÃO LOCALIZADA (possível alucinação) - reporte assim, nunca "provavelmente existe".
-
-## Jurimetria agregada (6 tools dedicadas - contagens/taxas exatas)
-
-Para perguntas de VOLUME/ranking use estas tools (servidas do read-model agregado do
-Postgres, mantido por projector - nunca varrem a tabela quente; respostas exatas e
-rápidas). Todas exigem um **recorte** (regra scan-safety) e devolvem o **envelope de
-honestidade** `jurimetria` `{snapshot_id, as_of, denominator_definition, value_kind,
-coverage_pct, truncado}`:
-
-| Tool | Assinatura | Para quê |
-|---|---|---|
-| `jurimetria_volume` | `orgao?` e/ou `ano?` (ou `ano_de`/`ano_ate`); `top` 1-200 (padrão 50). **Pelo menos um recorte é obrigatório.** | Volume por órgão × ano. Ex.: `jurimetria_volume(orgao="tjrj")` → série anual do TJRJ; `jurimetria_volume(ano=2024, top=20)` → maiores órgãos em 2024. |
-| `jurimetria_relator` | `orgao` (OBRIGATÓRIO), `relator?` (substring, case-insensitive), `top` 1-50 (padrão 25) | Quem mais relata num órgão + período de atuação (`ano_min`/`ano_max`). Rollup top-50 por volume. **LGPD:** figura nominal com n<20 é suprimida ("amostra insuficiente"). |
-| `jurimetria_classe` | `orgao` (OBRIGATÓRIO), `ano?` ou `ano_de`/`ano_ate`, `top` 1-100 (padrão 25) | Volume por classe processual CNJ. O bucket `classe_cnj_code=-1` é a massa SEM classe resolvida; o envelope traz `cobertura_classe_pct`. Rótulos de código via `obter_protocolo_classificacao`. |
-| `jurimetria_orgao_julgador` | `orgao` (OBRIGATÓRIO), `filtro?` (substring), `top` 1-100 (padrão 25) | Volume por câmara/turma/seção (unidade organizacional - sem supressão LGPD) + período de atuação. Ex.: "quais câmaras do TJRJ mais julgam?". |
-| `jurimetria_resultado` | `orgao?` e/ou recorte de ano (`ano?` ou `ano_de`/`ano_ate`). **Pelo menos um recorte é obrigatório.** | Taxas de DESFECHO (provimento/improvimento etc.) por órgão × ano, dos rollups `agg_decisions_resultado(_cov)`. Cada desfecho vem com **denominador duplo** rotulado: `share_over_known` (n/decididas - a fração ENTRE as decisões cujo desfecho o extractor determinou) E `share_over_all` (n/total). **LGPD:** recortes com <20 decisões conhecidas são suprimidos ("amostra insuficiente"). |
-| `jurimetria_lag_publicacao` | `orgao?` OU `ano?`. **Pelo menos um recorte é obrigatório.** | Lag de publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano, do rollup `agg_decisions_lag_pub`. É a ÚNICA métrica temporal servida hoje - **NÃO é duração do processo** (ajuizamento→trânsito). Órgãos sem `data_publicacao` (vários TJs) saem sem lag. |
-| `jurimetria_desfecho_cruzado` | `orgao` (OBRIGATÓRIO) + um eixo de cruzamento (ex. `por="classe"` ou `por="relator"`), com recorte de ano opcional | Cruza a taxa de desfecho (provimento/improvimento) por um segundo eixo (classe, relator, câmara), numa janela limitada por dia. Mantém a supressão LGPD (célula com n<20 é suprimida). Use para "o TJRJ provê mais apelações ou agravos", sempre reportando o denominador. |
-
-Regras de honestidade (obrigatório):
-
-- **Taxa de desfecho SÓ via `jurimetria_resultado`** - nunca infira provimento/improvimento
-  a partir de contagens de volume. A tool traz **denominador duplo** (`share_over_known` vs
-  `share_over_all`): reporte a taxa SEMPRE com o denominador, e o `coverage_pct`
-  (=100·conhecidas/total). Cobertura baixa = **não** é representativa (o extractor abstém em
-  dispositivo ambíguo - abstenção não é zero); diga "baixa cobertura", não uma taxa nua.
-- **Lag de publicação (`jurimetria_lag_publicacao`) NÃO é duração do processo** - é só o
-  intervalo publicação−julgamento. Quando `sem_cobertura` (coverage baixo) ou o órgão não
-  expõe `data_publicacao`, reporte "sem cobertura" e NÃO estime.
-- `aviso: "sem cobertura para o recorte"` = lacuna de ingestão/rollup, **não** volume
-  zero no mundo real - reporte assim.
-- Reporte `as_of` (data do snapshot) quando o número embasar uma afirmação.
-- Sem recorte (`orgao`/`ano`) a tool recusa com erro explicando - não insista; peça o
-  recorte ao usuário.
-
-## Campos canônicos novos (taxonomia + matéria + autoria)
-
-- **`buscar_qualificada` devolve a taxonomia CANÔNICA do precedente:** `tipo_canonico`
-  (o tipo padronizado), `tipo_label` (rótulo PT-BR pronto para exibição) e `tipo_familia`
-  (a família qualitativa: vinculante / editorial / …). Use-os para agrupar e rotular os
-  precedentes por tipo, em vez de inferir do texto da ementa.
-- **`materia`** acompanha cada qualificada (= `ramo_hint`, presente em ~100% delas): é a
-  matéria/ramo canônico do precedente. Use como **facet de recorte** ("súmulas de
-  Tributário") e em perguntas de **jurimetria** (distribuição por matéria).
-- **`redator_acordao`** vem nos acórdãos: é o magistrado **redator** do acórdão (autoria
-  pelo art. 941 do CPC), com `revisor` quando houver - o autor do acórdão a citar, distinto
-  do relator sorteado nos casos de relator vencido.
-- **Envelope de confiança `trust`** - os hits de busca (`buscar_regex`, `buscar_fts`,
-  `buscar_por_ontologia`, `buscar_por_cnj`, `buscar_hibrida`) trazem
-  `trust: {authority_tier, status_vigencia, trecho}`: `authority_tier` gradua a autoridade
-  do órgão/tipo; **cheque `status_vigencia` antes de citar qualificada/legislação como
-  amparo** - ato não-vigente vem sinalizado, nunca oculto.
-- **Vigência nas qualificadas (`buscar_qualificada`)** - cada resultado traz
-  `status_vigencia` (`vigente` / `cancelada` / …); canceladas/superadas saem **MARCADAS**
-  (vigentes primeiro, com `aviso` quando nada vigente casa). `incluir_canceladas=false`
-  oculta-as. Além do lookup por número, há o modo **navegar por matéria**:
-  `buscar_qualificada(materia="Direito Tributário", tipo="sumula")`.
-- **Citação numérica dispara lookup exato** - em `buscar_fts`/`buscar_semantica`, uma
-  consulta que cita "súmula 145 do STF", "súmula vinculante 11", "OJ 191" ou "tema 1234"
-  prependa o casamento EXATO por número (sinalizado em `signals.qualificada_numero`),
-  antes dos hits textuais.
-
-## Ontologia OJBU (ramos reais - use estes códigos)
-
-`buscar_por_ontologia` recebe `l1_code` (código TPU do ramo, inteiro), opcionalmente
-`l2_code`/`l3_code` (a sub-área exige o `l1_code` do seu ramo) **ou** `tema_transversal`.
-Os 21 ramos L1 (código TPU → ramo) são os nós reais da ontologia:
-
-| `l1_code` | Ramo | | `l1_code` | Ramo |
-|---|---|---|---|---|
-| 14 | Tributário | | 9633 | Criança e Adolescente |
-| 195 | Previdenciário | | 9985 | Administrativo e Dir. Público |
-| 287 | Penal | | 10110 | Ambiental |
-| 864 | Trabalho | | 11068 | Penal Militar |
-| 899 | Civil | | 11428 | Eleitoral |
-| 1156 | Consumidor | | 12480 | Saúde |
-| 1209 | Processual Penal | | 12734 | Assistencial |
-| 6191 | Internacional | | 12775 | Educação |
-| 7724 | Registros Públicos | | 1146 | Marítimo |
-| 8826 | Processual Civil e do Trabalho | | 11049 | Processual Penal Militar |
-
-Temas transversais (`tema_transversal=`): `DDG` (Digital e Proteção de Dados),
-`DER` (Econômico e Regulação), `DFN` (Financeiro e Orçamentário), `DAG` (Agrário e
-Fundiário Rural), `DID` (Pessoa Idosa e Envelhecimento). Use o tema transversal para
-recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si.
+   Num lote grande de citações, delegue essa passada ao subagente `conferente-citacoes`.
 
 ## Como citar (obrigatório)
 
@@ -206,23 +132,46 @@ recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si
   ementa ou link.
 - Cite `tribunal`, `numero_processo` (ou `numero_processo_cnj`), `relator` e
   `data_julgamento` quando presentes. Resuma a `ementa_snippet` em 1-2 frases.
-- Quando útil, mostre a classificação OJBU do registro (`classificacao.l1`,
-  `ramo_l1_codes`) e ofereça abrir o inteiro teor pelo `inteiro_teor_url`.
+- Quando útil, mostre a classificação OJBU (`classificacao.l1`, `ramo_l1_codes`) e
+  ofereça abrir o inteiro teor pelo `inteiro_teor_url`.
 - Em **acórdãos**, atribua a autoria ao **`redator_acordao`** (o redator - autor do
   acórdão pelo art. 941 do CPC) e ao `revisor` quando vier; nas **qualificadas** apresente
-  `tipo_label` (o tipo) e `materia` (a matéria/ramo) para situar o precedente.
+  `tipo_label` (o tipo) e `materia` (a matéria/ramo). Detalhe em `references/campos-e-trust.md`.
 - **Confira a vigência antes de amparar:** ao citar súmula/tema/qualificada, verifique
   `status_vigencia` (no hit `trust` ou em `buscar_qualificada`) e sinalize
   explicitamente quando o ato estiver cancelado/superado - nunca o apresente como vigente.
 - Se a busca **não** retornar resultado relevante (`total: 0` ou hits fracos),
   **diga isso honestamente** - não preencha a lacuna com um precedente fabricado.
 
+## Subagentes IAJUS (Claude Code)
+
+No **Claude Code**, uma tarefa grande de pesquisa ganha em delegar a subagentes
+especializados (invoque cada um via Task/subagent pelo nome). Em clientes **sem
+subagentes** (claude.ai web, ChatGPT, Codex), **execute você mesmo o método acima** -
+não delegue.
+
+- **`pesquisador-juris`** - tarefa multi-busca ou dossiê: conduz a varredura completa
+  (escalonamento de modalidade + envelope de honestidade) e devolve os julgados citáveis.
+- **`elaborador-tese`** - construir uma tese jurídica (enunciado + cadeia de fundamentos
+  com qualificada vigente, norma e precedentes, com solidez honesta).
+- **`refutador-tese`** - stress-test / contraditório de uma tese (jurisprudência contrária
+  real, distinguishing, sinais de superação).
+- **`precedentes-vinculantes`** - mapear o precedente qualificado aplicável (súmula, SV,
+  RG, repetitivo, IRDR/IRR/IAC, OJ) com vigência conferida.
+- **`processo-juris`** - pesquisa amarrada a um processo (dossiê a partir do número CNJ).
+- **`legislacao-juris`** - norma aplicável (federal, estadual ou municipal), vigência e
+  grafo de alterações.
+- **`memorialista-juris`** - montar memorial de pesquisa, parecer ou peça com citação
+  verificável de cada tese.
+- **`conferente-citacoes`** - **SEMPRE feche uma entrega citável com ele** (anti-alucinação):
+  confere cada citação de acórdão/norma contra a fonte antes do texto final.
+
 ## Boas práticas
 
 - Comece restrito (tema + tribunal + faixa de ano) e amplie só se vier vazio.
 - Para "qual o entendimento atual", prefira **precedentes qualificados** (súmula /
   repercussão geral / tema repetitivo) a um acórdão isolado: use `buscar_qualificada`
-  (entendimento consolidado do órgão) e/ou `buscar_por_citacoes` para ver quem o aplicou.
+  e/ou `buscar_por_citacoes` para ver quem o aplicou.
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
 - **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
   ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no

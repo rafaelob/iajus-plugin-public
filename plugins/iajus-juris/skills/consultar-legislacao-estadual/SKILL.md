@@ -82,11 +82,13 @@ Notas de uso:
   estiver fora do ar ou não retornar a norma, o campo `erro`/`aviso` diz isso -
   **repasse ao usuário**, não invente.
 
-## Método (execute você mesmo - o caminho subnacional difere do federal)
+## Método (o caminho subnacional difere do federal)
 
 A legislação estadual/municipal resolve **por identidade** (UF [+ município] + tipo +
 número + ano), NÃO por busca textual livre de tema. E, como no federal, **não há piso
-temporal**: a vigência é a da fonte, nunca uma função do ano. O fluxo:
+temporal**: a vigência é a da fonte, nunca uma função do ano. Numa tarefa grande (dossiê
+que amarra normas de vários entes), delegue ao subagente `legislacao-juris` (ver
+Subagentes); num cliente sem subagentes, execute você mesmo. O fluxo:
 
 1. **Ajuste a expectativa pela cobertura.** Para uma UF que você não conhece, chame
    `obter_cobertura_legislacao` (`uf="SP"`) antes - ela lista, sem fan-out lento, o estado
@@ -116,6 +118,19 @@ número/ano e o `link_completo` oficial - nunca uma redação de memória.
 - Preserve grafia e diacríticos exatamente como na fonte (UTF-8).
 - Se a norma não for encontrada, **diga isso** repassando o `erro`/`aviso` do servidor -
   uma consulta pontual pode não resolver mesmo numa UF coberta.
+
+## Subagentes IAJUS (Claude Code)
+
+No **Claude Code**, delegue uma tarefa normativa grande a subagentes especializados
+(invoque via Task/subagent pelo nome). Em clientes **sem subagentes** (claude.ai web,
+ChatGPT, Codex), **execute você mesmo o método acima** - não delegue.
+
+- **`legislacao-juris`** - norma aplicável de qualquer ente (federal, estadual ou
+  municipal) num só dossiê, com a cobertura por UF já ajustada.
+- **`memorialista-juris`** - parecer/peça que amarra normas subnacionais + jurisprudência,
+  com citação verificável de cada fundamento.
+- **`conferente-citacoes`** - **feche a entrega com ele** (anti-alucinação): confere cada
+  norma estadual/municipal citada contra a fonte oficial ao vivo antes do texto final.
 
 ## Boas práticas
 
