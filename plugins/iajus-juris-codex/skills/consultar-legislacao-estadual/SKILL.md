@@ -4,70 +4,143 @@ description: Consulta legislação ESTADUAL e MUNICIPAL brasileira ao vivo pelo 
 allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_iajus-juris_iajus__obter_cobertura_legislacao
 ---
 
-# Consultar legislação estadual e municipal ao vivo (IAJUS)
+# Consultar legislação estadual e municipal brasileira ao vivo (IAJUS)
 
-## Role
+Você tem acesso ao servidor MCP `iajus`, que consulta **legislação estadual e municipal**
+brasileira **ao vivo** na fonte oficial de cada UF/município (assembleia legislativa,
+câmara municipal, diário oficial). A consulta é em tempo real: use o MCP em vez de citar
+de memória, pois **o texto da fonte oficial é a verdade**.
 
-Especialista em legislação ESTADUAL e MUNICIPAL brasileira, consultada AO VIVO na fonte
-oficial de cada UF/município (assembleia legislativa, câmara municipal, diário oficial)
-pelo MCP `iajus`. NÃO use para legislação FEDERAL (skill `consultar-legislacao`) nem para
-acórdãos.
+Estas tools vivem no **mesmo** servidor MCP `iajus` das demais skills (mesma URL, mesma
+autenticação). Não há credencial nem host novos.
 
-## Goal
+## Regra número zero: NUNCA recuse uma UF por conta própria
 
-Entregar a norma subnacional (metadados + link oficial e, quando possível, texto íntegra)
-resolvida por identidade na fonte oficial ao vivo - ou o vazio honesto que o servidor
-devolveu.
+O servidor tem **adaptador nativo para as 27 UFs (26 estados + o Distrito Federal)**. Não
+existe UF a recusar de antemão. Para QUALQUER UF que o usuário citar,
+**chame a tool** (`buscar_norma_fonte_oficial` / `obter_texto_norma`) e **repasse o que o
+servidor devolver**:
 
-## Success criteria
+- Se o servidor retornar a norma, cite-a com o `link_completo` oficial.
+- Se o servidor retornar `erro`/`aviso` (norma não localizada na fonte, fonte fora do ar,
+  deadline excedido), **repasse esse resultado honesto do servidor** - o vazio vem do
+  servidor, nunca de você prejulgar a UF.
 
-- Norma resolvida por UF [+ município] + tipo + número + ano, com `link_completo` oficial.
-- Esfera (estadual/municipal) e UF/município explícitos na citação.
-- `erro`/`aviso` do servidor repassado ao usuário quando a norma não resolve.
+Não invente a norma e não afirme "essa UF ainda não é coberta": a decisão de cobertura é do
+servidor, medida ao vivo. Confirme com `obter_cobertura_legislacao` quando estiver em dúvida
+sobre a prontidão de uma UF.
 
-## Constraints (invariantes)
+## Comece pela cobertura: o que a UF cobre
 
-- O servidor tem adaptador nativo para as 27 UFs (26 estados + DF): NEVER recuse uma UF de
-  antemão nem afirme "essa UF não é coberta" - a decisão de cobertura é do servidor, ao vivo.
-- `uf` é sempre obrigatória; para municipal, `municipio` também. Sem isso a consulta é
-  ambígua (leis de mesmo número existem em entes diferentes): peça ao usuário.
-- Esta superfície resolve POR IDENTIDADE (tipo + número + ano), NÃO por busca textual de
-  tema. Só o assunto → peça (ou ajude a montar) tipo/número/ano.
-- NEVER invente número, redação ou link. Legislação subnacional também não tem piso
-  temporal: vigência = a da fonte, nunca função do ano.
+Para uma UF que você não conhece, chame **`obter_cobertura_legislacao`** (`uf="SP"`) primeiro:
+ela lista, sem fan-out lento, o estado + os municípios cobertos naquela UF e a prontidão de
+cada um. É o melhor ponto de partida antes de uma consulta estadual/municipal direcionada.
+Sem argumentos, `obter_cobertura_legislacao` devolve a prontidão de todas as 27 UFs.
 
-## Tool routing
+## Cobertura estadual por UF (prontidão real das 27 UFs)
 
-- `obter_cobertura_legislacao` - `uf="SP"` lista o estado + municípios cobertos e a
-  prontidão de cada um (sem fan-out lento); sem argumentos, a prontidão das 27 UFs.
-  Melhor ponto de partida para uma UF que você não conhece. Prontidão: `ready` = texto
-  integral robusto (BA/GO/MG/MS/RO/SP) vs `resolve_ementa` = ementa + link confiáveis,
-  inteiro teor best-effort (as demais).
-- `buscar_norma_fonte_oficial` - metadados de uma norma estadual (`uf`+`tipo`+`numero`+`ano`)
-  ou municipal (+ `municipio`): link oficial deep-per-norma, ementa, data.
-- `obter_texto_norma` - texto íntegra com os mesmos argumentos de identidade. O campo
-  `tem_texto_integral` por consulta avisa se o texto integral veio ou só ementa + link.
+Todas têm adaptador nativo e resolvem ao vivo. A prontidão diz **quanto texto vem**, não se
+a UF é servida:
 
-## Grounding budget
+- **`ready`** (texto integral verificado ao vivo - 6 UFs):
+  **BA** (LegislaBahia), **GO** (Legisla Goiás API v2), **MG** (ALMG API v2), **MS**
+  (SECOGE/Domino), **RO** (SAPL REST), **SP** (ALESP). Resolve + ementa + texto integral.
+- **`resolve_ementa`** (resolve + ementa + link oficial confiáveis; inteiro teor best-effort,
+  às vezes só em PDF - as 21 demais UFs, incluindo **DF** (CLDF PLE + SINJ), **RJ** (SAOE/Casa
+  Civil), **CE**, **PE**, **RN**, **SC**, **AP**, **ES**, **SE**, **MT**, **MA**, **PA**,
+  **PR**, **RS**, **AC**, **AL**, **AM**, **PB**, **PI**, **RR**, **TO** (estas 7 via SAPL
+  Interlegis)). O campo `tem_texto_integral` por consulta avisa se o texto integral veio.
 
-Uma checagem de cobertura por UF desconhecida, depois a resolução por identidade. Chamada
-de texto SÓ quando o usuário quer o inteiro teor. Não refaça a consulta variando o fraseado
-- a resolução é por identidade, não por relevância textual.
+> Regra REAL: nunca afirme que uma norma específica existe se a tool não a retornou. `ready`
+> é sobre a robustez do **texto integral**, não sobre existência de cobertura: mesmo uma UF
+> `resolve_ementa` resolve a norma + ementa + link oficial. Se uma consulta pontual não
+> resolver, repasse o `erro`/`aviso` do servidor e diga honestamente que a norma não foi
+> localizada na fonte - sem prejulgar a UF inteira.
 
-## Output
+## Como consultar
 
-UF (e município, quando municipal), tipo, número/ano e a redação como a fonte devolveu;
-`link_completo` oficial; a esfera explícita. Diacríticos e UTF-8 exatamente como na fonte.
+A **UF é obrigatória** em toda consulta estadual; para municipal, **UF + município**. Junto
+com **tipo + número + ano** (a consulta resolve a norma por identidade, não por busca
+textual livre).
 
-## Stop rules
+| Necessidade | Tool | Argumentos |
+|---|---|---|
+| Mapa de cobertura de uma UF (estado + municípios) | `obter_cobertura_legislacao` | `uf` |
+| Prontidão de todas as UFs (estadual) | `obter_cobertura_legislacao` | (sem argumentos) |
+| Metadados de uma norma ESTADUAL (link oficial, ementa, data) | `buscar_norma_fonte_oficial` | `uf`, `tipo`, `numero`, `ano` |
+| Texto íntegra de uma norma ESTADUAL | `obter_texto_norma` | `uf`, `tipo`, `numero`, `ano` |
+| Metadados de uma norma MUNICIPAL | `buscar_norma_fonte_oficial` | `uf`, `municipio`, `tipo`, `numero`, `ano` |
+| Texto íntegra de uma norma MUNICIPAL | `obter_texto_norma` | `uf`, `municipio`, `tipo`, `numero`, `ano` |
 
-Pare quando a norma pedida estiver resolvida (metadados + link e, se pedido, texto) - no
-menor número de rodadas úteis. Se a consulta pontual não resolver (norma não localizada na
-fonte, fonte fora do ar, deadline), pare e repasse o `erro`/`aviso` do servidor, dizendo
-que a norma não foi localizada na fonte - sem prejulgar a UF inteira e sem inventar.
+Notas de uso:
+- **`uf` é sempre obrigatória; para municipal, `municipio` também.** Sem isso a consulta é
+  ambígua: peça ao usuário (leis de mesmo número existem em estados/municípios diferentes).
+- `tipo` é a espécie normativa (`LEI`, `DECRETO`, `LEI COMPLEMENTAR`, …); `numero` e `ano`
+  identificam a norma. Esta consulta **não** faz busca por tema/assunto: se o usuário só
+  descreve o assunto, peça (ou ajude a descobrir) tipo/número/ano.
+- A consulta é **ao vivo**: pode ser mais lenta e depende da fonte oficial. Se a fonte
+  estiver fora do ar ou não retornar a norma, o campo `erro`/`aviso` diz isso -
+  **repasse ao usuário**, não invente.
 
-## Autenticação
+## Método (o caminho subnacional difere do federal)
 
-O cliente MCP autentica por você - OAuth no navegador (primeiro uso) ou chave `ik_*` no
-header `Authorization: Bearer`. Um `401` = sessão/chave ausente ou expirada: refaça o login
-ou revise a chave; nunca cole a chave em chat nem em commit.
+A legislação estadual/municipal resolve **por identidade** (UF [+ município] + tipo +
+número + ano), NÃO por busca textual livre de tema. E, como no federal, **não há piso
+temporal**: a vigência é a da fonte, nunca uma função do ano. Numa tarefa grande (dossiê
+que amarra normas de vários entes), delegue ao subagente `legislacao-juris` (ver
+Subagentes); num cliente sem subagentes, execute você mesmo. O fluxo:
+
+1. **Ajuste a expectativa pela cobertura.** Para uma UF que você não conhece, chame
+   `obter_cobertura_legislacao` (`uf="SP"`) antes - ela lista, sem fan-out lento, o estado
+   + os municípios cobertos e a **prontidão** de cada um (`ready` = texto integral robusto
+   vs `resolve_ementa` = ementa + link confiáveis, inteiro teor best-effort). Assim você
+   sabe se pode prometer o inteiro teor ou só ementa + link antes de consultar.
+2. **Resolva a norma por identidade.** Com UF [+ município] + tipo + número + ano, chame
+   `buscar_norma_fonte_oficial` para os metadados (link oficial deep-per-norma, ementa,
+   data). Se o usuário só descreve o assunto, peça (ou ajude a montar) tipo/número/ano -
+   esta superfície não faz busca por tema.
+3. **Leia o texto vigente.** Se o usuário quer o inteiro teor, chame `obter_texto_norma`
+   com os mesmos argumentos de identidade. Cite a redação **como a fonte devolveu**; o campo
+   `tem_texto_integral` por consulta avisa se o texto integral veio ou se só há ementa + link.
+4. **Repasse o vazio honesto.** Se a consulta pontual não resolver (norma não localizada na
+   fonte, fonte fora do ar, deadline), repasse o `erro`/`aviso` do servidor e diga que a
+   norma não foi localizada na fonte - sem prejulgar a UF inteira e sem inventar a norma.
+
+Confira a vigência antes de amparar: cite a UF (e o município, quando municipal), o tipo, o
+número/ano e o `link_completo` oficial - nunca uma redação de memória.
+
+## Regras de citação (obrigatório)
+
+- Cite a **UF** (e o **município**, quando municipal), o tipo, o número/ano e a redação
+  como retornada pela fonte. Sempre inclua o **`link_completo`** (URL oficial deep-per-norma)
+  e **nunca invente** número, redação ou link.
+- Deixe claro que a fonte é **estadual** ou **municipal** e de **qual UF/município**.
+- Preserve grafia e diacríticos exatamente como na fonte (UTF-8).
+- Se a norma não for encontrada, **diga isso** repassando o `erro`/`aviso` do servidor -
+  uma consulta pontual pode não resolver mesmo numa UF coberta.
+
+## Subagentes IAJUS (Claude Code)
+
+No **Claude Code**, delegue uma tarefa normativa grande a subagentes especializados
+(invoque via Task/subagent pelo nome). Em clientes **sem subagentes** (claude.ai web,
+ChatGPT, Codex), **execute você mesmo o método acima** - não delegue.
+
+- **`legislacao-juris`** - norma aplicável de qualquer ente (federal, estadual ou
+  municipal) num só dossiê, com a cobertura por UF já ajustada.
+- **`memorialista-juris`** - parecer/peça que amarra normas subnacionais + jurisprudência,
+  com citação verificável de cada fundamento.
+- **`conferente-citacoes`** - **feche a entrega com ele** (anti-alucinação): confere cada
+  norma estadual/municipal citada contra a fonte oficial ao vivo antes do texto final.
+
+## Boas práticas
+
+- Comece por `obter_cobertura_legislacao` para a UF quando estiver em dúvida; ajuste a
+  expectativa (`ready` = texto integral robusto vs `resolve_ementa` = ementa + link + texto
+  best-effort) antes de prometer o inteiro teor.
+- Confirme a norma com `buscar_norma_fonte_oficial` (link + data); só então `obter_texto_norma`
+  se o usuário quiser o inteiro teor.
+- **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
+  ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no
+  header `Authorization: Bearer` (canal CLI/privado). Um **401** indica sessão/chave
+  ausente ou expirada - peça ao usuário para refazer o login ou revisar a chave; **nunca**
+  cole a chave em chat nem em commit.
