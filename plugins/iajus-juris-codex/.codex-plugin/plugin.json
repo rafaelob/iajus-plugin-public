@@ -1,13 +1,33 @@
 {
   "name": "iajus-juris",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "description": "Pesquisa e cita jurisprudência e legislação brasileira real pelo MCP remoto IAJUS (34 tools, STF/STJ/TST/TCU/TJs/TRFs/TRTs/TREs). Seis skills reescritas outcome-first para GPT-5.6 (objetivo, invariantes, roteamento de tools, critério de parada): 7 modalidades de busca, jurimetria agregada exata, legislação federal e subnacional com texto vigente e grafo de alterações, verificação anti-alucinação de citações e corpus ao vivo. Skills mais MCP numa instalação, OAuth 2.1 (ik_* como fallback).",
+  "author": {
+    "name": "IAJUS / Celeris",
+    "email": "contato@iajus.com.br",
+    "url": "https://iajus.com.br"
+  },
+  "homepage": "https://iajus.com.br",
+  "repository": "https://github.com/rafaelob/iajus-plugin-public",
+  "license": "LicenseRef-Proprietary",
+  "keywords": ["jurisprudencia", "legislacao", "direito", "brasil", "stf", "stj", "mcp"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "IAJUS - Jurisprudência & Legislação BR",
     "shortDescription": "Jurisprudência e legislação brasileira pelo MCP remoto IAJUS (OAuth 2.1; ik_* como fallback).",
+    "longDescription": "Pesquise jurisprudência brasileira em sete modalidades, consulte legislação federal, estadual e municipal vigente, confira alterações normativas, obtenha jurimetria agregada e verifique citações contra fontes oficiais. O plugin conecta seis skills especializadas ao MCP remoto read-only do IAJUS, com 34 ferramentas e autenticação OAuth 2.1.",
+    "developerName": "IAJUS / Celeris",
     "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://iajus.com.br",
+    "privacyPolicyURL": "https://iajus.com.br/privacidade",
+    "termsOfServiceURL": "https://iajus.com.br/termos",
+    "defaultPrompt": [
+      "Mapeie a evolução do entendimento do STJ sobre vazamento de dados desde 2020 e cite precedentes oficiais divergentes.",
+      "Audite as citações desta peça: confirme existência, fidelidade e vigência, e sinalize precedentes superados com fontes oficiais.",
+      "Reconstrua a versão vigente do art. 927 do Código Civil, explique cada alteração e cite as fontes oficiais."
+    ],
     "composerIcon": "./assets/iajus-icon-512.png",
     "logo": "./assets/iajus-icon-512.png"
   }

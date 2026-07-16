@@ -1,8 +1,9 @@
 # IAJUS - plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex que entrega as **4 skills** jurídicas IAJUS + o servidor MCP remoto já
-configurado. É o gêmeo Codex do plugin Claude Code `iajus-juris` (mesmas skills
-byte-idênticas, mesmo MCP remoto). Autentica por **OAuth 2.1 por padrão** (login no
+Plugin Codex que entrega as **6 skills** jurídicas IAJUS + o servidor MCP remoto já
+configurado. Ele cobre a mesma família funcional do plugin Claude Code `iajus-juris`,
+mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
+byte-idênticos. Ambos usam o mesmo MCP remoto. Autentica por **OAuth 2.1 por padrão** (login no
 navegador, refresh automático); a chave `ik_*` continua disponível como **fallback
 manual** (Bearer).
 
@@ -80,14 +81,14 @@ comportamento de segurança do próprio ChatGPT.
 
 - **MCP remoto `iajus`** (`./.mcp.json`): streamable-HTTP em
   `https://mcp.iajus.com.br/mcp`, **OAuth 2.1** (`oauth_resource` RFC 8707 + `scopes`
-  `openid email profile offline_access`). Forma = **mapa direto de servidor** (sem
-  wrapper `mcpServers`/`mcp_servers`) - a forma que o loader do Codex aceita sem
-  ambiguidade de casing. Nenhum token literal em disco.
-- **4 skills** (`./skills/`): `pesquisar-jurisprudencia` (busca + jurimetria agregada),
-  `consultar-legislacao`, `consultar-legislacao-estadual` e `corpus-status`. Idênticas
-  às do plugin Claude Code - cobrem tribunais superiores, TJs, TRFs, TRTs, TREs,
-  Tribunais de Contas, Turmas Recursais dos JEFs, administrativo (CARF) e legislação
-  federal/estadual/municipal. (Doutrina é premium e não faz parte deste plugin.)
+  `openid email profile offline_access`). Forma = wrapper **`mcpServers` camelCase**,
+  com o servidor `iajus` dentro dele. Nenhum token literal em disco.
+- **6 skills** (`./skills/`): `pesquisar-jurisprudencia`, `consultar-legislacao`,
+  `consultar-legislacao-estadual`, `corpus-status`, `jurimetria-judicial` e
+  `verificar-citacoes`. Elas cobrem tribunais superiores, TJs, TRFs, TRTs, TREs,
+  Tribunais de Contas, Turmas Recursais dos JEFs, administrativo (CARF), legislação
+  federal/estadual/municipal, estatísticas judiciais e conferência anti-alucinação.
+  (Doutrina é premium e não faz parte deste plugin.)
 
 ## Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 
@@ -105,7 +106,7 @@ Build antigo do Codex sem `url` remoto: bridge stdio
 
 > Manifesto do plugin: `.codex-plugin/plugin.json`; manifesto do marketplace:
 > `.agents/plugins/marketplace.json`. OAuth keys do Codex (`oauth_resource`/`scopes`)
-> e a forma de `.mcp.json` (mapa direto / wrapper `mcpServers` camelCase) verificadas
+> e a forma de `.mcp.json` (wrapper `mcpServers` camelCase) verificadas
 > na fonte do `openai/codex` (`codex-rs/codex-mcp/src/plugin_config.rs`).
 
 ## Antigravity 2.0 (Google): mesmo MCP remoto

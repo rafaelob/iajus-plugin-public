@@ -1,7 +1,10 @@
 {
-  "iajus": {
-    "url": "https://mcp.iajus.com.br/mcp",
-    "oauth_resource": "https://mcp.iajus.com.br/mcp",
-    "scopes": ["openid", "email", "profile", "offline_access"]
+  "mcpServers": {
+    "iajus": {
+      "type": "http",
+      "url": "https://mcp.iajus.com.br/mcp",
+      "oauth_resource": "https://mcp.iajus.com.br/mcp",
+      "scopes": ["openid", "email", "profile", "offline_access"]
+    }
   }
 }
