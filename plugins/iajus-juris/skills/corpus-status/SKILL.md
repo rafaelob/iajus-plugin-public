@@ -1,21 +1,19 @@
 ---
 name: corpus-status
-description: 'Mostra o que a base IAJUS contém AGORA via MCP (tool obter_estatisticas_base, lê o Postgres ao vivo): decisões por tribunal com faixa de anos, normas de legislação por esfera/status e cobertura territorial (estados + DF e municípios), artigos e livros abertos de doutrina, qualificadas por espécie e vigência. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do tribunal X?". Corpus VIVO - total 0 = cobertura em andamento.'
+description: 'Mostra o que o read-model do corpus IAJUS reporta via MCP, sempre com o as_of de cada seção: decisões por tribunal e faixa de anos, legislação por esfera/status e território, doutrina e qualificadas por espécie/vigência. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do tribunal X?". Não estima nem extrapola contagens.'
 allowed-tools: mcp__iajus__obter_estatisticas_base, mcp__plugin_iajus-juris_iajus__obter_estatisticas_base
 ---
 
-# Estado do corpus IAJUS AO VIVO (o que a base contém AGORA)
+# Estado do corpus IAJUS conforme o `as_of`
 
-Você tem acesso ao servidor MCP `iajus`, que serve a tool **`obter_estatisticas_base`**
-- uma introspecção **ao vivo** do corpus, lida diretamente do **read-model Postgres**
-que as buscas consultam (não um snapshot estático). Use-a para responder, com números
-reais e atuais, **o que a base contém neste momento**.
+Você tem acesso ao servidor MCP `iajus`, que serve a tool **`obter_estatisticas_base`**:
+uma introspecção do **read-model Postgres** que as buscas consultam. Cada seção informa
+`as_of`: um timestamp quando vem de rollup, ou `"live"` quando foi agregada na chamada.
+Use esse campo para dizer de quando é cada número.
 
-> **O corpus é VIVO e cresce continuamente.** A base é ingerida o tempo todo: tribunais,
-> anos, acervos e espécies de qualificada **novos aparecem aqui (e na busca)
-> automaticamente, sem mudança de ferramenta ou de skill**. Por isso um `total: 0`
-> para um tribunal/ano que já está em cobertura significa **cobertura em andamento**, não
-> "não existe" - diga isso ao usuário em vez de afirmar ausência de dados.
+> **O corpus muda continuamente.** Um `total: 0` significa somente que a seção não mediu
+> registros naquele recorte no respectivo `as_of`. Sem outro campo autoritativo, não
+> conclua se é ausência na fonte, ingestão pendente ou cobertura incompleta.
 
 ## Quando usar
 
@@ -74,16 +72,14 @@ O que cada seção traz (chaves do payload):
 - **`legislacao`** - normas **por esfera** (federal/estadual/municipal/…), **por
   status de vigência** (vigente/revogada/desconhecida) e a **`cobertura_territorial`**:
   União (normas federais), **`estados_df`** e **`municipios`** cobertos.
-- **`as_of`** - o carimbo de atualidade de cada seção (rollup ou `"live"`).
+- **`as_of`** - timestamp do rollup ou `"live"` quando a seção foi agregada na chamada.
 
 ## Como interpretar (honestidade > preencher lacuna)
 
-- **`total: 0` ou contagem baixa para um tribunal/ano em cobertura = cobertura em
-  andamento**, não ausência definitiva. Avise o usuário e, quando fizer sentido,
-  ofereça uma fonte alternativa (ex.: tribunal superior para a tese).
-- **Nenhuma lista é hardcoded** - todo tribunal / acervo / espécie vem de um `GROUP BY`
-  sobre os dados vivos. Se um tribunal novo não aparece, ele ainda não foi ingerido (não
-  é bug da tool).
+- **`total: 0` ou contagem baixa** descreve apenas o recorte medido no `as_of`. Não
+  transforme esse número em diagnóstico de fonte ou pipeline sem evidência adicional.
+- **Reporte o frescor por seção.** Não chame um timestamp de rollup de "ao vivo" e não
+  omita que seções diferentes podem ter `as_of` diferentes.
 - **Contrato de honestidade: reporte os números do read-model como vieram.** Não estime,
   não arredonde para impressionar, não extrapole além do que a tool devolveu, não some
   contagens de recortes que possam se sobrepor. Quando o usuário quiser um número que a
