@@ -21,6 +21,18 @@
       "license": "LicenseRef-Proprietary",
       "keywords": ["jurisprudencia", "legislacao", "direito", "brasil", "stf", "stj", "mcp"],
       "defaultEnabled": true
+    },
+    {
+      "name": "iajus-pt",
+      "source": "./plugins/iajus-pt",
+      "displayName": "IAJUS - Jurisprudência & Legislação PT",
+      "description": "Pesquisa e cita jurisprudência e legislação portuguesa pelo MCP remoto IAJUS. Inclui acórdãos dos tribunais superiores e das Relações via DGSI, legislação do Diário da República com ELI e três skills pt-PT para pesquisa multimodal, consulta de normas vigentes e estado atual do corpus. Instala skills e servidor MCP juntos, com OAuth 2.1 por defeito e chave ik_* apenas como alternativa privada.",
+      "version": "1.0.0",
+      "author": { "name": "IAJUS / Celeris", "email": "contato@iajus.com.br" },
+      "homepage": "https://iajus.pt",
+      "license": "LicenseRef-Proprietary",
+      "keywords": ["jurisprudencia", "legislacao", "direito", "portugal", "dgsi", "dre", "mcp"],
+      "defaultEnabled": true
     }
   ]
 }

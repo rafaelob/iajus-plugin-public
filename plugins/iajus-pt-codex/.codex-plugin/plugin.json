@@ -1,0 +1,32 @@
+{
+  "name": "iajus-pt",
+  "version": "1.0.0",
+  "description": "Pesquisa e cita jurisprudência e legislação portuguesa pelo MCP remoto IAJUS. Inclui acórdãos dos tribunais superiores e das Relações via DGSI, legislação do Diário da República com ELI e três skills pt-PT outcome-first para pesquisa multimodal, normas vigentes e estado do corpus. Instala skills e MCP juntos, com OAuth 2.1 por defeito e chave ik_* apenas como alternativa privada.",
+  "author": {
+    "name": "IAJUS / Celeris",
+    "email": "contato@iajus.com.br",
+    "url": "https://iajus.pt"
+  },
+  "homepage": "https://iajus.pt",
+  "repository": "https://github.com/rafaelob/iajus-plugin-public",
+  "license": "LicenseRef-Proprietary",
+  "keywords": ["jurisprudencia", "legislacao", "direito", "portugal", "dgsi", "dre", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "IAJUS - Jurisprudência & Legislação PT",
+    "shortDescription": "Jurisprudência e legislação portuguesa pelo MCP remoto IAJUS (OAuth 2.1; ik_* como alternativa).",
+    "longDescription": "Pesquise acórdãos portugueses em modalidades complementares, consulte legislação vigente pelo Diário da República e confira cada citação em fontes oficiais. O plugin conecta três skills pt-PT ao MCP remoto read-only do IAJUS, com autenticação OAuth 2.1.",
+    "developerName": "IAJUS / Celeris",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "websiteURL": "https://iajus.pt",
+    "privacyPolicyURL": "https://iajus.com.br/privacidade",
+    "termsOfServiceURL": "https://iajus.com.br/termos",
+    "defaultPrompt": [
+      "Pesquise acórdãos portugueses sobre responsabilidade civil e cite links oficiais da DGSI.",
+      "Confirme a redação vigente de uma norma portuguesa e cite o respetivo ELI.",
+      "Verifique a cobertura atual do corpus PT antes de concluir que não há resultados."
+    ]
+  }
+}
