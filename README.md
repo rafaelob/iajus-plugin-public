@@ -50,3 +50,5 @@ Crie a sua conta em [iajus.com.br](https://iajus.com.br). A autenticação padr�
 ## Suporte
 
 Dúvidas ou problemas: [iajus.com.br](https://iajus.com.br) ou contato@iajus.com.br.
+
+Política de privacidade: [iajus.com.br/privacidade](https://iajus.com.br/privacidade). Termos de uso: [iajus.com.br/termos](https://iajus.com.br/termos).
