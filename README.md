@@ -35,6 +35,14 @@ codex plugin add iajus-juris@iajus
 
 O login OAuth abre no navegador na primeira conexão: entre com a sua conta IAJUS e pronto.
 
+### Outros assistentes (conexão direta ao servidor MCP)
+
+Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, apontando para `https://mcp.iajus.com.br/mcp` e autenticando por **OAuth 2.1** (login no navegador). Você ganha as mesmas ferramentas de pesquisa jurídica; as skills prontas (pacotes de plugin do Claude Code e do Codex) e os subagentes especializados (só no Claude Code) descritos acima não acompanham a conexão direta.
+
+- **Mistral (Le Chat):** Contexto → Conectores → Adicionar Conector → aba "Conector MCP personalizado" → Título `IAJUS`, Servidor `https://mcp.iajus.com.br/mcp`, Descrição `Pesquisa Jurídica`, Método de Autenticação **OAuth2.1** → Conectar → Autorizar.
+- **Manus:** Plugins → Criar → "Adicionar MCP por URL" → Nome `IAJUS`, URL `https://mcp.iajus.com.br/mcp` → Salvar → no card do conector (MCP personalizado) → Conectar → login IAJUS → Autorizar.
+- **Grok (SuperGrok):** no composer → menu **+** → "Adicionar conector" → "Customizado" → Nome `IAJUS`, URL `https://mcp.iajus.com.br/mcp` → "Adicionar conector" → login IAJUS → Autorizar → invocar com **@IAJUS** no composer.
+
 ## Conta e acesso
 
 Crie a sua conta em [iajus.com.br](https://iajus.com.br). A autenticação padrão é **OAuth 2.1** (login no navegador, renovação automática): você nunca precisa colar token em arquivo. Detalhes de cada pacote, inclusive o fallback manual por chave, estão nos READMEs de `plugins/iajus-juris` (Claude Code) e `plugins/iajus-juris-codex` (Codex).
