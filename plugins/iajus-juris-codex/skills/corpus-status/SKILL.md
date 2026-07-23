@@ -47,8 +47,8 @@ Chaves do payload: `familias` (decisões/tribunais/normas/artigos_livros_doutrin
 `legislacao` (por esfera, por status, e `cobertura_territorial` União/`estados_df`/`municipios`);
 `as_of` (timestamp do rollup ou `"live"` quando a seção foi agregada na chamada).
 
-Perguntas quantitativas MAIS finas têm tool própria noutra skill: série anual EXATA de
-volume → `jurimetria_volume` (`pesquisar-jurisprudencia`); prontidão de legislação por UF →
+Volume por tribunal e faixa de anos coberta saem da própria `obter_estatisticas_base`
+(`secao="orgaos"`). Prontidão de legislação por UF tem tool própria noutra skill →
 `obter_cobertura_legislacao` (`consultar-legislacao-estadual`). Encaminhe, não estenda esta
 skill.
 

@@ -5,6 +5,29 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.4.0] - 2026-07-23
+
+As sete tools `jurimetria_*` (`jurimetria_volume` / `_relator` / `_classe` /
+`_orgao_julgador` / `_resultado` / `_lag_publicacao` / `_desfecho_cruzado`) foram
+**escondidas do perfil MCP público `iajus`** por decisão do operador (2026-07-22); o plugin
+público deixa de referenciá-las. Bump MINOR: nenhuma tool de busca ou de leitura muda de
+nome ou some.
+
+### Removido
+
+- **jurimetria-judicial** (skill): removida das duas variantes (Claude e Codex) - as tools
+  `jurimetria_*` que ela detalhava não são mais servidas no perfil público.
+- As sete tools `jurimetria_*` saíram do `allowed-tools` da skill `pesquisar-jurisprudencia`
+  (e o arquivo `references/jurimetria.md` foi deletado).
+
+### Mudado
+
+- **Contagens agregadas** (volume por tribunal, faixa de anos coberta) passam a ser servidas
+  por `obter_estatisticas_base` (skill `corpus-status`), a única tool de estatística do perfil
+  público. Recortes finos de desfecho (ranking de relator, taxa de provimento, lag de
+  publicação) não são servidos no perfil público - as skills e os agentes de pesquisa
+  (`pesquisador-juris`, `memorialista-juris`, `processo-juris`) deixam de prometê-los.
+
 ## [2.2.0] - 2026-07-13
 
 Roster de subagentes reorientado para PESQUISA JURÍDICA (decisão do operador) e skills com o método inline. Bump MINOR: adiciona e substitui capacidades de agente sem quebrar nenhuma tool.

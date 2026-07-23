@@ -73,12 +73,11 @@ de fundamentação.
   e estadual/municipal (por UF [+ município] + tipo + número + ano). **Para amparo, sirva só
   `status=vigente`** e sinalize `is_amending_only` (norma que só altera outra - cite a norma
   alterada consolidada, não a alteradora).
-- **Números do argumento** (quando o memorial invoca estatística - ex. "a jurisprudência é
-  massivamente favorável", "o órgão provê X% dos recursos desta classe"): use as tools de
-  `jurimetria_*` (contagens/taxas exatas do read-model, com envelope de honestidade).
-  **Taxa de desfecho só via `jurimetria_resultado`**, com o denominador duplo
-  (`share_over_known` vs `share_over_all`) e o `coverage_pct` reportados - nunca uma taxa nua,
-  nunca uma taxa inferida de volume. Cobertura baixa = diga "baixa cobertura", não um número.
+- **Números do argumento** (quando o memorial invoca volume - ex. "há farta jurisprudência
+  do STJ sobre o ponto"): use `obter_estatisticas_base` (skill `corpus-status`) para o volume
+  por tribunal e a faixa de anos coberta, com `as_of`. Recortes finos de desfecho (taxa de
+  provimento, "o órgão provê X% desta classe") NÃO são servidos no perfil público: não
+  afirme uma taxa que a base não mede, e nunca a infira de uma contagem de hits de busca.
 
 ## Estrutura do memorial (SOTA)
 
@@ -133,8 +132,8 @@ próprio texto.
   oficial. Fundamento sem link não é entregue.
 - **Vigência conferida antes de amparar.** Ato não-vigente entra só marcado (evolução), nunca
   como fundamento em vigor.
-- **Denominador em todo número.** Jurimetria sempre com `as_of`, denominador e cobertura;
-  taxa só via `jurimetria_resultado`.
+- **Número só com `as_of` e cobertura.** Volume por tribunal/ano vem de
+  `obter_estatisticas_base`, reportado como veio; taxa de desfecho a base não serve - não a afirme.
 - **Exponha a divergência.** O memorial cobre o que a busca achou, inclusive o contrário à
   tese - a força do documento está na cobertura verificada, não em omitir o desfavorável.
 - **Português jurídico correto, diacríticos e UTF-8 preservados** exatamente como na fonte.

@@ -6,8 +6,8 @@
   "plugins": [
     {
       "name": "iajus-juris",
-      "version": "2.3.3",
-      "description": "Pesquisa e cita jurisprudência brasileira real em 7 modalidades (STF/STJ/TST/TCU/TJs/TRFs/TRTs/TREs), legislação federal, estadual e municipal com texto vigente e grafo de alterações por dispositivo, jurimetria agregada exata e verificação anti-alucinação de citações, pelo MCP remoto IAJUS (34 tools). Seis skills outcome-first (objetivo, invariantes, roteamento de tools, parada) otimizadas para GPT e Codex, mais o servidor MCP configurado, OAuth 2.1 por padrão (chave ik_* como fallback).",
+      "version": "2.4.0",
+      "description": "Pesquisa e cita jurisprudência brasileira real em 7 modalidades (STF/STJ/TST/TCU/TJs/TRFs/TRTs/TREs), legislação federal, estadual e municipal com texto vigente e grafo de alterações por dispositivo, e verificação anti-alucinação de citações, pelo MCP remoto IAJUS (28 tools). Cinco skills outcome-first (objetivo, invariantes, roteamento de tools, parada) otimizadas para GPT e Codex, mais o servidor MCP configurado, OAuth 2.1 por padrão (chave ik_* como fallback).",
       "source": {
         "source": "local",
         "path": "./plugins/iajus-juris-codex"

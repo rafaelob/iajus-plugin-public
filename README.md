@@ -1,6 +1,6 @@
 # IAJUS: jurisprudência e legislação brasileira no seu assistente de IA
 
-Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente (Claude Code, Codex ou ChatGPT) à base do IAJUS: jurisprudência dos tribunais superiores e regionais, súmulas e teses firmadas, legislação federal, estadual e municipal com vigência conferida, e jurimetria com números exatos. Tudo com fonte oficial e link estável em cada resposta: o plugin existe para o seu assistente **citar o que existe de verdade**, nunca inventar precedente.
+Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente (Claude Code, Codex ou ChatGPT) à base do IAJUS: jurisprudência dos tribunais superiores e regionais, súmulas e teses firmadas, e legislação federal, estadual e municipal com vigência conferida. Tudo com fonte oficial e link estável em cada resposta: o plugin existe para o seu assistente **citar o que existe de verdade**, nunca inventar precedente.
 
 > Este marketplace é exclusivo do **Brasil**. Procura jurisprudência e legislação de **Portugal**? É um marketplace separado: [github.com/rafaelob/iajus-plugin-public-pt](https://github.com/rafaelob/iajus-plugin-public-pt).
 
@@ -8,7 +8,7 @@ Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente 
 
 - **Pesquisa de jurisprudência** em múltiplas modalidades (tese consolidada primeiro: súmulas, temas de repercussão geral e repetitivos; depois busca híbrida, semântica e por número CNJ), sempre com ementa e link oficial.
 - **Legislação com vigência**: texto vigente de leis federais, estaduais e municipais, cadeia de alterações artigo por artigo e verificação na fonte oficial.
-- **Jurimetria honesta**: volume de julgados, ranking de relatores, taxas de resultado e tempos de publicação, servidos de agregados exatos.
+- **Panorama do corpus**: quanto a base cobre por tribunal e a faixa de anos de cada acervo, servido do read-model com carimbo de atualização.
 - **Skills prontas** que ensinam o assistente o método de pesquisa jurídica, e (no Claude Code) **subagentes especializados**: pesquisador, elaborador de tese, refutador de tese (advogado do diabo), precedentes vinculantes, dossiê de processo, especialista em legislação, memorialista e conferente de citações.
 
 ## Instalar

@@ -1,16 +1,12 @@
 # IAJUS - plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 2.2.0** - roster de subagentes reorientado para **pesquisa jurídica**
-> (elaborador-tese, refutador-tese, precedentes-vinculantes, processo-juris) com o
-> método inline, sem quebrar nenhuma tool. A superfície MCP mantém a busca de citações
-> `buscar_por_citacoes`, a introspecção do corpus `obter_estatisticas_base` e a
-> jurimetria agregada exata
-> (`jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
-> `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao`).
-> Mantém grafo de legislação com alterações **por dispositivo**
-> (`alteracoes_dispositivo`) e vigência (`status_vigencia`) nas qualificadas e nos hits
-> de busca (envelope `trust`). Autenticação por **OAuth 2.1 por padrão** (login no
-> navegador, refresh automático); chave `ik_*` como **fallback manual**. Ver `CHANGELOG.md`.
+> **Versão 2.4.0** - as sete tools `jurimetria_*` saíram do perfil MCP público (decisão do
+> operador). A superfície pública mantém as **7 modalidades de busca**, a busca de citações
+> `buscar_por_citacoes`, a introspecção do corpus `obter_estatisticas_base` (volume por
+> tribunal e faixa de anos), grafo de legislação com alterações **por dispositivo**
+> (`alteracoes_dispositivo`) e vigência (`status_vigencia`) nas qualificadas e nos hits de
+> busca (envelope `trust`). Autenticação por **OAuth 2.1 por padrão** (login no navegador,
+> refresh automático); chave `ik_*` como **fallback manual**. Ver `CHANGELOG.md`.
 
 Um plugin: você ganha **skills** que ensinam o agente a pesquisar/citar
 jurisprudência e legislação brasileira **+** o **servidor MCP remoto IAJUS** já
@@ -26,7 +22,7 @@ municipal**.
 
 | Componente | Conteúdo |
 |---|---|
-| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 7 modalidades + as 6 tools de **jurimetria agregada** (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
+| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 7 modalidades de busca (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
 | `skills/consultar-legislacao/` | como localizar leis/artigos **federais** por termo, tema (ontologia) ou citação literal, com texto íntegra, vigência e grafo de alterações (inclusive **por dispositivo**) |
 | `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** ao vivo na fonte oficial (UF [+ município] + tipo + número + ano) |
 | `skills/corpus-status/` | o que a base contém AGORA (`obter_estatisticas_base`): por família/órgão/qualificada/esfera, com faixa de anos e cobertura de indexação |
@@ -36,7 +32,7 @@ As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
 jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
 (Doutrina é premium e não faz parte deste plugin.)
 
-### As 7 modalidades de busca + jurimetria agregada + qualificadas (tools do MCP)
+### As 7 modalidades de busca + qualificadas (tools do MCP)
 
 | Tool | Para quê |
 |---|---|
@@ -47,13 +43,10 @@ jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins
 | `buscar_por_cnj` | número de processo CNJ (exato ou por componentes) |
 | `buscar_por_ontologia` | ramo/sub-área OJBU via subárvore ltree (L1/L2/L3 TPU + temas transversais) |
 | `buscar_por_citacoes` | grafo de citações `legal_edges` (quem cita uma súmula/tema; cadeia multi-hop com `max_hops`; auditoria de lacunas) |
-| `jurimetria_volume` | contagem EXATA de decisões por órgão × ano (read-model agregado, com envelope de honestidade) |
-| `jurimetria_relator` | quem mais relata num órgão (top-50 por volume; LGPD n<20 suprimido) |
-| `jurimetria_classe` | volume por classe processual CNJ de um órgão (+ `cobertura_classe_pct`) |
-| `jurimetria_orgao_julgador` | volume por câmara/turma/seção de um órgão |
-| `jurimetria_resultado` | taxa de desfecho (provimento/improvimento) por órgão × ano, com denominador duplo e `coverage_pct` |
-| `jurimetria_lag_publicacao` | lag de publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano |
 | `buscar_qualificada` | precedentes qualificados (súmula, SV, RG, tema repetitivo, IRDR, IRR, IAC, OJ) com **`status_vigencia`** - canceladas saem marcadas; modo por matéria (`materia=`) |
+
+> Contagens agregadas (volume por tribunal, faixa de anos coberta) vêm de
+> `obter_estatisticas_base` (skill `corpus-status`).
 
 As buscas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem
 as famílias `jurisprudencia` + `legislacao` e são read-only. Os hits trazem o envelope

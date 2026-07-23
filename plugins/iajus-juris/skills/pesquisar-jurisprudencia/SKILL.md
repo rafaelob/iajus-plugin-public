@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), jurimetria exata (volume/relator/classe/órgão/resultado/lag), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ, estatística de julgados ou entendimento de um tribunal. NÃO use para leis.
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__jurimetria_volume, mcp__plugin_iajus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_iajus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_iajus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_iajus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_iajus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_iajus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__jurimetria_desfecho_cruzado, mcp__plugin_iajus-juris_iajus__jurimetria_desfecho_cruzado, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj
+description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj
 ---
 
 # Pesquisar jurisprudência brasileira (IAJUS)
@@ -31,7 +31,7 @@ memória.**
 > tribunais superiores (STJ/STF) para a tese criminal. (Demais tribunais e o TJ-RJ
 > cível não têm essa ressalva.)
 
-## Escolha da modalidade (7 tools de busca + jurimetria + qualificadas)
+## Escolha da modalidade (7 tools de busca + qualificadas)
 
 Comece pela modalidade certa para a pergunta. As buscas retornam um envelope
 uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
@@ -48,9 +48,6 @@ uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
 | Quais dispositivos legais um acórdão cita | `obter_dispositivos_citados` | Leitor do grafo de citações (CIT-04): lista os artigos que a decisão invoca. |
 | Quais julgados aplicam um dispositivo legal | `buscar_citantes_dispositivo` | O inverso (CIT-04): dado um dispositivo, traz os julgados que o aplicaram. |
 | A redação de uma súmula/tema mudou? Histórico de versões | `obter_versoes_qualificada` | Versões da redação de uma súmula/tema/precedente (mudou, quando e por quê). |
-| Pergunta QUANTITATIVA exata (volume, ranking de relator/classe/câmara) | `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` / `jurimetria_orgao_julgador` | Contagens EXATAS do read-model agregado, com envelope de honestidade. Detalhe: `references/jurimetria.md`. |
-| TAXA DE DESFECHO ("taxa de provimento do STJ", "provê mais agravos que apelações") | `jurimetria_resultado` / `jurimetria_desfecho_cruzado` | Taxas com **denominador duplo** e `coverage_pct` - nunca uma taxa sem denominador. Detalhe: `references/jurimetria.md`. |
-| LAG DE PUBLICAÇÃO ("quanto o STJ leva para publicar após julgar") | `jurimetria_lag_publicacao` | Dias `data_publicacao − data_julgamento` (p50/p90). **NÃO é duração do processo.** Detalhe: `references/jurimetria.md`. |
 | Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, repetitivo, IRDR, IRR, IAC, OJ) | `buscar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** para "o entendimento atual". |
 | **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas) | `buscar_informativos_stf` / `buscar_informativos_stj` | A síntese oficial dos julgados de destaque por edição. |
 
@@ -70,9 +67,6 @@ Notas de uso:
 
 ## Referências detalhadas (consulte quando precisar do detalhe)
 
-- **`references/jurimetria.md`** - assinatura exata das 7 tools `jurimetria_*` e as
-  regras de honestidade completas (denominador duplo, `coverage_pct`, LGPD n<20, lag ≠
-  duração de processo). Consulte para QUALQUER pergunta de volume/ranking/taxa/lag.
 - **`references/ontologia-ojbu.md`** - os 21 códigos `l1_code` TPU e os 5 temas
   transversais. Consulte ao usar `buscar_por_ontologia`.
 - **`references/campos-e-trust.md`** - taxonomia canônica das qualificadas
@@ -188,8 +182,8 @@ na primeira chamada:
 - **Prefira a busca direta.** Para responder e citar, `buscar_hibrida` (melhor relevância
   geral) e `buscar_semantica` (perguntas conceituais) já entregam ementa + `link_completo`
   oficial de cada julgado - comece por elas. As demais modalidades (`buscar_fts`,
-  `buscar_regex`, `buscar_por_ontologia`, jurimetria…) são **refinamento**: acione-as
-  quando a busca direta vier fraca ou a pergunta pedir contagem/facet/forma literal.
+  `buscar_regex`, `buscar_por_ontologia`…) são **refinamento**: acione-as
+  quando a busca direta vier fraca ou a pergunta pedir facet/forma literal.
 - **Abrir a íntegra:** cada resultado da busca já traz o `link_completo` (URL estável do
   acórdão na fonte) e, quando disponível, o `inteiro_teor_url` (PDF/HTML da íntegra) - cite
   esses links; NÃO é preciso outra tool para "abrir" o julgado. A leitura do documento é o

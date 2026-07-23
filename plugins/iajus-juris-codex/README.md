@@ -1,6 +1,6 @@
 # IAJUS - plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex que entrega as **6 skills** jurídicas IAJUS + o servidor MCP remoto já
+Plugin Codex que entrega as **5 skills** jurídicas IAJUS + o servidor MCP remoto já
 configurado. Ele cobre a mesma família funcional do plugin Claude Code `iajus-juris`,
 mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
 byte-idênticos. Ambos usam o mesmo MCP remoto. Autentica por **OAuth 2.1 por padrão** (login no
@@ -83,12 +83,11 @@ comportamento de segurança do próprio ChatGPT.
   `https://mcp.iajus.com.br/mcp`, **OAuth 2.1** (`oauth_resource` RFC 8707 + `scopes`
   `openid email profile offline_access`). Forma = wrapper **`mcpServers` camelCase**,
   com o servidor `iajus` dentro dele. Nenhum token literal em disco.
-- **6 skills** (`./skills/`): `pesquisar-jurisprudencia`, `consultar-legislacao`,
-  `consultar-legislacao-estadual`, `corpus-status`, `jurimetria-judicial` e
-  `verificar-citacoes`. Elas cobrem tribunais superiores, TJs, TRFs, TRTs, TREs,
-  Tribunais de Contas, Turmas Recursais dos JEFs, administrativo (CARF), legislação
-  federal/estadual/municipal, estatísticas judiciais e conferência anti-alucinação.
-  (Doutrina é premium e não faz parte deste plugin.)
+- **5 skills** (`./skills/`): `pesquisar-jurisprudencia`, `consultar-legislacao`,
+  `consultar-legislacao-estadual`, `corpus-status` e `verificar-citacoes`. Elas cobrem
+  tribunais superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais dos
+  JEFs, administrativo (CARF), legislação federal/estadual/municipal, panorama do corpus e
+  conferência anti-alucinação. (Doutrina é premium e não faz parte deste plugin.)
 
 ## Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 

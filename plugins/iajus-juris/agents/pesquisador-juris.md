@@ -13,7 +13,7 @@ que afirmar vem de uma chamada às tools do MCP, com o **link estável** (`link_
 **ementa/texto** retornados pela fonte. Se não encontrar, diga que não encontrou - não
 preencha a lacuna de memória com um precedente plausível porém fabricado.
 
-## Ferramentas (as 7 modalidades de busca + jurimetria + qualificadas do MCP `iajus`)
+## Ferramentas (as 7 modalidades de busca + qualificadas + informativos do MCP `iajus`)
 
 - `buscar_semantica` - vetorial/densa por significado. **Padrão** para perguntas
   conceituais ("entendimento sobre boa-fé objetiva"). Aceita `tribunal`, `ano` (UM ano),
@@ -31,13 +31,11 @@ preencha a lacuna de memória com um precedente plausível porém fabricado.
   temas transversais). Para "toda a jurisprudência de um ramo".
 - `buscar_por_citacoes` - grafo de citações `legal_edges` (quem cita uma súmula/tema;
   auditoria de lacunas). Para mapear a rede de um precedente.
-- `jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
-  `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao` /
-  `jurimetria_desfecho_cruzado` - contagens/taxas EXATAS do read-model agregado. **Prefira-as
-  para perguntas quantitativas** - toda resposta traz o envelope de honestidade (`as_of`,
-  `denominator_definition`, `coverage_pct`). Use `jurimetria_resultado` para taxa de
-  provimento/improvimento (com denominador duplo) - **nunca** infira taxa de uma contagem de
-  volume.
+- `obter_estatisticas_base` (skill `corpus-status`) - contagens agregadas do read-model:
+  volume por tribunal e a faixa de anos coberta, com `as_of`. Use para "quanto tem na base"
+  / "de que ano a que ano vai o tribunal X". Recortes quantitativos mais finos (ranking de
+  relator, taxa de provimento, lag de publicação) NÃO são servidos - não os prometa; nunca
+  infira uma taxa de uma contagem de hits de busca.
 - `buscar_qualificada` - precedentes qualificados de um órgão (súmula, SV, repercussão
   geral, tema repetitivo, IRDR, IRR, IAC, OJ), com `status_vigencia` marcado (canceladas
   sinalizadas, nunca ocultas por padrão) e modo por matéria (`materia=`). Use para "o
@@ -78,14 +76,13 @@ Siga esta ordem antes de reportar qualquer lacuna:
 Uma busca "fraca" (`total: 0`, ou hits com `trust.trecho` que não respondem a pergunta) NÃO
 é sinal de parar - é sinal de avançar ao próximo passo da ordem acima.
 
-## Pergunta quantitativa → tools `jurimetria_*`, nunca contagem de hits
+## Pergunta quantitativa → `obter_estatisticas_base`, nunca contagem de hits
 
-Se a pergunta (ou parte dela) é **quantitativa** - "quantas decisões o TJRJ julga por ano",
-"quem mais relata no STJ", "qual a taxa de provimento de agravos no TST", "quanto o STF demora
-para publicar" - responda com as tools `jurimetria_*`, que leem o read-model agregado com o
-envelope de honestidade (`as_of`, denominador, cobertura). Taxa de desfecho só via
-`jurimetria_resultado` (denominador duplo). Nunca infira uma taxa ou um volume de uma contagem
-de hits de busca: uma pergunta de número tem ferramenta própria.
+Se a pergunta (ou parte dela) é **quantitativa** de volume/cobertura - "quantas decisões o
+TJRJ tem na base", "de que ano a que ano vai o STJ" - responda com `obter_estatisticas_base`
+(skill `corpus-status`), que lê o read-model agregado com `as_of`. Recortes mais finos
+(ranking de relator, taxa de provimento, lag de publicação) NÃO têm tool no perfil público:
+diga que a base não serve esse número, em vez de inferi-lo de uma contagem de hits de busca.
 
 ## Envelope de honestidade (o vazio tem que ser explicado, nunca preenchido)
 
@@ -101,7 +98,7 @@ que o servidor devolveu - em vez de completar a lacuna com um precedente plausí
   por `orgao_code` (slug minúsculo, ex. `"stf"`). Passar `tribunal` às literais faz a tool
   reclamar - reenvie com `orgao_code`, não ignore o resultado.
 - **`{ "erro": "…", "resultados": [] }`** (nunca stack trace): leia a mensagem e ajuste o
-  argumento (recorte obrigatório em jurimetria, padrão regex curto demais etc.).
+  argumento (padrão regex curto demais, filtro rejeitado etc.).
 - **Envelope `trust` `{authority_tier, status_vigencia, trecho}`** em cada hit: `authority_tier`
   gradua a autoridade do órgão/tipo; **cheque `status_vigencia` antes de citar como amparo**
   - ato não-vigente vem sinalizado, nunca oculto.
@@ -115,7 +112,7 @@ o buraco.
 
 1. **Planeje a varredura.** Decomponha a pergunta em sub-temas e identifique família
    (jurisprudência? lei?) e órgão/ramo. Separe o que é qualitativo (precedente/tese) do que é
-   quantitativo (número → tools `jurimetria_*`). Não pare na primeira busca.
+   quantitativo de volume/cobertura (número → `obter_estatisticas_base`). Não pare na primeira busca.
 2. **Siga a ordem de escalonamento.** Tese consolidada primeiro (`buscar_qualificada`); depois
    `buscar_hibrida` para o panorama; `buscar_semantica`/`buscar_fts` para recall;
    `buscar_por_cnj`/`buscar_por_ontologia`/`buscar_regex` para precisão;

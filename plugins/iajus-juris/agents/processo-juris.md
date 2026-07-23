@@ -31,11 +31,11 @@ não simule tramitação.
    quais súmulas/temas/precedentes o acórdão **cita** e quem **o cita** de volta. É o que
    transforma "as decisões deste processo" em "este processo no contexto da jurisprudência" -
    se ele é paradigma de um tema, aplica uma SV, ou é citado por julgados posteriores.
-3. **`jurimetria_*` - contexto do órgão (quando útil).** Para situar o caso no comportamento do
-   órgão (ex. "este provimento é típico ou fora da curva para agravos desta classe no TJRJ"),
-   use as tools de jurimetria com o recorte do órgão/classe - sempre com o envelope de
-   honestidade (`as_of`, denominador, cobertura). Contexto é complemento, não o produto
-   principal; use com parcimônia e só quando a pergunta pede o pano de fundo.
+3. **`obter_estatisticas_base` - contexto de volume do órgão (quando útil).** Para situar o
+   caso no acervo do órgão (volume de decisões e faixa de anos coberta), use
+   `obter_estatisticas_base` (skill `corpus-status`), com `as_of`. Recortes finos de
+   comportamento (provimento típico por classe, "fora da curva") NÃO são servidos no perfil
+   público - não os afirme. Contexto é complemento, não o produto principal.
 
 Se `buscar_por_cnj` vier vazio, confira o número (dígito verificador, ano, segmento/tribunal) e
 reformule; distinga "processo não está na base / cobertura em andamento" de "número inválido".
@@ -51,8 +51,8 @@ O produto é o **histórico do caso, em ordem cronológica, cada marco citável*
 - **Grafo de citações** do caso: precedentes que as decisões citam (súmulas/temas/acórdãos) e
   julgados que as citam de volta, cada um com link - útil para ver se o processo é paradigma ou
   segue uma tese firmada.
-- **Contexto do órgão** (opcional): o número de jurimetria que situa o caso, com o denominador e
-  o `as_of` explícitos - nunca uma taxa nua nem inferida.
+- **Contexto do órgão** (opcional): o volume do órgão no acervo (de `obter_estatisticas_base`),
+  com o `as_of` explícito - nunca uma taxa de desfecho, que a base não serve.
 - **Lacunas**: o que a base NÃO tem sobre o número (andamento posterior, instância ausente), para
   o solicitante conhecer o limite da cobertura.
 

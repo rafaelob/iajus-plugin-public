@@ -33,21 +33,19 @@ Esta skill é só para o **panorama quantitativo / de cobertura** do corpus.
 
 ## Qual tool de estatística para qual pergunta
 
-`obter_estatisticas_base` é a porta de entrada - o panorama geral do read-model. Mas há
-duas tools irmãs, exatas, para recortes específicos (ambas servidas pelo mesmo MCP; as
-skills que as detalham estão entre parênteses):
+`obter_estatisticas_base` é a porta de entrada - o panorama geral do read-model. Há também
+uma tool irmã, exata, para um recorte específico (servida pelo mesmo MCP; a skill que a
+detalha está entre parênteses):
 
 | Pergunta | Tool | Onde detalhada |
 |---|---|---|
-| "o que tem na base?", cobertura por acervo/tribunal/qualificada/legislação | `obter_estatisticas_base` | esta skill |
-| "quantos acórdãos por ano no tribunal X" (contagem EXATA de volume, com envelope de honestidade e `as_of`) | `jurimetria_volume` | `pesquisar-jurisprudencia` |
+| "o que tem na base?", cobertura por acervo/tribunal/qualificada/legislação, **volume por tribunal e faixa de anos** (contagem do read-model, com `as_of`) | `obter_estatisticas_base` | esta skill |
 | mapa de cobertura de legislação estadual/municipal por UF (estado + municípios + prontidão) | `obter_cobertura_legislacao` | `consultar-legislacao-estadual` |
 
-Regra prática: `obter_estatisticas_base` responde "o que existe na base, por acervo";
-para uma **série anual de volume de julgados** com o contexto de honestidade completo,
-`jurimetria_volume` é a fonte exata; para **prontidão de legislação por UF**,
-`obter_cobertura_legislacao`. Não estenda esta skill para juris fina ou legislação por UF -
-aponte para a skill irmã.
+Regra prática: `obter_estatisticas_base` responde "o que existe na base, por acervo" e
+também o **volume por tribunal e a faixa de anos coberta** (`secao="orgaos"`); para
+**prontidão de legislação por UF**, `obter_cobertura_legislacao`. Não estenda esta skill
+para juris fina ou legislação por UF - aponte para a skill irmã.
 
 ## A tool
 
@@ -84,7 +82,8 @@ O que cada seção traz (chaves do payload):
   não arredonde para impressionar, não extrapole além do que a tool devolveu, não some
   contagens de recortes que possam se sobrepor. Quando o usuário quiser um número que a
   tool não mede (ex.: uma taxa, uma projeção), diga o que a base mede e o que não mede -
-  e encaminhe à tool exata (`jurimetria_volume` para volume de julgados por ano).
+  o volume por tribunal e a faixa de anos coberta vêm de `obter_estatisticas_base`
+  (`secao="orgaos"`).
 
 ## Exemplos de chamada
 
