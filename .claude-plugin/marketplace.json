@@ -32,7 +32,7 @@
       "homepage": "https://iajus.pt",
       "license": "LicenseRef-Proprietary",
       "keywords": ["jurisprudencia", "legislacao", "direito", "portugal", "dgsi", "dre", "mcp"],
-      "defaultEnabled": true
+      "defaultEnabled": false
     }
   ]
 }
