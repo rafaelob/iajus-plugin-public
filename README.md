@@ -2,6 +2,8 @@
 
 Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente (Claude Code, Codex ou ChatGPT) à base do IAJUS: jurisprudência dos tribunais superiores e regionais, súmulas e teses firmadas, legislação federal, estadual e municipal com vigência conferida, e jurimetria com números exatos. Tudo com fonte oficial e link estável em cada resposta: o plugin existe para o seu assistente **citar o que existe de verdade**, nunca inventar precedente.
 
+> Este marketplace é exclusivo do **Brasil**. Procura jurisprudência e legislação de **Portugal**? É um marketplace separado: [github.com/rafaelob/iajus-plugin-public-pt](https://github.com/rafaelob/iajus-plugin-public-pt).
+
 ## O que você ganha
 
 - **Pesquisa de jurisprudência** em múltiplas modalidades (tese consolidada primeiro: súmulas, temas de repercussão geral e repetitivos; depois busca híbrida, semântica e por número CNJ), sempre com ementa e link oficial.
