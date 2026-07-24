@@ -30,7 +30,7 @@ municipal**.
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
 jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
-(Doutrina é premium e não faz parte deste plugin.)
+(A doutrina que este plugin alcança é a de acesso aberto.)
 
 ### As 7 modalidades de busca + qualificadas (tools do MCP)
 

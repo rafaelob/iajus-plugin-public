@@ -87,7 +87,7 @@ comportamento de segurança do próprio ChatGPT.
   `consultar-legislacao-estadual`, `corpus-status` e `verificar-citacoes`. Elas cobrem
   tribunais superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais dos
   JEFs, administrativo (CARF), legislação federal/estadual/municipal, panorama do corpus e
-  conferência anti-alucinação. (Doutrina é premium e não faz parte deste plugin.)
+  conferência anti-alucinação. (A doutrina alcançada é a de acesso aberto.)
 
 ## Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 

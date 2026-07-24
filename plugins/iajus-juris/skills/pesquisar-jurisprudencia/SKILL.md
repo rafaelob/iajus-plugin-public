@@ -59,8 +59,8 @@ Notas de uso:
   recebe `tribunal` como componente CNJ.)
 - **Recorte de ano difere:** `buscar_semantica` aceita `ano` (UM ano exato);
   `buscar_hibrida` (e regex/FTS/ontologia) aceitam `ano_min`/`ano_max` (faixa).
-  Ambas aceitam `tribunal`, `ramo_l1` (código OJBU L1), `space` (`default` =
-  text-embedding-3-small; `premium` = gemini) e `k` (1-100, padrão 20).
+  Ambas aceitam `tribunal`, `ramo_l1` (código OJBU L1) e `k` (1-100, padrão 20).
+  O espaço de embedding é o padrão do servidor; não envie `space`.
 - `buscar_regex` recusa padrões só de metacaracteres (ex.: `^[A-Z]+$`); inclua um
   trecho literal ≥3 chars. Em erro, a tool devolve `{ "erro": "…", "resultados": [] }`
   (nunca stack trace) - leia a mensagem e ajuste.
