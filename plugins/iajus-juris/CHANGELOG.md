@@ -5,6 +5,38 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.5.0] - 2026-07-26
+
+A superfície pública servia `listar_orgaos_julgadores` sem que nenhuma skill a
+pré-autorizasse, então ela chegava ao cliente como ferramenta não autorizada. Bump MINOR:
+ganho de capacidade, nenhuma tool muda de nome ou some.
+
+### Adicionado
+
+- **`listar_orgaos_julgadores`** entra no `allowed-tools` da skill
+  `pesquisar-jurisprudencia`, nas duas variantes (Claude e Codex), com linha de roteamento e
+  nota de uso. Cada argumento documentado (`orgao_code`, `filtro` por substring insensível a
+  acento e caixa, `limit` 1-200 com default 50, lista vazia para órgão desconhecido,
+  `n`/`ano_min`/`ano_max`) foi verificado contra o servidor, não inferido.
+- O `n` devolvido por essa tool **é** contagem real de cobertura do órgão e pode ser
+  reportado; o que não vale é somar a lista para obter total do tribunal, porque ela vem
+  cortada por `limit`.
+
+### Corrigido
+
+- A copy deixa de apresentar o campo `materia` como base de jurimetria: o perfil público
+  não serve agregação por matéria, e prometer recorte que não existe é pior que omitir.
+- **Cobertura temporal estava SUBDECLARADA ao usuário.** A skill dizia "TST/TRTs/TREs 2016+,
+  demais 2013+" enquanto o piso real é **2000 para todos os tribunais** desde 2026-07-02, com
+  três exceções (STF controle concentrado 1988, TCU 1992, TRF6 2022). O plugin estava
+  vendendo menos acervo do que o IAJUS tem.
+
+### Mudado
+
+- O gate de cobertura de skills passa a derivar da **lista viva de tools do perfil**, não de
+  um instantâneo congelado. O instantâneo mentia nas duas direções ao mesmo tempo, e é essa
+  classe de drift silencioso que a mudança fecha.
+
 ## [2.4.0] - 2026-07-23
 
 As sete tools `jurimetria_*` (`jurimetria_volume` / `_relator` / `_classe` /

@@ -12,7 +12,9 @@ atribuir a autoria de um acórdão e ao conferir vigência antes de amparar.
   precedentes por tipo, em vez de inferir do texto da ementa.
 - **`materia`** acompanha cada qualificada (= `ramo_hint`, presente em ~100% delas): é a
   matéria/ramo canônico do precedente. Use como **facet de recorte** ("súmulas de
-  Tributário") e em perguntas de **jurimetria** (distribuição por matéria).
+  Tributário") para escopar a busca. **Não** é base para uma distribuição: esta superfície
+  não serve agregação por matéria, e contar os hits de uma busca - limitados pelo `k` que
+  você pediu - não produz uma distribuição, produz um número com cara de estatística.
 - **`redator_acordao`** vem nos acórdãos: é o magistrado **redator** do acórdão (autoria
   pelo art. 941 do CPC), com `revisor` quando houver - o autor do acórdão a citar, distinto
   do relator sorteado nos casos de relator vencido.

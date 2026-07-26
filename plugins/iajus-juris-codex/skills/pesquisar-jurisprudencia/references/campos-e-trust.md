@@ -10,7 +10,8 @@ conferir vigência antes de amparar.
   (rótulo PT-BR) e `tipo_familia` (vinculante / editorial / …). Agrupe/rotule por eles,
   não pelo texto da ementa.
 - `materia` (= `ramo_hint`, ~100% das qualificadas): matéria/ramo canônico. Use como facet
-  de recorte e em jurimetria.
+  de recorte para escopar a busca. NÃO é base para distribuição: esta superfície não serve
+  agregação por matéria, e contar hits (limitados pelo `k`) não é uma estatística.
 - `redator_acordao` (nos acórdãos): o redator, autoria pelo art. 941 do CPC, com `revisor`
   quando houver - distinto do relator sorteado quando vencido.
 

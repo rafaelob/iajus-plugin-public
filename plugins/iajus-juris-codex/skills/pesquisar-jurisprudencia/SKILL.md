@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
 description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj, mcp__iajus__listar_orgaos_julgadores, mcp__plugin_iajus-juris_iajus__listar_orgaos_julgadores
 ---
 
 # Pesquisar jurisprudência brasileira (IAJUS)
@@ -58,6 +58,12 @@ Envelope uniforme de busca: `{ modalidade, total, resultados:[…] }`, read-only
 - `buscar_qualificada` - entendimento consolidado do órgão (súmula, SV, RG, repetitivo,
   IRDR, IRR, IAC, OJ) com `status_vigencia`, `tipo_label`, `materia`. Prefira a um acórdão
   isolado para "o entendimento atual". Retorno: `references/campos-e-trust.md`.
+- `listar_orgaos_julgadores` - os órgãos julgadores (câmara/turma/seção) de UM tribunal, para
+  descobrir o valor EXATO do filtro `orgao_julgador_norm` de `buscar_hibrida`/`buscar_fts`/
+  `buscar_regex`. Aceita `orgao_code` (ex.: `stj`, `tjsp`), `filtro` (substring, insensível a
+  acento/caixa) e `limit` 1-200 (padrão 50); órgão desconhecido → lista vazia. O `n` de cada
+  item é contagem REAL do rollup (cobertura daquele órgão na base) e ordena a lista; como a
+  lista é cortada por `limit`, somar os `n` NÃO dá o total do tribunal.
 - Para **contagens/estatísticas agregadas** (volume por tribunal, faixa de anos coberta)
   a tool é `obter_estatisticas_base` (skill `corpus-status`), não esta skill de busca.
 - `buscar_informativos_stf` / `buscar_informativos_stj` - síntese oficial dos julgados de

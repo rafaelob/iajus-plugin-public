@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
 description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj, mcp__iajus__listar_orgaos_julgadores, mcp__plugin_iajus-juris_iajus__listar_orgaos_julgadores
 ---
 
 # Pesquisar jurisprudência brasileira (IAJUS)
@@ -50,8 +50,16 @@ uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
 | A redação de uma súmula/tema mudou? Histórico de versões | `obter_versoes_qualificada` | Versões da redação de uma súmula/tema/precedente (mudou, quando e por quê). |
 | Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, repetitivo, IRDR, IRR, IAC, OJ) | `buscar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** para "o entendimento atual". |
 | **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas) | `buscar_informativos_stf` / `buscar_informativos_stj` | A síntese oficial dos julgados de destaque por edição. |
+| "Quais câmaras/turmas/seções o tribunal X tem?" - para então filtrar a busca por uma delas | `listar_orgaos_julgadores` | Descobre o valor EXATO do filtro `orgao_julgador_norm`. Sem ele você não sabe como aquele tribunal grafa a câmara, e o valor chutado devolve vazio. |
 
 Notas de uso:
+- **Filtrar por câmara/turma/seção:** `buscar_hibrida`, `buscar_fts` e `buscar_regex` aceitam
+  `orgao_julgador_norm`, mas o valor precisa casar com a grafia do tribunal. Descubra-a com
+  `listar_orgaos_julgadores(orgao_code="tjsp")` - `filtro` busca por substring (insensível a
+  acento/caixa) e `limit` vai de 1 a 200 (padrão 50) - e só então filtre a busca. Órgão
+  desconhecido devolve lista vazia. O `n` de cada item é uma contagem REAL do rollup (quantas
+  decisões daquele órgão há na base) e ordena a lista - pode ser reportado como a cobertura
+  daquele órgão. Mas a lista é cortada por `limit`: somar os `n` NÃO dá o total do tribunal.
 - **Filtro de órgão difere por modalidade:** só `buscar_semantica` / `buscar_hibrida`
   aceitam `tribunal` (ex.: `"STF"`). As demais (`buscar_regex`, `buscar_fts`,
   `buscar_por_ontologia`) filtram por **`orgao_code`** - o slug minúsculo (ex.: `"stf"`).
