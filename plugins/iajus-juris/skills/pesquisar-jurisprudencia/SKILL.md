@@ -70,8 +70,9 @@ Notas de uso:
   Ambas aceitam `tribunal`, `ramo_l1` (código OJBU L1) e `k` (1-100, padrão 20).
   O espaço de embedding é o padrão do servidor; não envie `space`.
 - `buscar_regex` recusa padrões só de metacaracteres (ex.: `^[A-Z]+$`); inclua um
-  trecho literal ≥3 chars. Em erro, a tool devolve `{ "erro": "…", "resultados": [] }`
-  (nunca stack trace) - leia a mensagem e ajuste.
+  trecho literal ≥3 chars. Em erro devolve `{ "erro": "…", "busca_status":
+  "incompleta" }` SEM a chave `resultados` (nunca stack trace) - leia e ajuste.
+  Envelope de erro NÃO é zero encontrado: nada foi medido, então não relate ausência.
 
 ## Referências detalhadas (consulte quando precisar do detalhe)
 

@@ -1,6 +1,6 @@
 {
   "name": "iajus-juris",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Pesquisa e cita jurisprudência e legislação brasileira real pelo MCP remoto IAJUS (28 tools, STF/STJ/TST/TCU/TJs/TRFs/TRTs/TREs). Cinco skills reescritas outcome-first para GPT-5.6 (objetivo, invariantes, roteamento de tools, critério de parada): 7 modalidades de busca, legislação federal e subnacional com texto vigente e grafo de alterações, verificação anti-alucinação de citações e corpus ao vivo. Skills mais MCP numa instalação, OAuth 2.1 (ik_* como fallback).",
   "author": {
     "name": "IAJUS / Celeris",

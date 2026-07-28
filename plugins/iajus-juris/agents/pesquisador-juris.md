@@ -97,8 +97,10 @@ que o servidor devolveu - em vez de completar a lacuna com um precedente plausí
   só `buscar_semantica`/`buscar_hibrida` aceitam `tribunal` (ex. `"STF"`); as demais filtram
   por `orgao_code` (slug minúsculo, ex. `"stf"`). Passar `tribunal` às literais faz a tool
   reclamar - reenvie com `orgao_code`, não ignore o resultado.
-- **`{ "erro": "…", "resultados": [] }`** (nunca stack trace): leia a mensagem e ajuste o
-  argumento (padrão regex curto demais, filtro rejeitado etc.).
+- **`{ "erro": "…", "busca_status": "incompleta" }`**, SEM a chave `resultados` (nunca stack
+  trace): leia a mensagem e ajuste o argumento (padrão regex curto demais, filtro rejeitado
+  etc.). **Envelope de erro não é zero encontrado** - nada foi medido, então repita a busca
+  corrigida; nunca relate ausência de jurisprudência a partir de uma recusa de argumento.
 - **Envelope `trust` `{authority_tier, status_vigencia, trecho}`** em cada hit: `authority_tier`
   gradua a autoridade do órgão/tipo; **cheque `status_vigencia` antes de citar como amparo**
   - ato não-vigente vem sinalizado, nunca oculto.

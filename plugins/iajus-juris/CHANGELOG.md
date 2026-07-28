@@ -5,6 +5,19 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.5.1] - 2026-07-28
+
+### Corrigido
+
+- **A skill deixa de ensinar que erro é resultado vazio.** As duas variantes de
+  `pesquisar-jurisprudencia` (Claude e Codex) documentavam o envelope de falha do
+  `buscar_regex` como `{ "erro": "…", "resultados": [] }`. Um agente que lê isso e recebe
+  uma recusa de argumento conclui que **não existe jurisprudência sobre o tema** e relata
+  ausência ao usuário - quando na verdade nada foi medido. O servidor já não devolve essa
+  forma: o envelope de erro traz `erro` e `busca_status: "incompleta"` e **omite** a chave
+  `resultados` justamente para que a ausência de medição não se disfarce de zero. As skills
+  passam a documentar a forma real e a dizer a regra por extenso.
+
 ## [2.5.0] - 2026-07-26
 
 A superfície pública servia `listar_orgaos_julgadores` sem que nenhuma skill a

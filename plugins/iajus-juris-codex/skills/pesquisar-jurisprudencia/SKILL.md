@@ -45,7 +45,8 @@ Envelope uniforme de busca: `{ modalidade, total, resultados:[…] }`, read-only
 - `buscar_fts` - expressão literal (pt_unaccent, stemming; `phrase=true` = ordem exata).
   Filtra por `orgao_code` (slug minúsculo), NÃO `tribunal`.
 - `buscar_regex` - forma de citação literal (regex POSIX; exija ≥3 chars literais). Filtra
-  por `orgao_code`. Erro → `{erro:...,resultados:[]}`: leia e ajuste o argumento.
+  por `orgao_code`. Erro → `{erro:...,busca_status:"incompleta"}`, SEM `resultados`:
+  ajuste e repita. Erro nunca é zero encontrado - não relate ausência sem medição.
 - `buscar_por_cnj` - número de processo CNJ (completo = exato, ou por componentes; recebe
   `tribunal` como componente).
 - `buscar_por_ontologia` - ramo do direito por `l1_code` TPU (ou L2/L3, ou

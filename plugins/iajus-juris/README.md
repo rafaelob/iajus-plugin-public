@@ -230,7 +230,7 @@ Antigravity. A chave é validada server-side (hash SHA-256); sem chave válida, 
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
-- **Editor:** IAJUS / Celeris (CVO Alliance Ltda.) - <https://iajus.com.br>.
+- **Editor:** IAJUS / Celeris (Celeris Juris Inteligência Jurídica Ltda.) - <https://iajus.com.br>.
 - **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio IAJUS
   (jurisprudência e legislação brasileira - registro público, normalizado e
   classificado). O consumo de busca é autenticado por conta (OAuth) e validado
