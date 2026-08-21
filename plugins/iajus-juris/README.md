@@ -1,6 +1,6 @@
 # IAJUS - plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 2.6.5** - o perfil MCP público expõe 28 ferramentas; as sete tools `jurimetria_*` saíram do perfil MCP público (decisão do
+> **Versão 2.6.6** - o perfil MCP público expõe 28 ferramentas; as sete tools `jurimetria_*` saíram do perfil MCP público (decisão do
 > operador). A superfície pública mantém as **7 modalidades de busca**, a busca de citações
 > `buscar_por_citacoes`, a introspecção do corpus `obter_estatisticas_base` (volume por
 > tribunal e faixa de anos), grafo de legislação com alterações **por dispositivo**
@@ -8,7 +8,7 @@
 > busca (envelope `trust`). Autenticação por **OAuth 2.1 por padrão** (login no navegador,
 > refresh automático); chave `ik_*` como **fallback manual**. Ver `CHANGELOG.md`.
 
-Um plugin 2.6.5: você ganha **skills** que ensinam o agente a pesquisar/citar
+Um plugin 2.6.6: você ganha **skills** que ensinam o agente a pesquisar/citar
 jurisprudência e legislação brasileira **+** o **servidor MCP remoto IAJUS** já
 configurado. Não precisa configurar o MCP na mão.
 
@@ -226,7 +226,7 @@ Antigravity. A chave é validada server-side (hash SHA-256); sem chave válida, 
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
-- **Editor:** IAJUS / Celeris (Celeris Juris Inteligência Jurídica Ltda.) - <https://iajus.com.br>.
+- **Editor:** Celeris Juris Tecnologia e Inteligência Jurídica LTDA - CNPJ 68.398.872/0001-93 - <https://iajus.com.br>.
 - **Escopo dos dados:** use o MCP para pesquisa jurídica brasileira no corpus IAJUS
   (jurisprudência e legislação normalizadas). Não inclua dados pessoais, credenciais ou
   outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
