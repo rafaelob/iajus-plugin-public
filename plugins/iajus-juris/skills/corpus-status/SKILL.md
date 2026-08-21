@@ -11,9 +11,22 @@ uma introspecção do **read-model Postgres** que as buscas consultam. Cada seç
 `as_of`: um timestamp quando vem de rollup, ou `"live"` quando foi agregada na chamada.
 Use esse campo para dizer de quando é cada número.
 
-> **O corpus muda continuamente.** Um `total: 0` significa somente que a seção não mediu
-> registros naquele recorte no respectivo `as_of`. Sem outro campo autoritativo, não
-> conclua se é ausência na fonte, ingestão pendente ou cobertura incompleta.
+> **O corpus muda continuamente.** Leia `desfecho` ANTES de qualquer contagem:
+> `erro`/`nao_terminou`/`medida_indisponivel` = a consulta não mediu; só `sem_resultado` (ou um `total`
+> sem `desfecho` de falha) descreve o recorte no `as_of`. Sem outro campo
+> autoritativo, não conclua ausência na fonte, ingestão pendente ou cobertura incompleta.
+
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
 
 ## Quando usar
 
@@ -49,7 +62,7 @@ para juris fina ou legislação por UF - aponte para a skill irmã.
 
 ## A tool
 
-`obter_estatisticas_base` é **read-only**, retorna JSON e aceita:
+`obter_estatisticas_base` retorna JSON e aceita:
 
 | Argumento | Valores | Efeito |
 |---|---|---|
@@ -74,8 +87,9 @@ O que cada seção traz (chaves do payload):
 
 ## Como interpretar (honestidade > preencher lacuna)
 
-- **`total: 0` ou contagem baixa** descreve apenas o recorte medido no `as_of`. Não
-  transforme esse número em diagnóstico de fonte ou pipeline sem evidência adicional.
+- **`total: 0` só é recorte medido se `desfecho` for `sem_resultado`.** `erro`, `nao_terminou`
+  ou `medida_indisponivel` não diagnostica fonte nem pipeline. Não transforme o número em
+  ausência sem evidência adicional.
 - **Reporte o frescor por seção.** Não chame um timestamp de rollup de "ao vivo" e não
   omita que seções diferentes podem ter `as_of` diferentes.
 - **Contrato de honestidade: reporte os números do read-model como vieram.** Não estime,

@@ -1,6 +1,6 @@
 ---
 name: consultar-legislacao-estadual
-description: Consulta ao vivo legislação ESTADUAL e MUNICIPAL na fonte oficial pelo MCP IAJUS. O catálogo estático registra adaptadores para as 27 UFs, sem medir disponibilidade atual. Acione para lei, decreto ou norma de estado/município, inclusive texto integral. Requer UF (+ município) + tipo + número + ano. NÃO use para legislação FEDERAL nem para acórdãos/súmulas.
+description: Consulta legislação ESTADUAL e MUNICIPAL brasileira pelo MCP IAJUS, buscando texto e link da fonte oficial quando disponíveis. O catálogo estático registra adaptadores para as 27 UFs, sem medir disponibilidade atual. Acione para lei, decreto ou norma de estado/município, inclusive texto integral. Requer UF (+ município) + tipo + número + ano. NÃO use para legislação FEDERAL nem para acórdãos/súmulas.
 allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_iajus-juris_iajus__obter_cobertura_legislacao
 ---
 
@@ -14,6 +14,18 @@ de memória, pois **o texto da fonte oficial é a verdade**.
 Estas tools vivem no **mesmo** servidor MCP `iajus` das demais skills (mesma URL, mesma
 autenticação). Não há credencial nem host novos.
 
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`, repasse a falha — nunca «essa UF não é coberta».
+
 ## Regra número zero: NUNCA recuse uma UF por conta própria
 
 O catálogo estático do servidor registra **adaptador nativo para as 27 UFs (26 estados +
@@ -22,9 +34,9 @@ o Distrito Federal)**. Não existe UF a recusar de antemão. Para QUALQUER UF qu
 servidor devolver**:
 
 - Se o servidor retornar a norma, cite-a com o `link_completo` oficial.
-- Se o servidor retornar `erro`/`aviso` (norma não localizada na fonte, fonte fora do ar,
-  deadline excedido), **repasse esse resultado honesto do servidor** - o vazio vem do
-  servidor, nunca de você prejulgar a UF.
+- Se `desfecho` for `sem_resultado`, a fonte foi consultada e não tem a norma.
+- Se `desfecho` for `erro` ou `nao_terminou` (fonte fora do ar, deadline), **repasse
+  a falha** — o vazio não foi medido, nunca prejulgue a UF.
 
 Não invente a norma e não afirme "essa UF ainda não é coberta". A disponibilidade só é
 comprovada pela consulta pontual ao vivo. Use `obter_cobertura_legislacao` apenas para

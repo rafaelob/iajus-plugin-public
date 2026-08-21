@@ -5,6 +5,33 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.6.5] - 2026-08-20
+
+### Corrigido
+
+- As descrições e as cinco skills deixam explícito que o plugin pesquisa fontes jurídicas
+  públicas, não busca pessoas por identificadores privados e não protocola, assina ou modifica
+  processos.
+- O OAuth pede apenas `openid email offline_access`; o scope `profile`, que não é necessário para
+  pesquisa jurídica, foi removido dos dois clientes.
+- As quatro ferramentas que podem preencher cache ou índice aditivo deixam de ser apresentadas
+  globalmente como somente leitura. Os hints do MCP distinguem essa escrita reconstruível de
+  qualquer alteração em fonte oficial ou sistema judicial.
+
+## [2.6.0] - 2026-08-16
+
+### Adicionado
+
+- **Quinto valor do envelope de desfecho: `medida_indisponivel`.** As skills e os agents
+  passam a ensinar que a fonte pode responder e NÃO carregar a medida - um estado que não é
+  avaria e não é zero. Com quatro nomes apenas, este caso caía no mais próximo, e os dois
+  vizinhos mentem em direções opostas: `erro` afirma uma falha que não houve, e
+  `sem_resultado` afirma um zero MEDIDO que ninguém mediu. As duas leituras chegam ao
+  advogado com a mesma frase - "não existe" - e é por isso que o quinto nome existe.
+- O nome entra nas enumerações que dizem o que NÃO é medição. **Não** entra nas que atribuem
+  avaria ("reporte a falha", "não verificável por falha"): ali a frase passaria a ser falsa,
+  porque `medida_indisponivel` é não-medido SEM avaria.
+
 ## [2.5.1] - 2026-07-28
 
 ### Corrigido

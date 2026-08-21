@@ -1,6 +1,6 @@
 ---
 name: verificar-citacoes
-description: 'Verifica as citações jurídicas de um texto (petição, parecer, memorial, decisão) contra a fonte oficial pelo MCP IAJUS: existência, fidelidade e vigência, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA). Acione quando pedirem "confira as citações desta peça", "essas súmulas ainda estão em vigor?", "esse acórdão é real ou foi alucinado?", "valide os precedentes citados". É o antídoto da alucinação de citação. NÃO use para pesquisar do zero (use pesquisar-jurisprudencia).'
+description: 'Verifica as citações jurídicas de um texto (petição, parecer, memorial, decisão) contra fontes oficiais quando disponíveis pelo MCP IAJUS: existência, fidelidade e vigência, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA). Acione em "confira as citações desta peça", "essas súmulas ainda valem?", "esse acórdão é real ou foi alucinado?", "valide os precedentes citados". É o antídoto da alucinação de citação. NÃO use para pesquisar do zero (use pesquisar-jurisprudencia).'
 allowed-tools: mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_dispositivos, mcp__plugin_iajus-juris_iajus__buscar_dispositivos, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma
 ---
 
@@ -65,9 +65,21 @@ marcá-la NÃO LOCALIZADA - não para melhorar o fraseado do veredito.
 - CONFIRMADA - existe, fiel e vigente. Anexe `link_completo` + o dado que confirma.
 - DESATUALIZADA - existe mas está cancelada/superada/revogada, OU o texto diverge da fonte
   (número, órgão, redação). Diga o que diverge e o dado correto (com link).
-- NÃO LOCALIZADA - a fonte não retornou após busca adequada. Distinga cobertura em
-  andamento (`total: 0` de órgão em cobertura) de possível fabricação, dizendo qual hipótese
-  os sinais sustentam.
+- NÃO LOCALIZADA - a fonte devolveu `desfecho=sem_resultado` após busca adequada.
+  Distinga cobertura em andamento de possível fabricação. Se `desfecho` for `erro`
+  ou `nao_terminou`, a citação ficou **não verificável por falha**, não NÃO LOCALIZADA.
+
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`, a citação ficou não verificável por falha.
 
 Feche com: N confirmadas, N desatualizadas, N não localizadas - destacando as não
 localizadas como as de maior risco (citação fabricada).

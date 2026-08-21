@@ -19,7 +19,8 @@ esfera como o read-model o reporta, sem estimar ou extrapolar.
 ## Success criteria
 
 - Os números vêm de `obter_estatisticas_base` desta sessão, reportados como vieram.
-- `total: 0` / contagem baixa descrito apenas como o recorte medido no respectivo `as_of`.
+- `total: 0` só é recorte medido se `desfecho` for `sem_resultado`. `erro` /
+  `nao_terminou` / `medida_indisponivel` não descreve o recorte.
 
 ## Constraints (invariantes)
 
@@ -29,12 +30,24 @@ esfera como o read-model o reporta, sem estimar ou extrapolar.
 - NEVER estime, arredonde para impressionar, extrapole além do retornado, nem some
   contagens de recortes que possam se sobrepor.
 - NEVER inferir ausência na fonte, ingestão pendente ou cobertura incompleta só a partir
-  de `total: 0`.
+  de `total: 0` (e nunca quando `desfecho` for `erro`, `nao_terminou` ou `medida_indisponivel`).
 - Seções podem ter frescores diferentes: timestamp = rollup; `"live"` = agregação na chamada.
+
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
 
 ## Tool routing
 
-`obter_estatisticas_base` (read-only, JSON). Argumentos:
+`obter_estatisticas_base` (JSON). Argumentos:
 
 - `secao` - `tudo` (padrão) | `familias` | `orgaos` | `qualificadas` | `legislacao`.
   Comece por `tudo`. (`secao="orgaos"` = lista de tribunais.)
@@ -65,9 +78,9 @@ mede, e encaminhe à tool exata.
 
 ## Stop rules
 
-Pare quando o panorama pedido estiver reportado com o `as_of`. `total: 0` não diagnostica
-a causa; sem outro campo autoritativo, não afirme ausência, ingestão pendente ou cobertura
-incompleta.
+Pare quando o panorama pedido estiver reportado com o `as_of`. `total: 0` com
+`desfecho=sem_resultado` não diagnostica a causa; `erro`/`nao_terminou`/`medida_indisponivel` significa
+que a consulta não mediu. Sem outro campo autoritativo, não afirme ausência.
 
 ## Autenticação
 

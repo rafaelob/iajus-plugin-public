@@ -1,6 +1,6 @@
 ---
 name: consultar-legislacao
-description: 'Consulta legislação FEDERAL brasileira real (leis, decretos, MPVs, LCs, emendas) pelo MCP IAJUS: texto íntegra do Planalto, resolução por tipo/número/ano, busca por tema, vigência (vigente/revogada) e alterações por artigo. Acione quando o usuário pedir o texto de uma lei federal, um artigo ou a redação vigente de um dispositivo, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z". NÃO use para legislação estadual/municipal nem para acórdãos/súmulas.'
+description: 'Consulta legislação FEDERAL brasileira (leis, decretos, MPVs, LCs, emendas) pelo MCP IAJUS: texto e referências da fonte oficial quando disponíveis, resolução por tipo/número/ano, busca por tema, vigência (vigente/revogada) e alterações por artigo. Acione quando o usuário pedir o texto de uma lei federal, um artigo ou a redação vigente de um dispositivo, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z". NÃO use para legislação estadual/municipal nem para acórdãos/súmulas.'
 allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__listar_normas, mcp__plugin_iajus-juris_iajus__listar_normas, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__buscar_dispositivos, mcp__plugin_iajus-juris_iajus__buscar_dispositivos, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__obter_ontologia_juridica, mcp__plugin_iajus-juris_iajus__obter_ontologia_juridica, mcp__iajus__obter_classificacao_tipo, mcp__plugin_iajus-juris_iajus__obter_classificacao_tipo, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__obter_protocolo_classificacao, mcp__plugin_iajus-juris_iajus__obter_protocolo_classificacao
 ---
 
@@ -71,12 +71,24 @@ Número da norma, artigo e redação como a fonte devolveu; `link_completo` ofic
 `status` de vigência; a norma alteradora + data quando o dispositivo foi alterado/revogado.
 Diacríticos e UTF-8 exatamente como na fonte.
 
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
+
 ## Stop rules
 
 Pare quando a norma/dispositivo pedido estiver resolvido com a redação vigente e a vigência
-conferida - no menor número de rodadas úteis. Se a norma não estiver na base (`total: 0`,
-norma não federal, MPV convertida que não resolve), pare e diga isso honestamente em vez de
-improvisar.
+conferida - no menor número de rodadas úteis. Se `desfecho` for `sem_resultado` (ou a
+norma não for federal / MPV convertida que não resolve), pare e diga isso. Se for
+`erro` ou `nao_terminou`, reporte a falha — não «não está na base».
 
 ## Autenticação
 

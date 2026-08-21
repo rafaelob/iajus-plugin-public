@@ -1,6 +1,6 @@
 ---
 name: consultar-legislacao
-description: 'Consulta legislação FEDERAL brasileira real (leis, decretos, MPVs, LCs, emendas) pelo MCP IAJUS: texto íntegra do Planalto, resolução por tipo/número/ano, busca por tema, vigência (vigente/revogada) e alterações por artigo. Acione quando o usuário pedir o texto de uma lei federal, um artigo ou a redação vigente de um dispositivo, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z". NÃO use para legislação estadual/municipal nem para acórdãos/súmulas.'
+description: 'Consulta legislação FEDERAL brasileira (leis, decretos, MPVs, LCs, emendas) pelo MCP IAJUS: texto e referências da fonte oficial quando disponíveis, resolução por tipo/número/ano, busca por tema, vigência (vigente/revogada) e alterações por artigo. Acione quando o usuário pedir o texto de uma lei federal, um artigo ou a redação vigente de um dispositivo, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z". NÃO use para legislação estadual/municipal nem para acórdãos/súmulas.'
 allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__listar_normas, mcp__plugin_iajus-juris_iajus__listar_normas, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__buscar_dispositivos, mcp__plugin_iajus-juris_iajus__buscar_dispositivos, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__obter_ontologia_juridica, mcp__plugin_iajus-juris_iajus__obter_ontologia_juridica, mcp__iajus__obter_classificacao_tipo, mcp__plugin_iajus-juris_iajus__obter_classificacao_tipo, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__obter_protocolo_classificacao, mcp__plugin_iajus-juris_iajus__obter_protocolo_classificacao
 ---
 
@@ -12,11 +12,22 @@ decretos, MPVs, leis complementares, emendas constitucionais, decretos-lei), com
 MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
 
 > **Corpus VIVO e em crescimento:** a base de legislação é ingerida continuamente -
-> normas e dispositivos novos aparecem automaticamente, sem mudança de skill. Um
-> `total: 0` para uma norma que deveria existir pode ser **cobertura em andamento**,
-> não inexistência - diga isso honestamente e não invente a norma. Para ver o que a
-> base de legislação contém AGORA (por esfera/status + cobertura de indexação), use a
-> skill **corpus-status** (`obter_estatisticas_base`).
+> normas e dispositivos novos aparecem automaticamente, sem mudança de skill.
+> Leia `desfecho` ANTES de qualquer contagem: `erro`/`nao_terminou`/`medida_indisponivel` = a consulta
+> não mediu; só `sem_resultado` é zero MEDIDO. Para ver o que a base contém AGORA,
+> use a skill **corpus-status** (`obter_estatisticas_base`).
+
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
 
 ## Como consultar - escolha o caminho pela pergunta
 
@@ -107,8 +118,9 @@ Não presuma que uma norma antiga "não existe na base" por ser antiga. Numa tar
   ou no grafo `altera_norma`), **diga isso explicitamente** - não apresente texto
   revogado como vigente; aponte a norma alteradora e a data.
 - Preserve a grafia e os diacríticos exatamente como na fonte (UTF-8).
-- Se a norma não estiver na base (ex.: `total: 0`, norma não federal, MPV convertida que
-  não resolve), **diga isso** em vez de improvisar.
+- Se `desfecho` for `sem_resultado` (consulta rodou e não achou), ou a norma não for
+  federal / MPV convertida que não resolve, **diga isso**. Se for `erro` ou
+  `nao_terminou`, reporte a falha — não «não está na base».
 - A cobertura aqui é **federal**; legislação estadual/municipal tem skill própria
   (`consultar-legislacao-estadual`) e jurisprudência também (`pesquisar-jurisprudencia`).
 

@@ -1,6 +1,6 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
+description: Pesquisa e cita jurisprudência brasileira (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS, com fontes oficiais quando disponíveis - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
 allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj, mcp__iajus__listar_orgaos_julgadores, mcp__plugin_iajus-juris_iajus__listar_orgaos_julgadores
 ---
 
@@ -31,12 +31,25 @@ chamada de tool nesta sessão, com o `link_completo` que a fonte retornou.
 - NEVER apresente súmula cancelada/superada ou artigo revogado como amparo vigente -
   `status_vigencia` sai MARCADO, reporte-o.
 - ALWAYS cite o `link_completo` retornado (URL estável deep-per-record da fonte oficial).
-- Ausência de evidência ≠ resposta negativa: `total: 0` de órgão/ano em cobertura é
-  cobertura em andamento; avise e ofereça a fonte superior.
+- Ausência de evidência ≠ resposta negativa: só `desfecho=sem_resultado` é zero
+  MEDIDO (cobertura em andamento); `erro`/`nao_terminou`/`medida_indisponivel` não mediu. Avise e ofereça a
+  fonte superior.
+
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
 
 ## Tool routing
 
-Envelope uniforme de busca: `{ modalidade, total, resultados:[…] }`, read-only.
+Formato uniforme de busca: `{ modalidade, total, resultados:[…] }`.
 
 - `buscar_semantica` - tema/conceito (vetorial). Padrão conceitual. Aceita `tribunal`,
   `ano` (um ano), `ramo_l1`, `space`, `k`.
@@ -74,7 +87,7 @@ Chamadas independentes são paralelizáveis (ex.: `buscar_qualificada` + `buscar
 mesma consulta). Dependentes: primeiro o hit, depois `obter_dispositivos_citados` /
 `obter_versoes_qualificada` sobre o resultado.
 
-Escalada em ordem quando `total: 0` ou hits fracos: `buscar_semantica` →
+Escalada em ordem quando `desfecho` é `sem_resultado` ou hits fracos: `buscar_semantica` →
 `buscar_hibrida` (mesma consulta) → reformular com os termos dos primeiros hits → trocar
 de modalidade pela forma da pergunta → subir de tribunal (TJ/TRF vazio → STJ/STF).
 

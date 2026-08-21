@@ -1,7 +1,8 @@
 # IAJUS - plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex que entrega as **5 skills** jurídicas IAJUS + o servidor MCP remoto já
-configurado. Ele cobre a mesma família funcional do plugin Claude Code `iajus-juris`,
+Plugin Codex **2.6.3** que entrega as **5 skills** jurídicas IAJUS e conecta ao endpoint
+MCP único `https://mcp.iajus.com.br/mcp` (28 ferramentas). Ele cobre a mesma família
+funcional do plugin Claude Code `iajus-juris`,
 mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
 byte-idênticos. Ambos usam o mesmo MCP remoto. Autentica por **OAuth 2.1 por padrão** (login no
 navegador, refresh automático); a chave `ik_*` continua disponível como **fallback
@@ -62,32 +63,25 @@ codex mcp login iajus
 3. **Para evitar confirmação por chamada**, ajuste o **approval mode** do Codex
    (em `~/.codex/config.toml`). A sintaxe exata dos modos de aprovação evolui -
    consulte a doc oficial de approvals do Codex em
-   <https://developers.openai.com/codex> e escolha o modo que preferir. As
-   ferramentas IAJUS são **read-only**, então tendem a se encaixar bem em modos
-   menos restritivos.
+  <https://developers.openai.com/codex> e escolha o modo que preferir.
 
-### ChatGPT (conector / Developer Mode / Apps)
+### ChatGPT (conector MCP)
 
-As ferramentas IAJUS são **read-only** (marcadas com `readOnlyHint`), então o
-ChatGPT tende a pedir **menos** confirmação. A aprovação no ChatGPT é **por
-ferramenta e por conversa**: na primeira vez que uma ferramenta é usada numa
-conversa, o ChatGPT pede confirmação e você pode marcar **"lembrar"** para o resto
-**daquela** conversa (não persiste entre conversas). Como **App aprovado pelo
-workspace**, o administrador aprova o App uma vez e o ChatGPT usa um snapshot
-congelado das ferramentas. O autor não consegue pré-aprovar por você - é o
-comportamento de segurança do próprio ChatGPT.
+O IAJUS conecta-se ao ChatGPT pelo conector MCP remoto no endpoint único
+`https://mcp.iajus.com.br/mcp`. Autorize a conexão com OAuth 2.1; as confirmações
+continuam sob controle do cliente e do usuário. O plugin não pré-aprova chamadas.
 
 ## O que o plugin configura
 
 - **MCP remoto `iajus`** (`./.mcp.json`): streamable-HTTP em
   `https://mcp.iajus.com.br/mcp`, **OAuth 2.1** (`oauth_resource` RFC 8707 + `scopes`
-  `openid email profile offline_access`). Forma = wrapper **`mcpServers` camelCase**,
+  `openid email offline_access`). Forma = wrapper **`mcpServers` camelCase**,
   com o servidor `iajus` dentro dele. Nenhum token literal em disco.
 - **5 skills** (`./skills/`): `pesquisar-jurisprudencia`, `consultar-legislacao`,
   `consultar-legislacao-estadual`, `corpus-status` e `verificar-citacoes`. Elas cobrem
   tribunais superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais dos
   JEFs, administrativo (CARF), legislação federal/estadual/municipal, panorama do corpus e
-  conferência anti-alucinação. (A doutrina alcançada é a de acesso aberto.)
+  conferência anti-alucinação.
 
 ## Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 
@@ -134,7 +128,7 @@ arquivo. O passo a passo completo está no README do plugin Claude Code irmão
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
 - **Editor:** IAJUS / Celeris (Celeris Juris Inteligência Jurídica Ltda.) - <https://iajus.com.br>.
-- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio IAJUS
-  (jurisprudência e legislação brasileira - registro público, normalizado e
-  classificado). O consumo de busca é autenticado por conta (OAuth) e validado
-  server-side; nenhuma tool retorna credenciais nem grava dados.
+- **Escopo dos dados:** use o MCP para pesquisa jurídica brasileira no corpus IAJUS
+  (jurisprudência e legislação normalizadas). Não inclua dados pessoais, credenciais ou
+  outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
+  server-side.

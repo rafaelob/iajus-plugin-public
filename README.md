@@ -4,6 +4,28 @@ Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente 
 
 > Este marketplace é exclusivo do **Brasil**. Procura jurisprudência e legislação de **Portugal**? É um marketplace separado: [github.com/rafaelob/iajus-plugin-public-pt](https://github.com/rafaelob/iajus-plugin-public-pt).
 
+## Migração de quem instalou antes da separação
+
+Até 2026-07-23 este marketplace incluía também o plugin de Portugal. Se você adicionou o marketplace antes dessa data, remova o marketplace antigo e adicione de novo o da sua jurisdição. No Claude Code:
+
+```text
+/plugin marketplace remove iajus
+/plugin marketplace add https://github.com/rafaelob/iajus-plugin-public
+/plugin install iajus-juris@iajus
+/plugin enable iajus-juris@iajus
+/reload-plugins
+```
+
+No Codex:
+
+```bash
+codex plugin marketplace remove iajus
+codex plugin marketplace add https://github.com/rafaelob/iajus-plugin-public
+codex plugin add iajus-juris@iajus
+```
+
+Para Portugal, o repositório correto é `https://github.com/rafaelob/iajus-plugin-public-pt`.
+
 ## O que você ganha
 
 - **Pesquisa de jurisprudência** em múltiplas modalidades (tese consolidada primeiro: súmulas, temas de repercussão geral e repetitivos; depois busca híbrida, semântica e por número CNJ), sempre com ementa e link oficial.

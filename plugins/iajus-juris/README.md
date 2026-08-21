@@ -1,6 +1,6 @@
 # IAJUS - plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 2.4.0** - as sete tools `jurimetria_*` saíram do perfil MCP público (decisão do
+> **Versão 2.6.5** - o perfil MCP público expõe 28 ferramentas; as sete tools `jurimetria_*` saíram do perfil MCP público (decisão do
 > operador). A superfície pública mantém as **7 modalidades de busca**, a busca de citações
 > `buscar_por_citacoes`, a introspecção do corpus `obter_estatisticas_base` (volume por
 > tribunal e faixa de anos), grafo de legislação com alterações **por dispositivo**
@@ -8,7 +8,7 @@
 > busca (envelope `trust`). Autenticação por **OAuth 2.1 por padrão** (login no navegador,
 > refresh automático); chave `ik_*` como **fallback manual**. Ver `CHANGELOG.md`.
 
-Um plugin: você ganha **skills** que ensinam o agente a pesquisar/citar
+Um plugin 2.6.5: você ganha **skills** que ensinam o agente a pesquisar/citar
 jurisprudência e legislação brasileira **+** o **servidor MCP remoto IAJUS** já
 configurado. Não precisa configurar o MCP na mão.
 
@@ -24,13 +24,14 @@ municipal**.
 |---|---|
 | `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 7 modalidades de busca (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
 | `skills/consultar-legislacao/` | como localizar leis/artigos **federais** por termo, tema (ontologia) ou citação literal, com texto íntegra, vigência e grafo de alterações (inclusive **por dispositivo**) |
-| `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** ao vivo na fonte oficial (UF [+ município] + tipo + número + ano) |
+| `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** e localizar a fonte oficial quando disponível (UF [+ município] + tipo + número + ano) |
 | `skills/corpus-status/` | o que a base contém AGORA (`obter_estatisticas_base`): por família/órgão/qualificada/esfera, com faixa de anos e cobertura de indexação |
-| `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email profile offline_access`) |
+| `skills/verificar-citacoes/` | confere as citações de um texto (petição, parecer, memorial) contra a fonte oficial: existência, fidelidade e **vigência**, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA) - o antídoto da alucinação de citação |
+| `agents/` (8 subagentes) | `pesquisador-juris`, `elaborador-tese`, `refutador-tese`, `precedentes-vinculantes`, `processo-juris`, `legislacao-juris`, `memorialista-juris`, `conferente-citacoes` - invocáveis por Task/subagent no Claude Code. Cada um declara `tools:` com **allowlist** das ferramentas MCP que usa: sem Bash, sem escrita em disco |
+| `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email offline_access`) |
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
 jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins`.
-(A doutrina que este plugin alcança é a de acesso aberto.)
 
 ### As 7 modalidades de busca + qualificadas (tools do MCP)
 
@@ -48,8 +49,8 @@ jurisprudência ou legislação. Após instalar/habilitar, rode `/reload-plugins
 > Contagens agregadas (volume por tribunal, faixa de anos coberta) vêm de
 > `obter_estatisticas_base` (skill `corpus-status`).
 
-As buscas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem
-as famílias `jurisprudencia` + `legislacao` e são read-only. Os hits trazem o envelope
+As buscas retornam o mesmo formato (`{ modalidade, total, resultados:[…] }`), cobrem
+as famílias `jurisprudencia` + `legislacao`. Os hits trazem o envelope
 de confiança `trust` (`{authority_tier, status_vigencia, trecho}`) - cheque a vigência
 antes de citar como amparo.
 
@@ -77,9 +78,9 @@ manifesto, **zero segredo**).
 /reload-plugins                              # conecta o MCP iajus; o Claude abre o login OAuth no navegador
 ```
 
-O plugin vem **habilitado por padrão** (`defaultEnabled: true`) e já traz o endpoint do
-MCP fixado no padrão de produção. Ao usar a primeira tool, o Claude abre o login OAuth no
-navegador (mesma conta da aplicação) e renova o token sozinho via `offline_access`:
+O plugin já traz o endpoint do MCP fixado no padrão de produção. Ao usar a primeira tool,
+o Claude abre o login OAuth no navegador (mesma conta da aplicação) e renova o token sozinho
+via `offline_access`:
 
 ```
 https://mcp.iajus.com.br/mcp
@@ -134,16 +135,11 @@ evitar confirmação por chamada, ajuste o **approval mode** do Codex - veja a d
 oficial de approvals do Codex (<https://developers.openai.com/codex>). Passo a passo
 de instalação em `plugins/iajus-juris-codex/README.md`.
 
-### ChatGPT (conector / Developer Mode / Apps)
+### ChatGPT (conector MCP)
 
-As ferramentas IAJUS são **read-only** (marcadas com `readOnlyHint`), então o ChatGPT
-tende a pedir **menos** confirmação. Ainda assim, a aprovação no ChatGPT é **por
-ferramenta e por conversa**: ao usar uma ferramenta pela primeira vez numa conversa,
-o ChatGPT pede confirmação e você pode marcar **"lembrar"** para o resto **daquela**
-conversa (não persiste entre conversas). Se o IAJUS estiver publicado como **App
-aprovado pelo workspace**, o administrador aprova o App uma vez e o ChatGPT usa um
-snapshot congelado das ferramentas. O autor não consegue pré-aprovar por você - é o
-comportamento de segurança do próprio ChatGPT.
+O IAJUS conecta-se ao ChatGPT pelo conector MCP remoto no endpoint único
+`https://mcp.iajus.com.br/mcp`. Autorize a conexão com OAuth 2.1; as confirmações
+continuam sob controle do cliente e do usuário. O plugin não pré-aprova chamadas.
 
 ### Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
 
@@ -231,7 +227,7 @@ Antigravity. A chave é validada server-side (hash SHA-256); sem chave válida, 
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
 - **Editor:** IAJUS / Celeris (Celeris Juris Inteligência Jurídica Ltda.) - <https://iajus.com.br>.
-- **Escopo dos dados:** as tools são **read-only** e servem o corpus próprio IAJUS
-  (jurisprudência e legislação brasileira - registro público, normalizado e
-  classificado). O consumo de busca é autenticado por conta (OAuth) e validado
-  server-side; nenhuma tool retorna credenciais nem grava dados.
+- **Escopo dos dados:** use o MCP para pesquisa jurídica brasileira no corpus IAJUS
+  (jurisprudência e legislação normalizadas). Não inclua dados pessoais, credenciais ou
+  outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
+  server-side.

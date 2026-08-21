@@ -1,6 +1,6 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
+description: Pesquisa e cita jurisprudência brasileira (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS, com fontes oficiais quando disponíveis - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
 allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj, mcp__iajus__listar_orgaos_julgadores, mcp__plugin_iajus-juris_iajus__listar_orgaos_julgadores
 ---
 
@@ -15,26 +15,37 @@ classificação alinhada ao CNJ/TPU (ontologia OJBU: 21 ramos L1 → sub-áreas 
 memória.**
 
 > **Corpus VIVO e em crescimento:** a base é ingerida continuamente - órgãos, anos
-> e famílias novos aparecem na busca automaticamente, sem mudança de skill. Um
-> `total: 0` (ou recall fraco) para um órgão/ano que já está em cobertura significa
-> **cobertura em andamento**, não "não existe": avise o usuário e ofereça uma fonte
-> alternativa (ex.: tribunal superior). Para conferir o que a base contém AGORA
-> (por órgão/ano/família + quanto já está embedado), use a skill **corpus-status**
-> (`obter_estatisticas_base`).
+> e famílias novos aparecem na busca automaticamente, sem mudança de skill.
+> Leia `desfecho` ANTES de qualquer contagem: `erro`/`nao_terminou`/`medida_indisponivel` = não mediu;
+> só `sem_resultado` é zero MEDIDO. Para conferir o que a base contém AGORA,
+> use a skill **corpus-status** (`obter_estatisticas_base`).
+
+## Envelope de desfecho
+
+Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+
+- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
 
 > **Cobertura TJ-RJ (atual):** os acórdãos do TJ-RJ no corpus são hoje
 > predominantemente **cíveis**; a matéria **criminal** (Câmaras Criminais 1ª a 8ª +
 > Seção Criminal) está **apenas parcialmente ingerida** e segue em coleta.
 > **Sempre rode a busca primeiro** - não recuse a consulta criminal de antemão.
-> Só **se** ela voltar `total: 0` ou recall fraco, trate como **lacuna de cobertura
-> em andamento** (não como ausência de precedente): avise o usuário e ofereça os
+> Só **se** `desfecho` for `sem_resultado` (ou recall fraco com hits que não
+> respondem), trate como **lacuna de cobertura em andamento** (não como ausência
+> de precedente): avise o usuário e ofereça os
 > tribunais superiores (STJ/STF) para a tese criminal. (Demais tribunais e o TJ-RJ
 > cível não têm essa ressalva.)
 
 ## Escolha da modalidade (7 tools de busca + qualificadas)
 
-Comece pela modalidade certa para a pergunta. As buscas retornam um envelope
-uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
+Comece pela modalidade certa para a pergunta. As buscas retornam um formato
+uniforme (`{ modalidade, total, resultados:[…] }`).
 
 | Pergunta do usuário | Tool | Por quê |
 |---|---|---|
@@ -94,8 +105,10 @@ cliente sem subagentes, conduza-a você mesmo, nesta ordem.
    repercussão geral, tema repetitivo, IRDR, IRR, IAC, OJ): o precedente qualificado
    vence um acórdão isolado, e você o cita com a vigência já conferida. Só depois desça
    ao acórdão individual (busca semântica/híbrida) para exemplificar a aplicação da tese.
-2. **Escale a modalidade em vez de cair no vazio.** Uma busca fraca (`total: 0`, ou
-   hits cujo `trust.trecho` não responde) NÃO é sinal de parar - é sinal de escalar,
+2. **Escale a modalidade em vez de cair no vazio.** Uma busca com
+   `desfecho=sem_resultado` (ou hits cujo `trust.trecho` não responde) NÃO é sinal
+   de parar - é sinal de escalar. Se `desfecho` for `erro` ou `nao_terminou`,
+   reporte a falha e não escale como se o acervo estivesse vazio.
    nesta ordem, antes de reportar lacuna:
    - `buscar_semantica` → **`buscar_hibrida`** com a MESMA consulta (a fusão RRF resgata
      o que a densa isolada perdeu);
@@ -111,12 +124,11 @@ cliente sem subagentes, conduza-a você mesmo, nesta ordem.
 3. **Refine até a cobertura estabilizar** (rodadas sem resultado novo relevante) e cruze
    as modalidades: densa/híbrida para o panorama, FTS/regex para termos e dispositivos
    literais, ontologia para esgotar um ramo, citações para a rede do precedente-chave.
-4. **Envelope de honestidade.** Reporte o vazio como vazio, com o motivo: um `total: 0`
-   de órgão/ano em cobertura é **cobertura em andamento**, não "o precedente não existe"
-   (diga isso e ofereça a fonte superior); um filtro rejeitado (`tribunal` numa modalidade
-   que só aceita `orgao_code`) pede reenvio, não descarte do resultado; um
-   `{ "erro": … }` pede ajuste do argumento. Nunca preencha a lacuna com um precedente
-   plausível porém fabricado.
+4. **Envelope de honestidade.** Leia `desfecho` primeiro: `sem_resultado` é zero
+   MEDIDO (cobertura em andamento, não «o precedente não existe» — ofereça a fonte
+   superior); `erro`/`nao_terminou`/`medida_indisponivel` é NÃO-MEDIDO; `parcial` declara o que ficou de
+   fora. Um filtro rejeitado (`tribunal` numa modalidade que só aceita `orgao_code`)
+   pede reenvio. Nunca preencha a lacuna com um precedente fabricado.
 5. **Passada de conferência anti-alucinação (obrigatória antes de entregar).** Toda
    citação que você entregar precisa ter vindo de uma chamada REAL nesta sessão, com o
    `link_completo` que a fonte retornou. Antes de fechar a resposta, confira cada citação:
@@ -143,8 +155,8 @@ cliente sem subagentes, conduza-a você mesmo, nesta ordem.
 - **Confira a vigência antes de amparar:** ao citar súmula/tema/qualificada, verifique
   `status_vigencia` (no hit `trust` ou em `buscar_qualificada`) e sinalize
   explicitamente quando o ato estiver cancelado/superado - nunca o apresente como vigente.
-- Se a busca **não** retornar resultado relevante (`total: 0` ou hits fracos),
-  **diga isso honestamente** - não preencha a lacuna com um precedente fabricado.
+- Se `desfecho` for `sem_resultado` (ou só hits fracos), **diga isso honestamente**.
+  Se for `erro` ou `nao_terminou`, reporte a falha. Não preencha com precedente fabricado.
 
 ## Subagentes IAJUS (Claude Code)
 
@@ -184,9 +196,8 @@ não delegue.
 
 ## Aprovação de ferramentas (sem fricção)
 
-Todas as tools do IAJUS são **somente-leitura** (marcadas `readOnlyHint`) - não escrevem
-nada, só pesquisam e citam. Ainda assim, alguns clientes pedem **uma aprovação por tool**
-na primeira chamada:
+As ferramentas de pesquisa retornam resultados para consulta e citação. Ainda assim,
+alguns clientes pedem **uma aprovação por tool** na primeira chamada:
 
 - **Prefira a busca direta.** Para responder e citar, `buscar_hibrida` (melhor relevância
   geral) e `buscar_semantica` (perguntas conceituais) já entregam ementa + `link_completo`
@@ -198,8 +209,7 @@ na primeira chamada:
   esses links; NÃO é preciso outra tool para "abrir" o julgado. A leitura do documento é o
   próprio hit da busca (ementa + trecho + links); não há tool separada de "abrir".
 - **Se o cliente pedir aprovação por chamada:** oriente o usuário a **autorizar uma vez**
-  e marcar **"sempre permitir" / "lembrar nesta conversa"** - como as tools são
-  somente-leitura, é seguro liberar em bloco, e as buscas seguintes deixam de perguntar.
+  e marcar **"sempre permitir" / "lembrar nesta conversa"**, conforme a política do cliente.
   (No Claude Code, `/permissions` permite pré-aprovar as tools `mcp__iajus__*`; no ChatGPT,
   a caixa de confirmação do conector oferece lembrar a escolha na conversa.) Se a caixa de
   aprovação **não renderizar/travar**, é limitação da interface do cliente, não do IAJUS:
