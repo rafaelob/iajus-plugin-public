@@ -1,6 +1,6 @@
 # IAJUS - plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex **2.6.3** que entrega as **5 skills** jurídicas IAJUS e conecta ao endpoint
+Plugin Codex **2.6.4** que entrega as **5 skills** jurídicas IAJUS e conecta ao endpoint
 MCP único `https://mcp.iajus.com.br/mcp` (28 ferramentas). Ele cobre a mesma família
 funcional do plugin Claude Code `iajus-juris`,
 mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
@@ -127,7 +127,7 @@ arquivo. O passo a passo completo está no README do plugin Claude Code irmão
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
-- **Editor:** IAJUS / Celeris (Celeris Juris Inteligência Jurídica Ltda.) - <https://iajus.com.br>.
+- **Editor:** Celeris Juris Tecnologia e Inteligência Jurídica LTDA - CNPJ 68.398.872/0001-93 - <https://iajus.com.br>.
 - **Escopo dos dados:** use o MCP para pesquisa jurídica brasileira no corpus IAJUS
   (jurisprudência e legislação normalizadas). Não inclua dados pessoais, credenciais ou
   outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado

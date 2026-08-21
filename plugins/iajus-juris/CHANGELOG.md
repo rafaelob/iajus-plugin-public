@@ -5,6 +5,15 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.6.6] - 2026-08-21
+
+### Corrigido
+
+- A identidade do editor agora usa a razão social verificada, Celeris Juris Tecnologia e
+  Inteligência Jurídica LTDA, e o README informa o CNPJ 68.398.872/0001-93.
+- O catálogo público acompanha as 28 ferramentas do MCP servido e mantém as descrições de
+  pesquisa jurídica, autenticação OAuth 2.1 e fontes oficiais sem prometer cobertura absoluta.
+
 ## [2.6.5] - 2026-08-20
 
 ### Corrigido
