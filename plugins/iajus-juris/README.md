@@ -86,6 +86,14 @@ via `offline_access`:
 https://mcp.iajus.com.br/mcp
 ```
 
+### Cursor / Grok Bot (mesmo MCP remoto)
+
+O mesmo diretório também traz o manifesto Cursor (`.cursor-plugin/plugin.json`) e uma cópia descoberta automaticamente em `mcp.json` (o `.mcp.json` permanece para Claude e Grok Build). Submissão do marketplace: [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish), apontando para este repositório público.
+
+Após a listagem: no Cursor, **Customize** → busque **IAJUS** / `iajus-juris` → Instalar → autorizar OAuth em `https://mcp.iajus.com.br/mcp`. No Grok Bot, **Plugins** → **IAJUS** → adicionar → autorizar no navegador.
+
+A revisão do Cursor Marketplace atualmente prefere plugins open-source. Este empacotamento usa a mesma licença proprietária de distribuição deste diretório (`LicenseRef-Proprietary` / `LICENSE`); a licença não foi alterada para a embalagem Cursor.
+
 ## Como liberar todas as ferramentas (autorizar por padrão)
 
 > **Uma linha honesta:** nenhum plugin consegue liberar as ferramentas

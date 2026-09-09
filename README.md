@@ -1,6 +1,6 @@
 # IAJUS: jurisprudência e legislação brasileira no seu assistente de IA
 
-Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente (Claude Code, Codex ou ChatGPT) à base do IAJUS: jurisprudência dos tribunais superiores e regionais, súmulas e teses firmadas, e legislação federal, estadual e municipal com vigência conferida. Tudo com fonte oficial e link estável em cada resposta: o plugin existe para o seu assistente **citar o que existe de verdade**, nunca inventar precedente.
+Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente (Claude Code, Codex, ChatGPT, Cursor ou Grok Bot) à base do IAJUS: jurisprudência dos tribunais superiores e regionais, súmulas e teses firmadas, e legislação federal, estadual e municipal com vigência conferida. Tudo com fonte oficial e link estável em cada resposta: o plugin existe para o seu assistente **citar o que existe de verdade**, nunca inventar precedente.
 
 > Este marketplace é exclusivo do **Brasil**. Procura jurisprudência e legislação de **Portugal**? É um marketplace separado: [github.com/rafaelob/iajus-plugin-public-pt](https://github.com/rafaelob/iajus-plugin-public-pt).
 
@@ -59,6 +59,17 @@ codex plugin add iajus-juris@iajus
 
 O login OAuth abre no navegador na primeira conexão: entre com a sua conta IAJUS e pronto.
 
+### Cursor e Grok Bot (após listagem no Cursor Marketplace)
+
+Este repositório empacota o plugin no formato Cursor (`.cursor-plugin/` + `mcp.json`) para submissão em [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish), apontando para `https://github.com/rafaelob/iajus-plugin-public`.
+
+Depois que o plugin estiver listado:
+
+1. **Cursor:** abra **Customize** na barra lateral, busque **IAJUS** / `iajus-juris`, instale (escopo do projeto ou do usuário) e autorize o OAuth no navegador. O servidor MCP é `https://mcp.iajus.com.br/mcp`.
+2. **Grok Bot:** abra **Plugins** (ou o card **Connect** no chat), busque **IAJUS**, adicione e autorize no navegador. Confirme o plugin em **Installed**.
+
+A revisão do Cursor Marketplace atualmente prefere plugins open-source. Este empacotamento usa a mesma licença proprietária de distribuição dos arquivos de integração já usada no Claude e no Grok (`LicenseRef-Proprietary`; ver `plugins/iajus-juris/LICENSE`). A licença não foi alterada para esta embalagem.
+
 ### Outros assistentes (conexão direta ao servidor MCP)
 
 Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, apontando para `https://mcp.iajus.com.br/mcp` e autenticando por **OAuth 2.1** (login no navegador). Você ganha as mesmas ferramentas de pesquisa jurídica; as skills prontas (pacotes de plugin do Claude Code e do Codex) e os subagentes especializados (só no Claude Code) descritos acima não acompanham a conexão direta.
@@ -69,7 +80,7 @@ Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, ap
 
 ## Conta e acesso
 
-Crie a sua conta em [iajus.com.br](https://iajus.com.br). A autenticação padrão é **OAuth 2.1** (login no navegador, renovação automática): você nunca precisa colar token em arquivo. Detalhes de cada pacote, inclusive o fallback manual por chave, estão nos READMEs de `plugins/iajus-juris` (Claude Code) e `plugins/iajus-juris-codex` (Codex).
+Crie a sua conta em [iajus.com.br](https://iajus.com.br). A autenticação padrão é **OAuth 2.1** (login no navegador, renovação automática): você nunca precisa colar token em arquivo. Detalhes de cada pacote, inclusive o fallback manual por chave, estão nos READMEs de `plugins/iajus-juris` (Claude Code, Grok Build e Cursor / Grok Bot) e `plugins/iajus-juris-codex` (Codex).
 
 ## Suporte
 
