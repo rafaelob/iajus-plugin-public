@@ -1,0 +1,19 @@
+{
+  "name": "iajus",
+  "owner": {
+    "name": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
+    "email": "contato@iajus.com.br"
+  },
+  "metadata": {
+    "description": "IAJUS marketplace — Brazilian case law and legislation via hosted MCP.",
+    "version": "2.6.6",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "iajus-juris",
+      "source": "./plugins/iajus-juris",
+      "description": "Brazilian legal research through the hosted IAJUS MCP server: case law, qualified and binding precedents, and federal, state, and municipal legislation. OAuth 2.1 to https://mcp.iajus.com.br/mcp."
+    }
+  ]
+}
