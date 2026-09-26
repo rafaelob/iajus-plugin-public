@@ -1,6 +1,6 @@
 # IAJUS - plugin Claude Code (jurisprudência + legislação BR)
 
-> **Versão 2.6.6** - o perfil MCP público expõe 28 ferramentas; as sete tools `jurimetria_*` saíram do perfil MCP público (decisão do
+> **Versão 2.6.8** - o perfil MCP público expõe 28 ferramentas; as sete tools `jurimetria_*` saíram do perfil MCP público (decisão do
 > operador). A superfície pública mantém as **7 modalidades de busca**, a busca de citações
 > `buscar_por_citacoes`, a introspecção do corpus `obter_estatisticas_base` (volume por
 > tribunal e faixa de anos), grafo de legislação com alterações **por dispositivo**
@@ -8,7 +8,7 @@
 > busca (envelope `trust`). Autenticação por **OAuth 2.1 por padrão** (login no navegador,
 > refresh automático); chave `ik_*` como **fallback manual**. Ver `CHANGELOG.md`.
 
-Um plugin 2.6.6: você ganha **skills** que ensinam o agente a pesquisar/citar
+Com este plugin, você ganha **skills** que ensinam o agente a pesquisar/citar
 jurisprudência e legislação brasileira **+** o **servidor MCP remoto IAJUS** já
 configurado. Não precisa configurar o MCP na mão.
 

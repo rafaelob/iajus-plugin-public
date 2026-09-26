@@ -5,6 +5,15 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.6.8] - 2026-09-25
+
+### Corrigido
+
+- Manifestos, apresentação do pacote e selo de conteúdo identificam a mesma versão.
+- O conteúdo atual recebe um número novo, preservando a detecção de alterações sob
+  versões já seladas. A versão 2.6.7 foi uma etapa de preparação no repositório.
+- A disponibilização deste pacote nos marketplaces depende da publicação externa.
+
 ## [2.6.6] - 2026-08-21
 
 ### Corrigido
