@@ -39,10 +39,10 @@ chamada de tool nesta sessão, com o `link_completo` que a fonte retornou.
 
 Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
 
-- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` - mediu uma parte; declare o que ficou de fora.
 - `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
 
 `total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.

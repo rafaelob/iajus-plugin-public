@@ -1,7 +1,6 @@
 ---
 name: corpus-status
 description: 'Mostra o que o read-model do corpus IAJUS reporta via MCP, sempre com o as_of de cada seção: decisões por tribunal e faixa de anos, legislação por esfera/status e território, doutrina e qualificadas por espécie/vigência. Acione em "o que tem na base?", "quantos acórdãos do TJRJ?", "cobrimos 2023-2026 do tribunal X?". Não estima nem extrapola contagens.'
-allowed-tools: mcp__iajus__obter_estatisticas_base, mcp__plugin_iajus-juris_iajus__obter_estatisticas_base
 ---
 
 # Estado do corpus IAJUS conforme o `as_of`
@@ -20,10 +19,10 @@ Use esse campo para dizer de quando é cada número.
 
 Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
 
-- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` - mediu uma parte; declare o que ficou de fora.
 - `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
 
 `total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
@@ -114,9 +113,9 @@ O que cada seção traz (chaves do payload):
 Esta skill é uma introspecção direta - normalmente você chama `obter_estatisticas_base`
 você mesmo e reporta os números. No **Claude Code**, quando o panorama do corpus é o
 primeiro passo de uma tarefa maior, os subagentes de pesquisa consomem esta skill: o
-**`pesquisador-juris`** confere a cobertura antes de escalar a busca, e o
-**`legislacao-juris`** confere a prontidão de legislação por esfera/UF. Em clientes **sem
-subagentes** (claude.ai web, ChatGPT, Codex), execute a introspecção você mesmo.
+**`iajus-juris:pesquisador-juris`** confere a cobertura antes de escalar a busca, e o
+**`iajus-juris:legislacao-juris`** confere a prontidão de legislação por esfera/UF. Nos
+demais clientes (claude.ai, Cowork, ChatGPT, Codex), execute a introspecção você mesmo.
 
 **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
 ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no

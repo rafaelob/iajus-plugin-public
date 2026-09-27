@@ -1,6 +1,6 @@
 {
   "name": "iajus-juris",
-  "version": "2.6.4",
+  "version": "2.6.5",
   "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com sete modalidades de busca, 28 ferramentas e cinco skills. Citações apontam para fontes oficiais quando disponíveis. Autenticação OAuth 2.1.",
   "author": {
     "name": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",

@@ -5,6 +5,41 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.6.9] - 2026-09-27
+
+### Adicionado
+
+- O manifesto declara o ícone do plugin, a política de privacidade e os termos de uso,
+  que o diretório de plugins do Claude mostra na listagem.
+- O README do pacote público (OAuth) cobre a instalação no claude.ai e no Cowork
+  (Customize > Plugins e a aba Connectors do plugin), o que o plugin envia ao servidor e
+  os pacotes Cursor e Grok.
+
+### Alterado
+
+- As skills não pré-aprovam mais ferramentas: a aprovação de cada chamada fica com as
+  regras de permissão do usuário, como em qualquer cliente.
+- Os subagentes listam só as ferramentas do servidor MCP deste plugin, pelo nome que o
+  Claude Code dá a elas, e continuam sem Bash e sem escrita em disco.
+- As skills chamam os subagentes pelo nome que o Claude Code dá a eles,
+  `iajus-juris:<nome>`; nos demais clientes, executam o mesmo método diretamente.
+- Os manifestos Cursor e Grok passam a 2.6.9, porque usam as mesmas skills e subagentes.
+
+### Removido
+
+- Os exemplos que liam uma chave `ik_*` de variável de ambiente saíram do README do
+  pacote público, que autentica por OAuth 2.1. A alternativa por chave continua descrita
+  para o Claude Code, com a chave digitada pelo usuário.
+
+## [2.6.8] - 2026-09-25
+
+### Corrigido
+
+- Manifestos, apresentação do pacote e selo de conteúdo identificam a mesma versão.
+- O conteúdo atual recebe um número novo, preservando a detecção de alterações sob
+  versões já seladas. A versão 2.6.7 foi uma etapa de preparação no repositório.
+- A disponibilização deste pacote nos marketplaces depende da publicação externa.
+
 ## [2.6.6] - 2026-08-21
 
 ### Corrigido
@@ -143,7 +178,7 @@ Cinco subagentes especialistas e o icone IAJUS. Bump MINOR: adiciona capacidades
   - **legislacao-juris**: consulta legislacao federal, estadual e municipal, vigencia (status_vigencia) e grafo de alteracoes por dispositivo.
   - **jurimetria-juris**: agregados exatos (volume, relator, classe, orgao julgador, resultado, lag) sem inventar numero.
   - **conferente-citacoes**: confere cada citacao de acordao ou norma contra a fonte antes de fechar o texto.
-- Icone do plugin (`assets/iajus-icon-512.png`, Asterisco de Origem navy+ouro).
+- Icone do plugin (Asterisco de Origem navy+ouro).
 
 ## [2.0.0] - 2026-07-10
 

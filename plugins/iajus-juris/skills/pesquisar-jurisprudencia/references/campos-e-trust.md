@@ -30,7 +30,9 @@ atribuir a autoria de um acórdão e ao conferir vigência antes de amparar.
 
 - **`buscar_qualificada`** - cada resultado traz `status_vigencia` (`vigente` /
   `cancelada` / …); canceladas/superadas saem **MARCADAS** (vigentes primeiro, com `aviso`
-  quando nada vigente casa). `incluir_canceladas=false` oculta-as. Além do lookup por
+  quando nada vigente casa). `incluir_canceladas=false` esconde só o ato cujo estado adverso está
+  **VERIFICADO** - o que traz data de cancelamento ou cadeia de versões; o adverso ainda NÃO
+  verificado continua a vir, marcado com `vigencia_verificada: false`. Além do lookup por
   número, há o modo **navegar por matéria**:
   `buscar_qualificada(materia="Direito Tributário", tipo="sumula")`.
 

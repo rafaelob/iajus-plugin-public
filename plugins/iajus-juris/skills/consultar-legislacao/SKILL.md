@@ -1,7 +1,6 @@
 ---
 name: consultar-legislacao
 description: 'Consulta legislação FEDERAL brasileira (leis, decretos, MPVs, LCs, emendas) pelo MCP IAJUS: texto e referências da fonte oficial quando disponíveis, resolução por tipo/número/ano, busca por tema, vigência (vigente/revogada) e alterações por artigo. Acione quando o usuário pedir o texto de uma lei federal, um artigo ou a redação vigente de um dispositivo, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z". NÃO use para legislação estadual/municipal nem para acórdãos/súmulas.'
-allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__listar_normas, mcp__plugin_iajus-juris_iajus__listar_normas, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__buscar_dispositivos, mcp__plugin_iajus-juris_iajus__buscar_dispositivos, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__obter_ontologia_juridica, mcp__plugin_iajus-juris_iajus__obter_ontologia_juridica, mcp__iajus__obter_classificacao_tipo, mcp__plugin_iajus-juris_iajus__obter_classificacao_tipo, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__obter_protocolo_classificacao, mcp__plugin_iajus-juris_iajus__obter_protocolo_classificacao
 ---
 
 # Consultar legislação federal brasileira (IAJUS)
@@ -21,10 +20,10 @@ MCP em vez de citar de memória: **o texto da fonte oficial é a verdade.**
 
 Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
 
-- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` - mediu uma parte; declare o que ficou de fora.
 - `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
 
 `total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
@@ -85,9 +84,9 @@ Vigência e amparo nas buscas (síntese - detalhe em `references/grafo-alteracoe
 Legislação **não tem piso temporal**: toda norma recepcionada pela CF-1988 e vigente está
 em escopo, de qualquer ano (um decreto-lei dos anos 1950 ainda em vigor está em escopo). A
 vigência decide-se pelo **status da fonte** (`status`/`status_vigencia`), NUNCA pelo ano.
-Não presuma que uma norma antiga "não existe na base" por ser antiga. Numa tarefa grande
-(dossiê normativo, parecer que amarra várias normas), delegue ao subagente
-`legislacao-juris` (ver Subagentes); num cliente sem subagentes, execute você mesmo:
+Não presuma que uma norma antiga "não existe na base" por ser antiga. No Claude Code,
+numa tarefa grande (dossiê normativo, parecer que amarra várias normas), delegue ao
+subagente `legislacao-juris` (ver Subagentes); nos demais clientes, execute você mesmo:
 
 1. **Nome ou número → texto vigente.** Se o usuário dá o **apelido** ("CLT", "CDC", "Lei
    Maria da Penha"), resolva por `buscar_norma_por_nome`; se dá **tipo + número**
@@ -120,15 +119,16 @@ Não presuma que uma norma antiga "não existe na base" por ser antiga. Numa tar
 - Preserve a grafia e os diacríticos exatamente como na fonte (UTF-8).
 - Se `desfecho` for `sem_resultado` (consulta rodou e não achou), ou a norma não for
   federal / MPV convertida que não resolve, **diga isso**. Se for `erro` ou
-  `nao_terminou`, reporte a falha — não «não está na base».
+  `nao_terminou`, reporte a falha - não «não está na base».
 - A cobertura aqui é **federal**; legislação estadual/municipal tem skill própria
   (`consultar-legislacao-estadual`) e jurisprudência também (`pesquisar-jurisprudencia`).
 
 ## Subagentes IAJUS (Claude Code)
 
-No **Claude Code**, delegue uma tarefa normativa grande a subagentes especializados
-(invoque via Task/subagent pelo nome). Em clientes **sem subagentes** (claude.ai web,
-ChatGPT, Codex), **execute você mesmo o método acima** - não delegue.
+No **Claude Code**, delegue uma tarefa normativa grande a subagentes especializados.
+Cada um se chama `iajus-juris:<nome>` e também atende por `@agent-iajus-juris:<nome>`.
+Nos demais clientes (claude.ai, Cowork, ChatGPT, Codex), **execute você mesmo o método
+acima**, sem delegar.
 
 - **`legislacao-juris`** - norma aplicável (federal, estadual ou municipal), vigência
   (`status_vigencia`) e grafo de alterações por dispositivo, num só dossiê normativo.

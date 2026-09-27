@@ -25,7 +25,10 @@ conferir vigência antes de amparar.
 
 - `buscar_qualificada` traz `status_vigencia` (`vigente` / `cancelada` / …); canceladas
   saem MARCADAS (vigentes primeiro; `aviso` quando nada vigente casa). `incluir_canceladas=false`
-  oculta. Modo por matéria: `buscar_qualificada(materia="Direito Tributário", tipo="sumula")`.
+  esconde só o ato cujo estado adverso está VERIFICADO - o que traz data de cancelamento ou cadeia
+  de versões; o adverso ainda NÃO verificado continua a vir, marcado com
+  `vigencia_verificada: false`.
+  Modo por matéria: `buscar_qualificada(materia="Direito Tributário", tipo="sumula")`.
 
 ## Citação numérica dispara lookup exato
 

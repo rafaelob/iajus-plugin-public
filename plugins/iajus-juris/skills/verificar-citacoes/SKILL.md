@@ -1,7 +1,6 @@
 ---
 name: verificar-citacoes
 description: 'Verifica as citações jurídicas de um texto (petição, parecer, memorial, decisão) contra fontes oficiais quando disponíveis pelo MCP IAJUS: existência, fidelidade e vigência, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA). Acione em "confira as citações desta peça", "essas súmulas ainda valem?", "esse acórdão é real ou foi alucinado?", "valide os precedentes citados". É o antídoto da alucinação de citação. NÃO use para pesquisar do zero (use pesquisar-jurisprudencia).'
-allowed-tools: mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_dispositivos, mcp__plugin_iajus-juris_iajus__buscar_dispositivos, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma
 ---
 
 # Verificar citações jurídicas de um texto (IAJUS)
@@ -22,13 +21,13 @@ texto), use a skill `pesquisar-jurisprudencia`.
 
 Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
 
-- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` - mediu uma parte; declare o que ficou de fora.
 - `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
 
-`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`, a citação ficou **não verificável por falha** — não NÃO LOCALIZADA.
+`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`, a citação ficou **não verificável por falha** - não NÃO LOCALIZADA.
 
 ## O que você confere (três eixos)
 
@@ -104,10 +103,10 @@ não localizadas como as que exigem atenção (risco de citação fabricada).
 ## Subagentes IAJUS (Claude Code)
 
 No **Claude Code**, um lote grande de citações delega bem ao subagente
-**`conferente-citacoes`** (mesmo método, contexto isolado): invoque-o via Task/subagent
-pelo nome, passando o texto a verificar. Ele devolve o veredito por citação + o resumo.
-Em clientes **sem subagentes** (claude.ai web, ChatGPT, Codex), **execute a verificação
-você mesmo** pelo método acima - não delegue.
+**`conferente-citacoes`** (mesmo método, contexto isolado), que se chama
+`iajus-juris:conferente-citacoes`: passe a ele o texto a verificar. Ele devolve o veredito
+por citação + o resumo. Nos demais clientes (claude.ai, Cowork, ChatGPT, Codex),
+**execute a verificação você mesmo** pelo método acima, sem delegar.
 
 **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
 ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no

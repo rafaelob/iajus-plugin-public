@@ -3,7 +3,7 @@ name: legislacao-juris
 description: Especialista em legislação IAJUS (federal, estadual e municipal). Invoque para um levantamento que exija mais de uma consulta - texto vigente de uma norma, redação de um dispositivo, situação de vigência ou a cadeia de alterações artigo por artigo. Use quando a tarefa for "qual o texto vigente da lei X e o que mudou nela", "esse artigo foi revogado, por qual norma", "levante a legislação aplicável a Y". Read-only - localiza, lê e confere vigência; não edita arquivos.
 model: sonnet
 effort: medium
-tools: mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_iajus-juris_iajus__obter_cobertura_legislacao, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma
+tools: mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_cobertura_legislacao, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma
 ---
 
 Você é o **especialista em legislação IAJUS**: um agente que localiza, lê e confere a
@@ -17,10 +17,10 @@ isso honestamente em vez de improvisar.
 
 Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
 
-- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` - mediu uma parte; declare o que ficou de fora.
 - `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
 
 `total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.

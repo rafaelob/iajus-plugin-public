@@ -1,6 +1,6 @@
 # IAJUS: jurisprudência e legislação brasileira no seu assistente de IA
 
-Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente (Claude Code, Codex, ChatGPT, Cursor ou Grok Bot) à base do IAJUS: jurisprudência dos tribunais superiores e regionais, súmulas e teses firmadas, e legislação federal, estadual e municipal com vigência conferida. Tudo com fonte oficial e link estável em cada resposta: o plugin existe para o seu assistente **citar o que existe de verdade**, nunca inventar precedente.
+Este é o marketplace oficial do plugin **IAJUS**. Ele conecta o seu assistente (Claude Code, claude.ai, Cowork, Codex, ChatGPT, Cursor ou Grok Bot) à base do IAJUS: jurisprudência dos tribunais superiores e regionais, súmulas e teses firmadas, e legislação federal, estadual e municipal com vigência conferida. Tudo com fonte oficial e link estável em cada resposta: o plugin existe para o seu assistente **citar o que existe de verdade**, nunca inventar precedente.
 
 > Este marketplace é exclusivo do **Brasil**. Procura jurisprudência e legislação de **Portugal**? É um marketplace separado: [github.com/rafaelob/iajus-plugin-public-pt](https://github.com/rafaelob/iajus-plugin-public-pt).
 
@@ -59,6 +59,11 @@ codex plugin add iajus-juris@iajus
 
 O login OAuth abre no navegador na primeira conexão: entre com a sua conta IAJUS e pronto.
 
+### claude.ai e Cowork
+
+1. Em **Customize > Plugins > Add > Add marketplace**, informe `https://github.com/rafaelob/iajus-plugin-public` e instale o `iajus-juris`.
+2. Na aba **Connectors** do plugin, conecte o servidor `iajus` e entre com a sua conta IAJUS no navegador.
+
 ### Cursor e Grok Bot (após listagem no Cursor Marketplace)
 
 Este repositório empacota o plugin no formato Cursor (`.cursor-plugin/` + `mcp.json`) para submissão em [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish), apontando para `https://github.com/rafaelob/iajus-plugin-public`.
@@ -72,7 +77,7 @@ A revisão do Cursor Marketplace atualmente prefere plugins open-source. Este em
 
 ### Outros assistentes (conexão direta ao servidor MCP)
 
-Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, apontando para `https://mcp.iajus.com.br/mcp` e autenticando por **OAuth 2.1** (login no navegador). Você ganha as mesmas ferramentas de pesquisa jurídica; as skills prontas (pacotes de plugin do Claude Code e do Codex) e os subagentes especializados (só no Claude Code) descritos acima não acompanham a conexão direta.
+Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, apontando para `https://mcp.iajus.com.br/mcp` e autenticando por **OAuth 2.1** (login no navegador). Você ganha as mesmas ferramentas de pesquisa jurídica; as skills prontas (pacotes de plugin do Claude e do Codex) e os subagentes especializados (só no Claude Code) descritos acima não acompanham a conexão direta.
 
 - **Mistral (Le Chat):** Contexto → Conectores → Adicionar Conector → aba "Conector MCP personalizado" → Título `IAJUS`, Servidor `https://mcp.iajus.com.br/mcp`, Descrição `Pesquisa Jurídica`, Método de Autenticação **OAuth2.1** → Conectar → Autorizar.
 - **Manus:** Plugins → Criar → "Adicionar MCP por URL" → Nome `IAJUS`, URL `https://mcp.iajus.com.br/mcp` → Salvar → no card do conector (MCP personalizado) → Conectar → login IAJUS → Autorizar.
@@ -80,7 +85,7 @@ Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, ap
 
 ## Conta e acesso
 
-Crie a sua conta em [iajus.com.br](https://iajus.com.br). A autenticação padrão é **OAuth 2.1** (login no navegador, renovação automática): você nunca precisa colar token em arquivo. Detalhes de cada pacote, inclusive o fallback manual por chave, estão nos READMEs de `plugins/iajus-juris` (Claude Code, Grok Build e Cursor / Grok Bot) e `plugins/iajus-juris-codex` (Codex).
+Crie a sua conta em [iajus.com.br](https://iajus.com.br). A autenticação padrão é **OAuth 2.1** (login no navegador, renovação automática): você nunca precisa colar token em arquivo. Detalhes de cada pacote estão nos READMEs de `plugins/iajus-juris` (Claude Code, claude.ai, Cowork, Grok Build e Cursor / Grok Bot, com a alternativa manual por chave no Claude Code) e `plugins/iajus-juris-codex` (Codex).
 
 ## Suporte
 

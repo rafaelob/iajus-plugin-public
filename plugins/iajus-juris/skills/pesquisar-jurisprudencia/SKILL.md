@@ -1,7 +1,6 @@
 ---
 name: pesquisar-jurisprudencia
 description: Pesquisa e cita jurisprudência brasileira (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS, com fontes oficiais quando disponíveis - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_iajus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__obter_dispositivos_citados, mcp__plugin_iajus-juris_iajus__obter_dispositivos_citados, mcp__iajus__buscar_citantes_dispositivo, mcp__plugin_iajus-juris_iajus__buscar_citantes_dispositivo, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_iajus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_iajus-juris_iajus__buscar_informativos_stj, mcp__iajus__listar_orgaos_julgadores, mcp__plugin_iajus-juris_iajus__listar_orgaos_julgadores
 ---
 
 # Pesquisar jurisprudência brasileira (IAJUS)
@@ -24,10 +23,10 @@ memória.**
 
 Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
 
-- `erro` — a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` — a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` — timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` — mediu uma parte; declare o que ficou de fora.
+- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
+- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
+- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
+- `parcial` - mediu uma parte; declare o que ficou de fora.
 - `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
 
 `total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
@@ -96,9 +95,9 @@ Notas de uso:
 ## Método do pesquisador (5 passos)
 
 Uma pesquisa jurídica de verdade quase nunca é UMA chamada: é uma varredura que
-escala de modalidade até a cobertura estabilizar. Numa tarefa grande (dossiê,
-multi-busca), delegue ao subagente `pesquisador-juris` (ver seção Subagentes); num
-cliente sem subagentes, conduza-a você mesmo, nesta ordem.
+escala de modalidade até a cobertura estabilizar. No Claude Code, numa tarefa grande
+(dossiê, multi-busca), delegue ao subagente `pesquisador-juris` (ver seção Subagentes);
+nos demais clientes, conduza-a você mesmo, nesta ordem.
 
 1. **Priorize o CONTEÚDO consolidado antes do acórdão comum.** Para "qual o
    entendimento atual / a tese firmada", comece por `buscar_qualificada` (súmula, SV,
@@ -125,7 +124,7 @@ cliente sem subagentes, conduza-a você mesmo, nesta ordem.
    as modalidades: densa/híbrida para o panorama, FTS/regex para termos e dispositivos
    literais, ontologia para esgotar um ramo, citações para a rede do precedente-chave.
 4. **Envelope de honestidade.** Leia `desfecho` primeiro: `sem_resultado` é zero
-   MEDIDO (cobertura em andamento, não «o precedente não existe» — ofereça a fonte
+   MEDIDO (cobertura em andamento, não «o precedente não existe» - ofereça a fonte
    superior); `erro`/`nao_terminou`/`medida_indisponivel` é NÃO-MEDIDO; `parcial` declara o que ficou de
    fora. Um filtro rejeitado (`tribunal` numa modalidade que só aceita `orgao_code`)
    pede reenvio. Nunca preencha a lacuna com um precedente fabricado.
@@ -138,7 +137,8 @@ cliente sem subagentes, conduza-a você mesmo, nesta ordem.
      súmula cancelada/superada e artigo revogado saem MARCADOS, nunca como amparo vigente.
    Um número, ementa, relator ou link só entra na resposta se veio da tool. Sem retorno,
    é NÃO LOCALIZADA (possível alucinação) - reporte assim, nunca "provavelmente existe".
-   Num lote grande de citações, delegue essa passada ao subagente `conferente-citacoes`.
+   No Claude Code, num lote grande de citações, delegue essa passada ao subagente
+   `conferente-citacoes`; nos demais clientes, faça-a você mesmo.
 
 ## Como citar (obrigatório)
 
@@ -161,9 +161,9 @@ cliente sem subagentes, conduza-a você mesmo, nesta ordem.
 ## Subagentes IAJUS (Claude Code)
 
 No **Claude Code**, uma tarefa grande de pesquisa ganha em delegar a subagentes
-especializados (invoque cada um via Task/subagent pelo nome). Em clientes **sem
-subagentes** (claude.ai web, ChatGPT, Codex), **execute você mesmo o método acima** -
-não delegue.
+especializados. Cada um se chama `iajus-juris:<nome>` e também atende por
+`@agent-iajus-juris:<nome>`. Nos demais clientes (claude.ai, Cowork, ChatGPT, Codex),
+**execute você mesmo o método acima**, sem delegar.
 
 - **`pesquisador-juris`** - tarefa multi-busca ou dossiê: conduz a varredura completa
   (escalonamento de modalidade + envelope de honestidade) e devolve os julgados citáveis.
@@ -210,7 +210,8 @@ alguns clientes pedem **uma aprovação por tool** na primeira chamada:
   próprio hit da busca (ementa + trecho + links); não há tool separada de "abrir".
 - **Se o cliente pedir aprovação por chamada:** oriente o usuário a **autorizar uma vez**
   e marcar **"sempre permitir" / "lembrar nesta conversa"**, conforme a política do cliente.
-  (No Claude Code, `/permissions` permite pré-aprovar as tools `mcp__iajus__*`; no ChatGPT,
-  a caixa de confirmação do conector oferece lembrar a escolha na conversa.) Se a caixa de
+  (No Claude Code, `/permissions` permite pré-aprovar as tools do plugin, como mostra o
+  README do plugin; no claude.ai, no Cowork e no ChatGPT, a caixa de
+  confirmação do conector oferece lembrar a escolha.) Se a caixa de
   aprovação **não renderizar/travar**, é limitação da interface do cliente, não do IAJUS:
   reabra a conversa/sessão ou reautentique em `/mcp`, e prefira a busca direta acima.

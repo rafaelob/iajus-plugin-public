@@ -1,12 +1,12 @@
 # IAJUS - plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex **2.6.4** que entrega as **5 skills** jurídicas IAJUS e conecta ao endpoint
+Plugin Codex **2.6.5** que entrega as **5 skills** jurídicas IAJUS e conecta ao endpoint
 MCP único `https://mcp.iajus.com.br/mcp` (28 ferramentas). Ele cobre a mesma família
 funcional do plugin Claude Code `iajus-juris`,
 mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
-byte-idênticos. Ambos usam o mesmo MCP remoto. Autentica por **OAuth 2.1 por padrão** (login no
-navegador, refresh automático); a chave `ik_*` continua disponível como **fallback
-manual** (Bearer).
+byte-idênticos. Ambos usam o mesmo MCP remoto. Autentica por **OAuth 2.1** (login no
+navegador, refresh automático): o plugin não lê chave nem variável de ambiente da sua
+máquina.
 
 ## Instalação
 
@@ -31,8 +31,8 @@ codex plugin marketplace add https://dist.iajus.com.br/marketplace.git
 codex plugin add iajus-juris@iajus
 ```
 
-> O Basic gateia só o **clone do catálogo**. O **runtime do MCP** usa OAuth (ou a
-> `ik_*` via fallback abaixo). Acesso (conta + `ik_*`) em <https://iajus.com.br>.
+> O Basic gateia só o **clone do catálogo**. O **runtime do MCP** usa OAuth. Acesso
+> (conta + `ik_*`) em <https://iajus.com.br>.
 
 ## Runtime: OAuth na primeira chamada
 
@@ -83,20 +83,6 @@ continuam sob controle do cliente e do usuário. O plugin não pré-aprova chama
   JEFs, administrativo (CARF), legislação federal/estadual/municipal, panorama do corpus e
   conferência anti-alucinação.
 
-## Fallback manual: chave `ik_*` (Bearer) em vez de OAuth
-
-Se preferir a chave estática à OAuth, registre o MCP via CLI com o Bearer por
-variável de ambiente (esse caminho **não** dispara OAuth):
-
-```bash
-export IAJUS_API_TOKEN="ik_live_..."           # bash/zsh; PowerShell: $env:IAJUS_API_TOKEN="ik_live_..."
-codex mcp add iajus --url https://mcp.iajus.com.br/mcp --bearer-token-env-var IAJUS_API_TOKEN
-```
-
-Build antigo do Codex sem `url` remoto: bridge stdio
-`npx -y mcp-remote https://mcp.iajus.com.br/mcp --header "Authorization: Bearer ${IAJUS_API_TOKEN}"`
-(requer Node/npx). A configuração do servidor está em `./.mcp.json`.
-
 > Manifesto do plugin: `.codex-plugin/plugin.json`; manifesto do marketplace:
 > `.agents/plugins/marketplace.json`. OAuth keys do Codex (`oauth_resource`/`scopes`)
 > e a forma de `.mcp.json` (wrapper `mcpServers` camelCase) verificadas
@@ -115,11 +101,7 @@ servidor **sem token estático**:
 ```
 
 Salve e autentique em Settings, Customizations, Installed MCP Servers, Authenticate (uma
-vez por superfície). Se um build do Antigravity não enviar o token OAuth no HTTP direto
-e retornar `401`, use a ponte stdio `mcp-remote` com o Bearer por variável de ambiente
-(igual ao fallback `ik_*` acima): `npx -y mcp-remote https://mcp.iajus.com.br/mcp
---header "Authorization: Bearer ${IAJUS_API_TOKEN}"`. **Nunca** cole a chave literal no
-arquivo. O passo a passo completo está no README do plugin Claude Code irmão
+vez por superfície). O passo a passo completo está no README do plugin Claude irmão
 (`plugins/iajus-juris/README.md`, seção Antigravity 2.0).
 
 ## Privacidade e suporte
