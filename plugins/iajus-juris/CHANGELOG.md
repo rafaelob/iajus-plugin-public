@@ -5,6 +5,34 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [2.6.21] - 2026-10-02
+
+### Corrigido
+
+- A descrição do marketplace acompanha as seis skills da fonte do plugin. A geração preserva a opção de ativação do canal público e evita descrições desatualizadas.
+- Os endereços de conexão e a disponibilidade das ferramentas continuam os da ligação instalada.
+
+## [2.6.20] - 2026-10-01
+
+### Alterado
+
+- As skills explicam a continuação por até três páginas, com teto de 100 resultados para decisões e normas e de 50 notas para informativos. O padrão continua em 20 por página, ajustável ao pedido; fim da janela não equivale a fim do acervo.
+- As instruções usam o catálogo descoberto e não ativam o novo MCP.
+
+## [2.6.19] - 2026-10-01
+
+### Alterado
+
+- A skill de pesquisa orienta páginas de 20 informativos, quantidade de 1 a 50 e continuação por cursor quando a nova ferramenta estiver disponível. A janela de 50 notas é distinguida do total do acervo.
+- As instruções continuam condicionadas às ferramentas descobertas; esta versão do plugin não ativa o novo MCP.
+
+## [2.6.16] - 2026-10-01
+
+### Alterado
+
+- As skills e os oito agentes orientam a descoberta das ferramentas disponíveis, com nomes novos e legados separados. A nova skill de pesquisa Lex preserva contexto, restrições, IDs e a chave de repetição. Campos e limitações seguem cada modalidade; filtros do pedido não são relaxados em silêncio.
+- Esta atualização de instruções não ativa o novo MCP: use apenas as ferramentas expostas pela ligação instalada.
+
 ## [2.6.9] - 2026-09-27
 
 ### Adicionado

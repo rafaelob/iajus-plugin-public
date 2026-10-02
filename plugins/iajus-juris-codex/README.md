@@ -1,6 +1,6 @@
 # IAJUS - plugin para OpenAI Codex (via marketplace)
 
-Plugin Codex **2.6.5** que entrega as **5 skills** jurídicas IAJUS e conecta ao endpoint
+Plugin Codex que entrega as **6 skills** jurídicas IAJUS e conecta ao endpoint
 MCP único `https://mcp.iajus.com.br/mcp` (28 ferramentas). Ele cobre a mesma família
 funcional do plugin Claude Code `iajus-juris`,
 mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
@@ -77,8 +77,8 @@ continuam sob controle do cliente e do usuário. O plugin não pré-aprova chama
   `https://mcp.iajus.com.br/mcp`, **OAuth 2.1** (`oauth_resource` RFC 8707 + `scopes`
   `openid email offline_access`). Forma = wrapper **`mcpServers` camelCase**,
   com o servidor `iajus` dentro dele. Nenhum token literal em disco.
-- **5 skills** (`./skills/`): `pesquisar-jurisprudencia`, `consultar-legislacao`,
-  `consultar-legislacao-estadual`, `corpus-status` e `verificar-citacoes`. Elas cobrem
+- **6 skills** (`./skills/`): `pesquisar-jurisprudencia`, `consultar-legislacao`,
+  `consultar-legislacao-estadual`, `corpus-status`, `verificar-citacoes` e `pesquisa-juridica-lex`. Elas cobrem
   tribunais superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais dos
   JEFs, administrativo (CARF), legislação federal/estadual/municipal, panorama do corpus e
   conferência anti-alucinação.
@@ -114,3 +114,7 @@ vez por superfície). O passo a passo completo está no README do plugin Claude 
   (jurisprudência e legislação normalizadas). Não inclua dados pessoais, credenciais ou
   outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
   server-side.
+
+## Pesquisa Lex na conexão nova
+
+A skill `pesquisa-juridica-lex` usa a pesquisa comum ou profunda apenas quando essas ferramentas estiverem expostas. Conserva contexto, restrições, IDs e a chave de repetição; consulta e cancelamento acompanham a mesma tarefa. Na conexão legada, as ferramentas de pesquisa existentes continuam disponíveis.

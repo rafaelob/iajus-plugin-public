@@ -1,32 +1,16 @@
-# Grafo de norma + cadeia de alterações (legislação federal)
+# Ler uma norma e conferir alterações
 
-Referência da modelagem de alterações artigo por artigo (§11 do escopo IAJUS). Consulte
-ao responder "esse artigo foi alterado/revogado?", "o que mudou dentro da norma?" ou ao
-amparar numa redação vigente que pode ter sido alterada.
+Escolha ferramentas pelo propósito e pelo schema listado nesta conexão:
 
-## `obter_alteracoes_norma`
+- consultar_fonte_oficial com consulta.operacao alteracoes consulta eventos registrados para a identidade da norma. O resultado pode indicar que a fonte/executor não oferece histórico para aquele item.
+- explorar_relacoes_juridicas com relacao.modo grafo_norma consulta relações do grafo para a norma indicada.
+- pesquisar_artigos pode localizar dispositivos. Use o id_dispositivo devolvido para ler_documento com leitura.modo dispositivo.
+- ler_documento com leitura.modo texto_norma lê o texto pela identidade normativa aceita; observe formato, limites, versão e recorte devolvidos.
 
-Histórico de alterações artigo por artigo: a norma alteradora + a data de cada evento.
-Rode antes de afirmar que uma redação está em vigor.
+Grafo e lista de alterações são evidências distintas. Não deduza vigência atual, completude histórica ou inexistência de mudança da falta de um evento. Para citar a redação, use o texto e a fonte retornados; sinalize limites de data, executor, território ou leitura integral.
 
-## `obter_grafo_norma`
+Normas estaduais/municipais exigem que o retorno comprove a identidade e a leitura daquele recorte. O mapa de fontes em consultar_acervo é cadastral e não testa disponibilidade agora.
 
-`norma_ref` canônico (ex. `LEI_8112_1990`) + `max_depth` (1-20, padrão 8). Retorna:
+Se as ferramentas integradas não estiverem listadas, use apenas as rotas legacy descobertas: `obter_alteracoes_norma`, `obter_grafo_norma`, `obter_dispositivo_legal` e `obter_texto_norma`. Cada rota usa seu próprio schema; não envie campos de outra ferramenta.
 
-- `cadeia_alteracoes` - quem alterou a norma, recursivamente.
-- `dead_ends` - normas revogadas/caducadas alcançáveis.
-- conversão MPV→LEI - quando a norma é uma medida provisória convertida.
-- `citacoes` - `cita` (o que a norma cita) e `citada_por` (quem a cita).
-- `alteracoes_dispositivo` - eventos por dispositivo ("redação dada por", "revogado por",
-  "regulamentado por") com `dispositivo_ref` + a norma alteradora. É o bloco que diz o que
-  mudou dentro da norma, artigo a artigo.
-
-## Vigência e amparo (invariante)
-
-- Para amparo, sirva só `status=vigente` e sinalize `revogada`/`nao_recepcionada`. Se o
-  dispositivo estiver revogado/alterado, aponte a norma alteradora e a data; nunca
-  apresente texto revogado como vigente.
-- Norma `is_amending_only` (que só existe para alterar outra) não é fonte substantiva -
-  cite a norma alterada consolidada.
-- A redação vigente de UM dispositivo vem de `obter_dispositivo_legal`; o grafo/alterações
-  dizem o histórico, o dispositivo diz o texto atual.
+Use as ferramentas e schemas disponíveis nesta conexão; se uma rota estiver indisponível, informe a limitação.

@@ -1,8 +1,8 @@
 {
   "name": "iajus-juris",
   "displayName": "IAJUS - Brazilian Legal Research",
-  "description": "Brazilian legal research through the hosted IAJUS MCP server: case law, qualified and binding precedents, and federal, state, and municipal legislation, with citations and official-source links when available. Includes five legal-research skills, eight specialized agents, and OAuth 2.1 authentication.",
-  "version": "2.6.9",
+  "description": "Brazilian legal research through the hosted IAJUS MCP server: case law, qualified and binding precedents, and federal, state, and municipal legislation, with citations and official-source links when available. Includes six legal-research skills, eight specialized agents, and OAuth 2.1 authentication.",
+  "version": "2.6.21",
   "author": {
     "name": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
     "email": "contato@iajus.com.br"

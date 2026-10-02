@@ -1,96 +1,25 @@
 ---
 name: verificar-citacoes
-description: 'Verifica as citações jurídicas de um texto (petição, parecer, memorial, decisão) contra fontes oficiais quando disponíveis pelo MCP IAJUS: existência, fidelidade e vigência, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA). Acione em "confira as citações desta peça", "essas súmulas ainda valem?", "esse acórdão é real ou foi alucinado?", "valide os precedentes citados". É o antídoto da alucinação de citação. NÃO use para pesquisar do zero (use pesquisar-jurisprudencia).'
-allowed-tools: mcp__iajus__buscar_por_cnj, mcp__plugin_iajus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_qualificada, mcp__plugin_iajus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_iajus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_por_citacoes, mcp__plugin_iajus-juris_iajus__buscar_por_citacoes, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_dispositivos, mcp__plugin_iajus-juris_iajus__buscar_dispositivos, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma
+description: Verifica uma a uma citações de decisões, precedentes e normas contra registros e fontes disponíveis. Use para checar existência, fidelidade e vigência; não use para pesquisar do zero.
+allowed-tools: mcp__iajus__pesquisar_decisoes, mcp__iajus__pesquisar_precedentes, mcp__iajus__pesquisar_informativos, mcp__iajus__ver_historico_juridico, mcp__iajus__explorar_relacoes_juridicas, mcp__iajus__pesquisar_normas, mcp__iajus__pesquisar_artigos, mcp__iajus__consultar_fonte_oficial, mcp__iajus__ler_documento, mcp__iajus__buscar_por_cnj, mcp__iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__iajus__buscar_por_citacoes, mcp__iajus__buscar_citantes_dispositivo, mcp__iajus__obter_dispositivos_citados, mcp__iajus__buscar_hibrida, mcp__iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__iajus__buscar_por_ontologia, mcp__iajus__buscar_dispositivos, mcp__iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__iajus__buscar_norma_fonte_oficial, mcp__iajus__listar_normas, mcp__iajus__obter_texto_norma, mcp__iajus__obter_dispositivo_legal, mcp__iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__iajus__obter_estatisticas_base, mcp__iajus__obter_cobertura_legislacao
 ---
 
-# Verificar citações jurídicas de um texto (IAJUS)
+# Verificar citações jurídicas
 
-## Role
+Confira cada citação separadamente contra ferramentas e schemas listados nesta conexão. Se a rota necessária não estiver disponível, informe a limitação em vez de presumir outro nome.
 
-Conferente de citações jurídicas: bate, uma a uma, as citações de um texto (petição,
-parecer, memorial, minuta, decisão, artigo) contra a fonte oficial pelo MCP `iajus`. É o
-antídoto da alucinação de citação. NÃO pesquisa do zero (isso é `pesquisar-jurisprudencia`)
-e NÃO edita o texto do usuário.
+| Citação | Rota quando listada |
+|---|---|
+| Processo CNJ | `pesquisar_decisoes` com busca.modo cnj e o número completo. |
+| Súmula, tema ou outro precedente qualificado | `pesquisar_precedentes` por numero/tribunal; use `ver_historico_juridico` com id_documento devolvido quando a redação ou vigência exigir histórico. |
+| Acórdão citado por tese ou ementa | `pesquisar_decisoes` em modo hibrida, semantica ou textual, com os filtros pertinentes. |
+| Norma ou dispositivo legal | `pesquisar_normas` por nome/número; `consultar_fonte_oficial` para localização/alterações; `pesquisar_artigos` para localizar um dispositivo; `ler_documento` para ler a norma ou dispositivo identificado. |
+| Relação de citações | `explorar_relacoes_juridicas` somente depois de obter o identificador pelo resultado de busca. |
 
-## Goal
+Confirme identidade e conteúdo pelo registro retornado. Preserve link oficial, órgão, número, data, redação e situação exatamente como aparecem. Declare CONFIRMADA somente quando a fonte sustentar a referência e a afirmação do texto. Declare DESATUALIZADA apenas com evidência de versão ou estado adverso. Use NÃO LOCALIZADA somente após uma busca concluída e medida; use NÃO VERIFICÁVEL quando houver erro, indisponibilidade, limite, retorno parcial ou falta de fonte/conteúdo suficiente.
 
-Emitir um veredito por citação - CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA - ancorado no
-que a fonte retornou, e fechar com um resumo dos vereditos.
+Um status ausente não confirma vigência; ausência de histórico não prova que não houve alteração. Um zero sem indicador de medição não prova inexistência. Se a resposta legacy trouxer desfecho, sem_resultado é zero medido; erro, nao_terminou, parcial e medida_indisponivel deixam a citação não verificável.
 
-## Success criteria
+## Conexão legacy
 
-- Cada citação verificada nos três eixos: existência, fidelidade, vigência.
-- Toda CONFIRMADA acompanha o `link_completo` oficial e o dado que a confirma.
-- NÃO LOCALIZADA sinalizada como possível alucinação, nunca "confirmada" para completar.
-
-## Constraints (invariantes)
-
-- NEVER confirme de memória: uma citação só é CONFIRMADA se uma chamada de tool nesta
-  sessão a retornou. Sem retorno = NÃO LOCALIZADA (possível alucinação).
-- ALWAYS confira a vigência: qualificada cancelada/superada (`status_vigencia`) ou
-  lei/artigo revogado é DESATUALIZADA, mesmo que o enunciado exista.
-- Dispositivo só é CONFIRMADO com existência E redação: o artigo existe naquela norma E a
-  redação vigente bate com o que o texto afirma.
-- NEVER edite o texto do usuário - você entrega o veredito; a correção é do autor.
-
-## Tool routing (por tipo de citação)
-
-- Número de processo CNJ → `buscar_por_cnj` (completo = exato, ou por componentes). Confira
-  tribunal, data, relator/redator.
-- Súmula / SV / tema RG / repetitivo / IRDR / IRR / IAC / OJ → `buscar_qualificada` (a
-  citação numérica dispara lookup exato) + `obter_versoes_qualificada` quando a redação pode
-  ter mudado. Reporte `status_vigencia`.
-- Quem aplica um precedente → `buscar_por_citacoes` (confere se sustenta a tese atribuída).
-- Acórdão por tese/ementa sem número → `buscar_hibrida` / `buscar_semantica` (se nada casar
-  após escalada, NÃO LOCALIZADA).
-- Dispositivo de lei citado, com redação → `buscar_dispositivos` (acha o artigo) +
-  `obter_dispositivo_legal` (redação vigente).
-- Norma alterada/revogada → `obter_alteracoes_norma` / `obter_grafo_norma`.
-- Status da norma inteira → `buscar_norma_por_nome` / `buscar_norma_por_numero`.
-- Lei estadual/municipal → `buscar_norma_fonte_oficial` / `obter_texto_norma` (UF [+
-  município] + tipo + número + ano).
-
-Cada citação é uma unidade independente - verificações de citações distintas são
-paralelizáveis. Erro `{erro:...}` numa tool → ajuste o argumento e repita.
-
-## Grounding budget
-
-Uma verificação por citação. Buscas adicionais SÓ para esgotar a escalada de uma citação
-que veio vazia (semântica → híbrida → reformular → FTS/CNJ → tribunal superior) antes de
-marcá-la NÃO LOCALIZADA - não para melhorar o fraseado do veredito.
-
-## Output (veredito por citação + resumo)
-
-- CONFIRMADA - existe, fiel e vigente. Anexe `link_completo` + o dado que confirma.
-- DESATUALIZADA - existe mas está cancelada/superada/revogada, OU o texto diverge da fonte
-  (número, órgão, redação). Diga o que diverge e o dado correto (com link).
-- NÃO LOCALIZADA - a fonte devolveu `desfecho=sem_resultado` após busca adequada.
-  Distinga cobertura em andamento de possível fabricação. Se `desfecho` for `erro`
-  ou `nao_terminou`, a citação ficou **não verificável por falha**, não NÃO LOCALIZADA.
-
-## Envelope de desfecho
-
-Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
-
-- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` - mediu uma parte; declare o que ficou de fora.
-- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
-
-`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`, a citação ficou não verificável por falha.
-
-Feche com: N confirmadas, N desatualizadas, N não localizadas - destacando as não
-localizadas como as de maior risco (citação fabricada).
-
-## Stop rules
-
-Pare quando todas as citações do texto tiverem veredito e o resumo estiver montado - no
-menor número de rodadas úteis, sem confirmar nada sem retorno de tool.
-
-## Autenticação
-
-O cliente MCP autentica por você - OAuth no navegador (primeiro uso) ou chave `ik_*` no
-header `Authorization: Bearer`. Um `401` = sessão/chave ausente ou expirada: refaça o login
-ou revise a chave; nunca cole a chave em chat nem em commit.
+Se as rotas integradas não estiverem listadas, use somente ferramentas legacy descobertas: `buscar_por_cnj`; `buscar_qualificada` e `obter_versoes_qualificada`; `buscar_informativos_stf` ou `buscar_informativos_stj`; `buscar_hibrida`, `buscar_semantica`, `buscar_fts`, `buscar_regex` ou `buscar_por_ontologia`; `buscar_dispositivos`, `buscar_norma_por_nome`, `buscar_norma_por_numero`, `buscar_norma_fonte_oficial`, `listar_normas`, `obter_texto_norma`, `obter_dispositivo_legal`, `obter_alteracoes_norma` ou `obter_grafo_norma`. Para relações, use `buscar_por_citacoes`, `buscar_citantes_dispositivo` ou `obter_dispositivos_citados` conforme o sentido e os IDs retornados. Use cobertura apenas para interpretar ausência: `obter_estatisticas_base` e `obter_cobertura_legislacao`. Siga o schema próprio de cada rota; não envie nela campos de outra ferramenta nem remova filtros ao repetir uma consulta.

@@ -6,8 +6,8 @@
   "plugins": [
     {
       "name": "iajus-juris",
-      "version": "2.6.5",
-      "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com sete modalidades de busca, 28 ferramentas, cinco skills e OAuth 2.1. Citações apontam para fontes oficiais quando disponíveis.",
+      "version": "2.6.14",
+      "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com sete modalidades de busca, 28 ferramentas, seis skills e OAuth 2.1. Citações apontam para fontes oficiais quando disponíveis.",
       "source": {
         "source": "local",
         "path": "./plugins/iajus-juris-codex"

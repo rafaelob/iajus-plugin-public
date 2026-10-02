@@ -1,97 +1,31 @@
 ---
 name: consultar-legislacao
-description: 'Consulta legislação FEDERAL brasileira (leis, decretos, MPVs, LCs, emendas) pelo MCP IAJUS: texto e referências da fonte oficial quando disponíveis, resolução por tipo/número/ano, busca por tema, vigência (vigente/revogada) e alterações por artigo. Acione quando o usuário pedir o texto de uma lei federal, um artigo ou a redação vigente de um dispositivo, ou perguntar "qual lei federal regula Y", "o que diz o art. X da lei Z". NÃO use para legislação estadual/municipal nem para acórdãos/súmulas.'
-allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_iajus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__listar_normas, mcp__plugin_iajus-juris_iajus__listar_normas, mcp__iajus__obter_texto_norma, mcp__plugin_iajus-juris_iajus__obter_texto_norma, mcp__iajus__obter_alteracoes_norma, mcp__plugin_iajus-juris_iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_iajus-juris_iajus__obter_grafo_norma, mcp__iajus__obter_dispositivo_legal, mcp__plugin_iajus-juris_iajus__obter_dispositivo_legal, mcp__iajus__buscar_dispositivos, mcp__plugin_iajus-juris_iajus__buscar_dispositivos, mcp__iajus__buscar_semantica, mcp__plugin_iajus-juris_iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__plugin_iajus-juris_iajus__buscar_fts, mcp__iajus__buscar_por_ontologia, mcp__plugin_iajus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_iajus-juris_iajus__buscar_hibrida, mcp__iajus__obter_ontologia_juridica, mcp__plugin_iajus-juris_iajus__obter_ontologia_juridica, mcp__iajus__obter_classificacao_tipo, mcp__plugin_iajus-juris_iajus__obter_classificacao_tipo, mcp__iajus__buscar_norma_por_nome, mcp__plugin_iajus-juris_iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__plugin_iajus-juris_iajus__buscar_norma_por_numero, mcp__iajus__obter_protocolo_classificacao, mcp__plugin_iajus-juris_iajus__obter_protocolo_classificacao
+description: Pesquisa, lê e confere normas brasileiras. Use para texto de lei, dispositivo, identificação normativa, vigência ou alterações; legislação estadual e municipal tem skill própria.
+allowed-tools: mcp__iajus__pesquisar_normas, mcp__iajus__pesquisar_artigos, mcp__iajus__ler_documento, mcp__iajus__consultar_fonte_oficial, mcp__iajus__explorar_relacoes_juridicas, mcp__iajus__consultar_vocabulario_juridico, mcp__iajus__buscar_dispositivos, mcp__iajus__buscar_norma_por_nome, mcp__iajus__buscar_norma_por_numero, mcp__iajus__buscar_norma_fonte_oficial, mcp__iajus__listar_normas, mcp__iajus__obter_texto_norma, mcp__iajus__obter_dispositivo_legal, mcp__iajus__obter_alteracoes_norma, mcp__iajus__obter_grafo_norma, mcp__iajus__buscar_por_citacoes, mcp__iajus__buscar_citantes_dispositivo, mcp__iajus__obter_dispositivos_citados, mcp__iajus__obter_cobertura_legislacao, mcp__iajus__obter_estatisticas_base, mcp__iajus__obter_ontologia_juridica, mcp__iajus__obter_classificacao_tipo, mcp__iajus__obter_protocolo_classificacao, mcp__iajus__buscar_hibrida, mcp__iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__iajus__buscar_por_ontologia
 ---
 
-# Consultar legislação federal brasileira (IAJUS)
+# Consultar legislação brasileira
 
-## Role
+Use apenas ferramentas e schemas listados nesta conexão. Se a rota necessária não estiver disponível, informe isso sem presumir outro nome.
 
-Especialista em legislação FEDERAL brasileira (leis, decretos, MPVs, LCs, emendas,
-decretos-lei) que resolve, lê e confere vigência pela fonte oficial (Planalto + Senado)
-via MCP `iajus`. NÃO use para legislação estadual/municipal (skill
-`consultar-legislacao-estadual`) nem para acórdãos.
+## Normas e dispositivos
 
-## Goal
+Escolha a rota pela intenção, usando-a somente se estiver listada:
 
-Entregar a norma/dispositivo com a redação VIGENTE consolidada e o status de vigência,
-ancorados na fonte oficial - nunca uma redação de memória.
+- pesquisar_normas recebe busca com modo: hibrida, semantica, textual, expressao, ontologia, nome_ou_apelido ou numero. Use só os filtros do ramo selecionado. Esfera e visão normativa aparecem apenas nos ramos que as declaram; não acrescente filtros por analogia.
+- pesquisar_artigos localiza dispositivos legais, não artigos acadêmicos. Use o identificador retornado ao ler um dispositivo.
+- ler_documento recebe leitura. Para texto normativo use modo texto_norma e a identidade exigida pelo schema; para trecho específico use modo dispositivo com id_dispositivo retornado por uma busca.
+- consultar_fonte_oficial recebe consulta com operação localizar, alteracoes ou enumerar, quando esse ramo estiver listado. Informe somente fonte, identidade e filtros aceitos pela variante.
+- explorar_relacoes_juridicas pode consultar o grafo de uma norma pelo modo grafo_norma; use a referência canônica devolvida pela pesquisa.
 
-## Success criteria
+Em pesquisar_normas, o limite padrão é 20, ajustável de 1 a 100 conforme a quantidade pedida. Híbrida, semântica e ontologia paginam até três páginas, limitadas a 100 resultados (60 com páginas de 20); textual e expressão usam a paginação oferecida pelo executor. Para continuar, repita consulta, filtros e tamanho com page_info.next_cursor em busca.cursor. Pare na quantidade pedida ou sem continuação. Cursor recusado exige reiniciar, sem contar páginas repetidas como novas. Truncamento ou fim da janela não prova fim do acervo; refine o recorte. Nome, número e pesquisar_artigos mantêm seus próprios schemas, sem presumir cursor.
 
-- Norma/dispositivo resolvidos com `link_completo` oficial do Planalto.
-- Vigência afirmada só após checar `status`/`status_vigencia` e a cadeia de alterações.
-- Dispositivo revogado/alterado sinalizado, com a norma alteradora e a data.
+Busca híbrida ou semântica de normas pode chamar provedores e atualizar caches, conforme a descrição da ferramenta. Escolha essa modalidade somente quando a pesquisa temática for necessária. Não apresente um resultado indexado como texto oficial se a chamada não retornou esse texto ou link.
 
-## Constraints (invariantes)
+Leia redação e estado de vigência somente do resultado/fonte retornado. A ausência de um campo de status ou de histórico não prova vigência nem inexistência de alterações. Se não houver resultado medido, falha ou recorte parcial, diga qual limite ocorreu. Nunca retire um filtro para tentar fazer a chamada passar sem autorização do usuário.
 
-- Legislação NÃO tem piso temporal: toda norma recepcionada pela CF-1988 e vigente está em
-  escopo, de qualquer ano. Vigência = status da fonte, NUNCA função do ano.
-- NEVER invente número de lei, redação de artigo ou `link_completo`.
-- NEVER apresente texto revogado/alterado como vigente - aponte a norma alteradora e a data.
-- ALWAYS sirva só `status=vigente` para amparo; sinalize `revogada`/`nao_recepcionada`.
-  Norma `is_amending_only` não é fonte substantiva - cite a norma alterada consolidada.
+Para mudanças por dispositivo, abra references/grafo-alteracoes.md. Para legislação subnacional, use consultar-legislacao-estadual.
 
-## Tool routing
+## Conexão legacy
 
-- `buscar_norma_por_nome` - apelido → norma + `status` (ex.: "CLT", "CDC", "Lei Maria da
-  Penha").
-- `buscar_norma_por_numero` - tipo + número (+ ano) → norma + `status` (ex.: "Lei 8078",
-  "LC 95").
-- `buscar_norma_fonte_oficial` - resolve por `tipo`/`numero`/`ano` OU busca por termo/tema;
-  retorna ementa, data e `link_completo` oficial. Use para confirmar metadados load-bearing.
-- `obter_texto_norma` - texto íntegra (parâmetro `markdown` traz a hierarquia
-  Título/Capítulo/Art./§).
-- `obter_dispositivo_legal` - isola UM dispositivo ("art. 5º, II") com a redação vigente.
-  Caminho mais preciso para um único artigo.
-- `buscar_dispositivos` - varre os dispositivos de uma norma por tema/termo (grão dispositivo).
-- `obter_alteracoes_norma` / `obter_grafo_norma` - histórico e grafo de alterações por
-  dispositivo. Detalhe: `references/grafo-alteracoes.md`.
-- `listar_normas` - enumera normas de um tipo/ano.
-- `buscar_semantica` / `buscar_fts` / `buscar_hibrida` - busca no corpus com
-  `family="legislacao"` (semântica por significado; FTS por expressão, `phrase=true` = ordem;
-  híbrida serve por padrão só normas em vigor, `incluir_historico=true` traz revogadas).
-- `buscar_por_ontologia` - "quais leis tratam de um ramo": `l1_code` TPU + `family="legislacao"`.
-- `obter_ontologia_juridica` / `obter_classificacao_tipo` / `obter_protocolo_classificacao` -
-  árvore de ramos, classificação de um texto normativo e o protocolo CNJ/TPU.
-
-Fluxo dependente: resolver/descobrir a norma → ler o texto → checar vigência
-(`obter_alteracoes_norma`) antes de afirmar que a redação está em vigor.
-
-## Grounding budget
-
-Uma resolução direciona (nome/número/tema). Buscas adicionais SÓ para o dispositivo
-faltante, a cadeia de alterações ou a confirmação de metadados load-bearing - não para
-reformular. Antes de afirmar vigência de um dispositivo, cheque a cadeia de alterações.
-
-## Output
-
-Número da norma, artigo e redação como a fonte devolveu; `link_completo` oficial; o
-`status` de vigência; a norma alteradora + data quando o dispositivo foi alterado/revogado.
-Diacríticos e UTF-8 exatamente como na fonte.
-
-## Envelope de desfecho
-
-Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
-
-- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` - mediu uma parte; declare o que ficou de fora.
-- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
-
-`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
-
-## Stop rules
-
-Pare quando a norma/dispositivo pedido estiver resolvido com a redação vigente e a vigência
-conferida - no menor número de rodadas úteis. Se `desfecho` for `sem_resultado` (ou a
-norma não for federal / MPV convertida que não resolve), pare e diga isso. Se for
-`erro` ou `nao_terminou`, reporte a falha - não «não está na base».
-
-## Autenticação
-
-O cliente MCP autentica por você - OAuth no navegador (primeiro uso) ou chave `ik_*` no
-header `Authorization: Bearer`. Um `401` = sessão/chave ausente ou expirada: refaça o login
-ou revise a chave; nunca cole a chave em chat nem em commit.
+Se as rotas integradas não estiverem listadas, use somente rotas legacy que aparecerem nesta conexão e seus próprios schemas: `buscar_norma_por_nome` e `buscar_norma_por_numero` para localizar; `buscar_dispositivos` para localizar dispositivos; `buscar_norma_fonte_oficial`, `listar_normas` e `obter_texto_norma` para fontes e texto; `obter_dispositivo_legal` para ler dispositivo; `obter_alteracoes_norma` e `obter_grafo_norma` para histórico e relações. Para citações, use `buscar_por_citacoes`, `buscar_citantes_dispositivo` ou `obter_dispositivos_citados` com identificadores devolvidos. Para cobertura, use `obter_cobertura_legislacao` ou `obter_estatisticas_base`; `obter_ontologia_juridica`, `obter_classificacao_tipo` e `obter_protocolo_classificacao` servem para vocabulário e classificação. Buscas temáticas por `buscar_hibrida`, `buscar_semantica`, `buscar_fts` ou `buscar_por_ontologia` só cabem quando a intenção e o schema forem compatíveis. Não reduza filtros escolhidos para repetir uma chamada.

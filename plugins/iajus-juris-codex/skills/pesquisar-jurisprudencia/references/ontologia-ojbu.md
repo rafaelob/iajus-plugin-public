@@ -1,32 +1,15 @@
-# Ontologia OJBU (ramos reais - códigos TPU)
+# Pesquisar por OJBU
 
-Referência dos códigos da ontologia OJBU (alinhada ao CNJ/TPU). Consulte ao usar
-`buscar_por_ontologia`, que recebe `l1_code` (código TPU do ramo, inteiro),
-opcionalmente `l2_code`/`l3_code` (a sub-área exige o `l1_code` do seu ramo) OU
-`tema_transversal`.
+Use pesquisar_decisoes com busca.modo ontologia quando esse nome estiver listado. O recorte fica em busca.filtros:
 
-## Os 21 ramos L1 (código TPU → ramo)
+- ojbu_l1 aceita código positivo ou slug e é obrigatório salvo quando tema_transversal for usado.
+- ojbu_l2 e ojbu_l3 são códigos positivos; informe ojbu_l1 junto.
+- tema_transversal é um recorte alternativo. Não o misture com filtros de ramo, escopo, relator ou classificação principal.
+- tribunal, anos, escopo_rotulo, somente_principal e relator só se aplicam conforme o ramo descrito pelo schema.
+- Pesquisar um conceito amplo sem seleção OJBU é outra intenção: use hibrida ou semantica em vez de presumir um código.
 
-| `l1_code` | Ramo | | `l1_code` | Ramo |
-|---|---|---|---|---|
-| 14 | Tributário | | 9633 | Criança e Adolescente |
-| 195 | Previdenciário | | 9985 | Administrativo e Dir. Público |
-| 287 | Penal | | 10110 | Ambiental |
-| 864 | Trabalho | | 11068 | Penal Militar |
-| 899 | Civil | | 11428 | Eleitoral |
-| 1156 | Consumidor | | 12480 | Saúde |
-| 1209 | Processual Penal | | 12734 | Assistencial |
-| 6191 | Internacional | | 12775 | Educação |
-| 7724 | Registros Públicos | | 1146 | Marítimo |
-| 8826 | Processual Civil e do Trabalho | | 11049 | Processual Penal Militar |
+Consulte consultar_vocabulario_juridico no modo ontologia, se listado, para resolver classificações existentes. Não adivinhe códigos nem trate um rótulo sem resultado como ausência do assunto no corpus.
 
-## Temas transversais (`tema_transversal=`)
+Na conexão legacy, use `buscar_por_ontologia` apenas quando descoberto e siga seu próprio schema, que pode usar l1_code/l2_code/l3_code em vez dos campos da rota integrada.
 
-- `DDG` - Digital e Proteção de Dados (ex.: LGPD)
-- `DER` - Econômico e Regulação
-- `DFN` - Financeiro e Orçamentário
-- `DAG` - Agrário e Fundiário Rural
-- `DID` - Pessoa Idosa e Envelhecimento
-
-Use o tema transversal para recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code`
-para o ramo em si.
+Use as ferramentas e schemas disponíveis nesta conexão; se uma rota estiver indisponível, informe a limitação.

@@ -1,0 +1,13 @@
+IAJUS Plugin Distribution License
+
+Copyright (c) 2026 Celeris Juris Tecnologia e Inteligência Jurídica LTDA. All rights reserved.
+
+The plugin integration files contained in this directory are proprietary. Permission is granted, without charge, to xAI and to operators and users of compatible AI plugin marketplaces and agent clients to index, display metadata for, download, install, copy, and use unmodified copies of these plugin integration files solely for the purpose of connecting to and using the official IAJUS services.
+
+Redistribution of unmodified copies of these plugin integration files as part of a compatible plugin marketplace or agent-client distribution mechanism is permitted. Any modification, derivative work, sublicensing, sale, or other commercial redistribution of these files requires prior written permission from Celeris Juris Tecnologia e Inteligência Jurídica LTDA.
+
+This license applies only to the plugin integration files in this directory. It grants no rights in the IAJUS backend, APIs beyond their documented use, databases, datasets, legal corpus, models, source code not included here, trademarks, service marks, logos, or other proprietary content or infrastructure.
+
+Access to and use of the hosted IAJUS service remains subject to the IAJUS Terms of Use and Privacy Policy published at https://iajus.com.br/termos and https://iajus.com.br/privacidade.
+
+THE PLUGIN INTEGRATION FILES ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM OR IN CONNECTION WITH THESE FILES OR THEIR USE.

@@ -1,217 +1,40 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira (STF, STJ, TST, TCU, TSE, STM, TJs, TRFs, TRTs, TREs) pelo MCP IAJUS, com fontes oficiais quando disponíveis - 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, citações), qualificadas com vigência (súmula, RG, IRDR) e informativos STF/STJ. Acione para precedente, acórdão, súmula, tema, número CNJ ou entendimento de um tribunal. NÃO use para leis.
+description: Pesquisa decisões, precedentes qualificados, informativos e relações jurídicas brasileiras no IAJUS. Use para acórdãos, número CNJ, súmulas, temas e teses de tribunais. Não use para pesquisar legislação.
 ---
 
-# Pesquisar jurisprudência brasileira (IAJUS)
+# Pesquisar jurisprudência brasileira
 
-Você tem acesso ao servidor MCP `iajus`, que indexa jurisprudência brasileira
-(acórdãos colegiados desde 2000 em todos os tribunais - exceções: controle
-concentrado do STF desde 1988, TCU desde 1992, TRF6 desde 2022 -, súmulas,
-precedentes qualificados, repercussão geral) com
-classificação alinhada ao CNJ/TPU (ontologia OJBU: 21 ramos L1 → sub-áreas L2/L3).
-**Use o MCP em vez de inventar precedentes - a fonte é a verdade; nunca cite de
-memória.**
+Use somente os nomes e schemas que a conexão realmente exibe. Se uma rota não estiver listada, informe a indisponibilidade e escolha outra apenas quando ela atender à mesma intenção.
 
-> **Corpus VIVO e em crescimento:** a base é ingerida continuamente - órgãos, anos
-> e famílias novos aparecem na busca automaticamente, sem mudança de skill.
-> Leia `desfecho` ANTES de qualquer contagem: `erro`/`nao_terminou`/`medida_indisponivel` = não mediu;
-> só `sem_resultado` é zero MEDIDO. Para conferir o que a base contém AGORA,
-> use a skill **corpus-status** (`obter_estatisticas_base`).
+## Pesquisa de decisões
 
-## Envelope de desfecho
+Quando pesquisar_decisoes estiver listado, envie um único objeto busca com modo. Os schemas são fechados: use apenas os campos aceitos pelo modo e mantenha todos os filtros escolhidos em uma repetição.
 
-Leia a chave `desfecho` ANTES de qualquer contagem. Os cinco valores são mutuamente exclusivos:
+| modo | Uso e filtros próprios |
+|---|---|
+| hibrida | Pergunta em consulta; combina sinais. Aceita tribunal, anos e datas inicial/final, relator, órgão julgador, tipo e unidade, classe e filtros CNJ, tema, OJBU e natureza do foro. |
+| semantica | Consulta por significado. Aceita tribunal, um ano, tipo de unidade e, no BR, ramo OJBU, natureza do foro e discovery_only. Não aceita faixa de anos. |
+| textual | Termos no texto; filtros de órgão, classe, datas/anos e frase_exata, mais filtros CNJ/tema brasileiros. Ordenação e cursor só conforme o schema. |
+| expressao | Expressão regular POSIX; filtros de órgão, classe, datas/anos e ignorar_maiusculas. allow_unindexed_scan é opt-in explícito do campo e o padrão é falso. |
+| ontologia | Informe filtros.ojbu_l1 ou filtros.tema_transversal. L2/L3 e escopo do rótulo dependem do ramo; tema_transversal não combina com filtros de ramo. Consulte references/ontologia-ojbu.md. |
+| cnj | Informe numero completo ou componentes CNJ, não ambos. Ordenação e cursor seguem este modo. |
 
-- `erro` - a consulta FALHOU; ninguém olhou o acervo. Não é ausência.
-- `sem_resultado` - a consulta RODOU e o acervo não tem. Zero MEDIDO.
-- `nao_terminou` - timeout ou teto. NÃO-MEDIDO; não afirme que «não existe».
-- `parcial` - mediu uma parte; declare o que ficou de fora.
-- `medida_indisponivel` - a fonte respondeu e NÃO carrega a medida. NÃO-MEDIDO sem avaria; não é zero.
+O limite padrão é 20, ajustável de 1 a 100 conforme a quantidade pedida. Para buscar mais, use page_info.next_cursor em busca.cursor e repita consulta, filtros e tamanho; pare na quantidade solicitada ou quando não houver continuação. Não percorra todas as páginas sem necessidade.
 
-`total: 0` só é ausência medida quando `desfecho` é `sem_resultado`. Sem `desfecho`, ou com `erro`/`nao_terminou`/`medida_indisponivel`, diga que a consulta não mediu.
+Híbrida, semântica, textual e ontológica percorrem uma janela de até três páginas, limitada a 100 resultados (60 com páginas de 20). Fim da janela ou truncated não significa fim do acervo: refine o recorte para pesquisar além dela. Cursor expirado, inválido ou ranking alterado exige reiniciar a busca; não acumule a primeira página repetida como novos resultados. Expressão e CNJ usam a paginação oferecida pelo executor; varredura sem índice pode não oferecer cursor. A consulta textual por número CNJ exato tem restrições próprias e não entra nessa janela.
 
-> **Cobertura TJ-RJ (atual):** os acórdãos do TJ-RJ no corpus são hoje
-> predominantemente **cíveis**; a matéria **criminal** (Câmaras Criminais 1ª a 8ª +
-> Seção Criminal) está **apenas parcialmente ingerida** e segue em coleta.
-> **Sempre rode a busca primeiro** - não recuse a consulta criminal de antemão.
-> Só **se** `desfecho` for `sem_resultado` (ou recall fraco com hits que não
-> respondem), trate como **lacuna de cobertura em andamento** (não como ausência
-> de precedente): avise o usuário e ofereça os
-> tribunais superiores (STJ/STF) para a tese criminal. (Demais tribunais e o TJ-RJ
-> cível não têm essa ressalva.)
+## Outras intenções
 
-## Escolha da modalidade (7 tools de busca + qualificadas)
+- Pesquisar tese qualificada: pesquisar_precedentes, por numero ou matéria, com filtros de espécie/tribunal/vinculatividade; o limite é 10 e não há cursor. Canceladas ficam incluídas e marcadas por padrão.
+- Pesquisar conteúdo editorial: pesquisar_informativos aceita tribunal STF ou STJ, consulta e filtros de ramo, ano ou edição. O padrão é 20 notas, com limite de 1 a 50. Para continuar, repita o recorte e a quantidade com page_info.next_cursor em busca.cursor; pare na quantidade pedida. A janela recuperada cobre até três páginas, limitada a 50 notas, e seu fim não prova fim do acervo. Informativo não substitui o acórdão nem prova vinculatividade.
+- Ver versões de uma tese: ver_historico_juridico exige id_documento devolvido por uma pesquisa de precedentes.
+- Explorar citações: use explorar_relacoes_juridicas somente com identificadores devolvidos pela busca; escolha o modo admitido em seu schema. Não invente IDs nem converta uma relação em decisão de mérito.
+- Consultar cobertura: use consultar_acervo e indique o as_of retornado. Contagem de cobertura não comprova completude nem serving.
+- Abrir painel: chame abrir_painel_iajus apenas se a conexão o listar e o usuário pedir o painel ou houver um resultado profundo existente que deva ser aberto. Abrir o painel não inicia pesquisa.
 
-Comece pela modalidade certa para a pergunta. As buscas retornam um formato
-uniforme (`{ modalidade, total, resultados:[…] }`).
+Cite apenas registros, links, trechos e estados que o retorno realmente trouxer. Diferencie zero medido, erro, timeout, indisponibilidade e resultado parcial conforme os campos retornados. Se a resposta legacy trouxer desfecho, sem_resultado é o zero medido; erro, nao_terminou, parcial e medida_indisponivel não provam ausência. Consulte references/campos-e-trust.md para tratar campos de autoridade.
 
-| Pergunta do usuário | Tool | Por quê |
-|---|---|---|
-| Tema/conceito ("o que decidiram sobre dano moral por inscrição indevida") | `buscar_semantica` | Vetorial/densa - casa por significado. **Padrão para perguntas conceituais.** |
-| Quer o melhor resultado geral (relevância máxima) | `buscar_hibrida` | Funde semântica + FTS + trigram + CNJ + ontologia via RRF, com boost de classificação. |
-| Expressão exata / termo técnico literal ("usucapião extraordinária") | `buscar_fts` | Full-text pt_unaccent, stemming PT, insensível a acento; `phrase=true` exige a ordem. |
-| Padrão literal / forma de citação ("Súmula 7", "art. 1.228") | `buscar_regex` | Regex POSIX; **exija ≥3 caracteres literais** no padrão (âncora do índice). |
-| Número de processo CNJ | `buscar_por_cnj` | `numero` completo = casamento exato; ou componentes (ano, tribunal, origem). |
-| "Todos os acórdãos de um ramo do direito" | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU (ou L2/L3, ou `tema_transversal`). Códigos em `references/ontologia-ojbu.md`. |
-| Quem citou uma súmula/tema, ou o que um acórdão cita | `buscar_por_citacoes` | `legal_edges` single-hop; `normalized_ref="Súmula 279"` traz quem aplicou. |
-| Quais dispositivos legais um acórdão cita | `obter_dispositivos_citados` | Leitor do grafo de citações (CIT-04): lista os artigos que a decisão invoca. |
-| Quais julgados aplicam um dispositivo legal | `buscar_citantes_dispositivo` | O inverso (CIT-04): dado um dispositivo, traz os julgados que o aplicaram. |
-| A redação de uma súmula/tema mudou? Histórico de versões | `obter_versoes_qualificada` | Versões da redação de uma súmula/tema/precedente (mudou, quando e por quê). |
-| Entendimento CONSOLIDADO/vinculante de um órgão (súmula, SV, RG, repetitivo, IRDR, IRR, IAC, OJ) | `buscar_qualificada` | Lê os precedentes qualificados do órgão. **Prefira-os a um acórdão isolado** para "o entendimento atual". |
-| **Informativos** de jurisprudência do STF ou do STJ (teses recentes destacadas) | `buscar_informativos_stf` / `buscar_informativos_stj` | A síntese oficial dos julgados de destaque por edição. |
-| "Quais câmaras/turmas/seções o tribunal X tem?" - para então filtrar a busca por uma delas | `listar_orgaos_julgadores` | Descobre o valor EXATO do filtro `orgao_julgador_norm`. Sem ele você não sabe como aquele tribunal grafa a câmara, e o valor chutado devolve vazio. |
+## Conexão legacy
 
-Notas de uso:
-- **Filtrar por câmara/turma/seção:** `buscar_hibrida`, `buscar_fts` e `buscar_regex` aceitam
-  `orgao_julgador_norm`, mas o valor precisa casar com a grafia do tribunal. Descubra-a com
-  `listar_orgaos_julgadores(orgao_code="tjsp")` - `filtro` busca por substring (insensível a
-  acento/caixa) e `limit` vai de 1 a 200 (padrão 50) - e só então filtre a busca. Órgão
-  desconhecido devolve lista vazia. O `n` de cada item é uma contagem REAL do rollup (quantas
-  decisões daquele órgão há na base) e ordena a lista - pode ser reportado como a cobertura
-  daquele órgão. Mas a lista é cortada por `limit`: somar os `n` NÃO dá o total do tribunal.
-- **Filtro de órgão difere por modalidade:** só `buscar_semantica` / `buscar_hibrida`
-  aceitam `tribunal` (ex.: `"STF"`). As demais (`buscar_regex`, `buscar_fts`,
-  `buscar_por_ontologia`) filtram por **`orgao_code`** - o slug minúsculo (ex.: `"stf"`).
-  **Não** passe `tribunal` para essas: a tool rejeita o argumento. (`buscar_por_cnj`
-  recebe `tribunal` como componente CNJ.)
-- **Recorte de ano difere:** `buscar_semantica` aceita `ano` (UM ano exato);
-  `buscar_hibrida` (e regex/FTS/ontologia) aceitam `ano_min`/`ano_max` (faixa).
-  Ambas aceitam `tribunal`, `ramo_l1` (código OJBU L1) e `k` (1-100, padrão 20).
-  O espaço de embedding é o padrão do servidor; não envie `space`.
-- `buscar_regex` recusa padrões só de metacaracteres (ex.: `^[A-Z]+$`); inclua um
-  trecho literal ≥3 chars. Em erro devolve `{ "erro": "…", "busca_status":
-  "incompleta" }` SEM a chave `resultados` (nunca stack trace) - leia e ajuste.
-  Envelope de erro NÃO é zero encontrado: nada foi medido, então não relate ausência.
-
-## Referências detalhadas (consulte quando precisar do detalhe)
-
-- **`references/ontologia-ojbu.md`** - os 21 códigos `l1_code` TPU e os 5 temas
-  transversais. Consulte ao usar `buscar_por_ontologia`.
-- **`references/campos-e-trust.md`** - taxonomia canônica das qualificadas
-  (`tipo_canonico`/`tipo_label`/`materia`), autoria do acórdão (`redator_acordao`), o
-  envelope `trust` e a vigência (`status_vigencia`). Consulte ao rotular/citar.
-
-## Método do pesquisador (5 passos)
-
-Uma pesquisa jurídica de verdade quase nunca é UMA chamada: é uma varredura que
-escala de modalidade até a cobertura estabilizar. No Claude Code, numa tarefa grande
-(dossiê, multi-busca), delegue ao subagente `pesquisador-juris` (ver seção Subagentes);
-nos demais clientes, conduza-a você mesmo, nesta ordem.
-
-1. **Priorize o CONTEÚDO consolidado antes do acórdão comum.** Para "qual o
-   entendimento atual / a tese firmada", comece por `buscar_qualificada` (súmula, SV,
-   repercussão geral, tema repetitivo, IRDR, IRR, IAC, OJ): o precedente qualificado
-   vence um acórdão isolado, e você o cita com a vigência já conferida. Só depois desça
-   ao acórdão individual (busca semântica/híbrida) para exemplificar a aplicação da tese.
-2. **Escale a modalidade em vez de cair no vazio.** Uma busca com
-   `desfecho=sem_resultado` (ou hits cujo `trust.trecho` não responde) NÃO é sinal
-   de parar - é sinal de escalar. Se `desfecho` for `erro` ou `nao_terminou`,
-   reporte a falha e não escale como se o acervo estivesse vazio.
-   nesta ordem, antes de reportar lacuna:
-   - `buscar_semantica` → **`buscar_hibrida`** com a MESMA consulta (a fusão RRF resgata
-     o que a densa isolada perdeu);
-   - **reformule** com os termos que apareceram nos primeiros hits (relator, tese,
-     dispositivo citado, número de tema) - a segunda consulta quase sempre é melhor;
-   - **troque de modalidade pela forma da pergunta:** termo técnico literal →
-     `buscar_fts`; citação de súmula/artigo → `buscar_regex` (ou a citação numérica
-     dispara o lookup exato); ramo inteiro → `buscar_por_ontologia`; precisão por número
-     de processo → `buscar_por_cnj`; rede de um precedente → `buscar_por_citacoes`
-     (quem aplicou uma súmula/tema) e `obter_dispositivos_citados` (o que um acórdão cita);
-   - **suba na hierarquia de autoridade:** se um TJ/TRF vier vazio para a tese, tente o
-     tribunal superior (STJ/STF) - a tese firmada costuma estar lá.
-3. **Refine até a cobertura estabilizar** (rodadas sem resultado novo relevante) e cruze
-   as modalidades: densa/híbrida para o panorama, FTS/regex para termos e dispositivos
-   literais, ontologia para esgotar um ramo, citações para a rede do precedente-chave.
-4. **Envelope de honestidade.** Leia `desfecho` primeiro: `sem_resultado` é zero
-   MEDIDO (cobertura em andamento, não «o precedente não existe» - ofereça a fonte
-   superior); `erro`/`nao_terminou`/`medida_indisponivel` é NÃO-MEDIDO; `parcial` declara o que ficou de
-   fora. Um filtro rejeitado (`tribunal` numa modalidade que só aceita `orgao_code`)
-   pede reenvio. Nunca preencha a lacuna com um precedente fabricado.
-5. **Passada de conferência anti-alucinação (obrigatória antes de entregar).** Toda
-   citação que você entregar precisa ter vindo de uma chamada REAL nesta sessão, com o
-   `link_completo` que a fonte retornou. Antes de fechar a resposta, confira cada citação:
-   - **existe?** o precedente/norma com aquele número/tema/tipo voltou de uma chamada;
-   - **é fiel?** o enunciado, o órgão, o redator, a data que você afirma batem com a fonte;
-   - **está vigente?** cheque `status_vigencia` (no `trust` ou em `buscar_qualificada`) -
-     súmula cancelada/superada e artigo revogado saem MARCADOS, nunca como amparo vigente.
-   Um número, ementa, relator ou link só entra na resposta se veio da tool. Sem retorno,
-   é NÃO LOCALIZADA (possível alucinação) - reporte assim, nunca "provavelmente existe".
-   No Claude Code, num lote grande de citações, delegue essa passada ao subagente
-   `conferente-citacoes`; nos demais clientes, faça-a você mesmo.
-
-## Como citar (obrigatório)
-
-- **Sempre** cite o campo `link_completo` do registro retornado - é a URL estável,
-  deep-per-record, do acórdão na fonte oficial. **Nunca invente** número de processo,
-  ementa ou link.
-- Cite `tribunal`, `numero_processo` (ou `numero_processo_cnj`), `relator` e
-  `data_julgamento` quando presentes. Resuma a `ementa_snippet` em 1-2 frases.
-- Quando útil, mostre a classificação OJBU (`classificacao.l1`, `ramo_l1_codes`) e
-  ofereça abrir o inteiro teor pelo `inteiro_teor_url`.
-- Em **acórdãos**, atribua a autoria ao **`redator_acordao`** (o redator - autor do
-  acórdão pelo art. 941 do CPC) e ao `revisor` quando vier; nas **qualificadas** apresente
-  `tipo_label` (o tipo) e `materia` (a matéria/ramo). Detalhe em `references/campos-e-trust.md`.
-- **Confira a vigência antes de amparar:** ao citar súmula/tema/qualificada, verifique
-  `status_vigencia` (no hit `trust` ou em `buscar_qualificada`) e sinalize
-  explicitamente quando o ato estiver cancelado/superado - nunca o apresente como vigente.
-- Se `desfecho` for `sem_resultado` (ou só hits fracos), **diga isso honestamente**.
-  Se for `erro` ou `nao_terminou`, reporte a falha. Não preencha com precedente fabricado.
-
-## Subagentes IAJUS (Claude Code)
-
-No **Claude Code**, uma tarefa grande de pesquisa ganha em delegar a subagentes
-especializados. Cada um se chama `iajus-juris:<nome>` e também atende por
-`@agent-iajus-juris:<nome>`. Nos demais clientes (claude.ai, Cowork, ChatGPT, Codex),
-**execute você mesmo o método acima**, sem delegar.
-
-- **`pesquisador-juris`** - tarefa multi-busca ou dossiê: conduz a varredura completa
-  (escalonamento de modalidade + envelope de honestidade) e devolve os julgados citáveis.
-- **`elaborador-tese`** - construir uma tese jurídica (enunciado + cadeia de fundamentos
-  com qualificada vigente, norma e precedentes, com solidez honesta).
-- **`refutador-tese`** - stress-test / contraditório de uma tese (jurisprudência contrária
-  real, distinguishing, sinais de superação).
-- **`precedentes-vinculantes`** - mapear o precedente qualificado aplicável (súmula, SV,
-  RG, repetitivo, IRDR/IRR/IAC, OJ) com vigência conferida.
-- **`processo-juris`** - pesquisa amarrada a um processo (dossiê a partir do número CNJ).
-- **`legislacao-juris`** - norma aplicável (federal, estadual ou municipal), vigência e
-  grafo de alterações.
-- **`memorialista-juris`** - montar memorial de pesquisa, parecer ou peça com citação
-  verificável de cada tese.
-- **`conferente-citacoes`** - **SEMPRE feche uma entrega citável com ele** (anti-alucinação):
-  confere cada citação de acórdão/norma contra a fonte antes do texto final.
-
-## Boas práticas
-
-- Comece restrito (tema + tribunal + faixa de ano) e amplie só se vier vazio.
-- Para "qual o entendimento atual", prefira **precedentes qualificados** (súmula /
-  repercussão geral / tema repetitivo) a um acórdão isolado: use `buscar_qualificada`
-  e/ou `buscar_por_citacoes` para ver quem o aplicou.
-- Preserve diacríticos e UTF-8 exatamente como na fonte.
-- **Autenticação:** o cliente MCP autentica por você - via **login OAuth** (claude.ai /
-  ChatGPT / Codex / Cowork abrem o navegador no primeiro uso) **ou** por chave `ik_*` no
-  header `Authorization: Bearer` (canal CLI/privado). Um **401** indica sessão/chave
-  ausente ou expirada - peça ao usuário para refazer o login ou revisar a chave
-  configurada; **nunca** cole a chave em chat nem em commit.
-
-## Aprovação de ferramentas (sem fricção)
-
-As ferramentas de pesquisa retornam resultados para consulta e citação. Ainda assim,
-alguns clientes pedem **uma aprovação por tool** na primeira chamada:
-
-- **Prefira a busca direta.** Para responder e citar, `buscar_hibrida` (melhor relevância
-  geral) e `buscar_semantica` (perguntas conceituais) já entregam ementa + `link_completo`
-  oficial de cada julgado - comece por elas. As demais modalidades (`buscar_fts`,
-  `buscar_regex`, `buscar_por_ontologia`…) são **refinamento**: acione-as
-  quando a busca direta vier fraca ou a pergunta pedir facet/forma literal.
-- **Abrir a íntegra:** cada resultado da busca já traz o `link_completo` (URL estável do
-  acórdão na fonte) e, quando disponível, o `inteiro_teor_url` (PDF/HTML da íntegra) - cite
-  esses links; NÃO é preciso outra tool para "abrir" o julgado. A leitura do documento é o
-  próprio hit da busca (ementa + trecho + links); não há tool separada de "abrir".
-- **Se o cliente pedir aprovação por chamada:** oriente o usuário a **autorizar uma vez**
-  e marcar **"sempre permitir" / "lembrar nesta conversa"**, conforme a política do cliente.
-  (No Claude Code, `/permissions` permite pré-aprovar as tools do plugin, como mostra o
-  README do plugin; no claude.ai, no Cowork e no ChatGPT, a caixa de
-  confirmação do conector oferece lembrar a escolha.) Se a caixa de
-  aprovação **não renderizar/travar**, é limitação da interface do cliente, não do IAJUS:
-  reabra a conversa/sessão ou reautentique em `/mcp`, e prefira a busca direta acima.
+Se pesquisar_decisoes não estiver listada, use as rotas de busca que a conexão oferecer: `buscar_hibrida`, `buscar_semantica`, `buscar_fts`, `buscar_regex`, `buscar_por_ontologia` ou `buscar_por_cnj`. Para órgãos julgadores, `listar_orgaos_julgadores` enumera valores disponíveis para o filtro; não é uma busca de decisões. Para precedentes, use `buscar_qualificada` e, quando a redação exigir, `obter_versoes_qualificada`. Para conteúdo editorial use `buscar_informativos_stf` ou `buscar_informativos_stj`. Para citações, escolha `buscar_por_citacoes`, `buscar_citantes_dispositivo` ou `obter_dispositivos_citados` conforme a direção da relação. `obter_ontologia_juridica`, `obter_classificacao_tipo` e `obter_protocolo_classificacao` ajudam a resolver códigos e classificações; `obter_estatisticas_base` informa cobertura declarada. Use cada schema legacy como publicado e preserve os filtros ao repetir. Se nenhuma rota pertinente estiver listada, informe que ela não está disponível.

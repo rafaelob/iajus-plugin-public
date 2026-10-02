@@ -97,7 +97,7 @@ https://mcp.iajus.com.br/mcp
    `https://github.com/rafaelob/iajus-plugin-public` e instale o `iajus-juris`.
 2. Abra a aba **Connectors** do plugin e conecte o servidor `iajus`: o login OAuth abre
    no navegador (mesma conta da aplicação).
-3. As cinco skills ficam disponíveis no chat e no Cowork.
+3. As seis skills ficam disponíveis no chat e no Cowork.
 
 ### Cursor / Grok Bot (mesmo MCP remoto)
 
@@ -162,7 +162,7 @@ continuam sob controle do cliente e do usuário. O plugin não pré-aprova chama
 Se preferir a chave estática à OAuth, desabilite este plugin e registre o servidor à
 parte, digitando a sua chave no comando (não há fallback automático: header presente
 e rejeitado falha a conexão, então use OU OAuth OU Bearer). Desabilitar o plugin tira
-também as cinco skills e os oito subagentes: o servidor avulso entrega só as ferramentas.
+também as seis skills e os oito subagentes: o servidor avulso entrega só as ferramentas.
 
 ```text
 claude mcp add --transport http iajus https://mcp.iajus.com.br/mcp --header "Authorization: Bearer ik_live_..."
@@ -229,3 +229,7 @@ Customizations, Installed MCP Servers, Authenticate. O login OAuth abre no naveg
   (jurisprudência e legislação normalizadas). Não inclua dados pessoais, credenciais ou
   outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
   server-side.
+
+## Pesquisa Lex na conexão nova
+
+A skill `pesquisa-juridica-lex` usa a pesquisa comum ou profunda apenas quando essas ferramentas estiverem expostas. Conserva contexto, restrições, IDs e a chave de repetição; consulta e cancelamento acompanham a mesma tarefa. Na conexão legada, as ferramentas de pesquisa existentes continuam disponíveis.
