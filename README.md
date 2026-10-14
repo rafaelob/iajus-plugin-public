@@ -22,6 +22,7 @@ No Codex:
 codex plugin marketplace remove iajus
 codex plugin marketplace add https://github.com/rafaelob/iajus-plugin-public
 codex plugin add iajus-juris@iajus
+codex mcp login iajus
 ```
 
 Para Portugal, o repositório correto é `https://github.com/rafaelob/iajus-plugin-public-pt`.
@@ -31,7 +32,7 @@ Para Portugal, o repositório correto é `https://github.com/rafaelob/iajus-plug
 - **Pesquisa de jurisprudência** em múltiplas modalidades (tese consolidada primeiro: súmulas, temas de repercussão geral e repetitivos; depois busca híbrida, semântica e por número CNJ), sempre com ementa e link oficial.
 - **Legislação com vigência**: texto vigente de leis federais, estaduais e municipais, cadeia de alterações artigo por artigo e verificação na fonte oficial.
 - **Panorama do corpus**: quanto a base cobre por tribunal e a faixa de anos de cada acervo, servido do read-model com carimbo de atualização.
-- **Skills prontas** que ensinam o assistente o método de pesquisa jurídica, e (no Claude Code) **subagentes especializados**: pesquisador, elaborador de tese, refutador de tese (advogado do diabo), precedentes vinculantes, dossiê de processo, especialista em legislação, memorialista e conferente de citações.
+- **Skills prontas** que ensinam o assistente o método de pesquisa jurídica e **subagentes especializados**: pesquisador, elaborador de tese, refutador de tese (advogado do diabo), precedentes vinculantes, dossiê de processo, especialista em legislação, memorialista e conferente de citações. Claude Code e Cowork carregam `agents/*.md` quando o plugin está instalado e carregado nessas superfícies; o chat do claude.ai ignora esses arquivos ([matriz oficial da Anthropic](https://claude.com/docs/plugins/platform-support), consultada em 2026-10-09).
 
 ## Instalar
 
@@ -46,6 +47,7 @@ No Codex, este mesmo repositório também funciona como marketplace direto:
 ```bash
 codex plugin marketplace add https://github.com/rafaelob/iajus-plugin-public
 codex plugin add iajus-juris@iajus
+codex mcp login iajus
 ```
 
 ### Claude Code (comandos, um de cada vez)
@@ -62,7 +64,9 @@ O login OAuth abre no navegador na primeira conexão: entre com a sua conta IAJU
 ### claude.ai e Cowork
 
 1. Em **Customize > Plugins > Add > Add marketplace**, informe `https://github.com/rafaelob/iajus-plugin-public` e instale o `iajus-juris`.
-2. Na aba **Connectors** do plugin, conecte o servidor `iajus` e entre com a sua conta IAJUS no navegador.
+2. A instalação do plugin e a conexão MCP são etapas separadas. Na aba
+   **Connectors**, conecte o servidor `iajus` e entre com a sua conta IAJUS no
+   navegador.
 
 ### Cursor e Grok Bot (após listagem no Cursor Marketplace)
 
@@ -73,11 +77,11 @@ Depois que o plugin estiver listado:
 1. **Cursor:** abra **Customize** na barra lateral, busque **IAJUS** / `iajus-juris`, instale (escopo do projeto ou do usuário) e autorize o OAuth no navegador. O servidor MCP é `https://mcp.iajus.com.br/mcp`.
 2. **Grok Bot:** abra **Plugins** (ou o card **Connect** no chat), busque **IAJUS**, adicione e autorize no navegador. Confirme o plugin em **Installed**.
 
-A revisão do Cursor Marketplace atualmente prefere plugins open-source. Este empacotamento usa a mesma licença proprietária de distribuição dos arquivos de integração já usada no Claude e no Grok (`LicenseRef-Proprietary`; ver `plugins/iajus-juris/LICENSE`). A licença não foi alterada para esta embalagem.
+Este empacotamento usa Apache-2.0 para o código e as skills. Consulte `LICENSE` e `NOTICE` na raiz e nos pacotes para o escopo e as exclusões.
 
 ### Outros assistentes (conexão direta ao servidor MCP)
 
-Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, apontando para `https://mcp.iajus.com.br/mcp` e autenticando por **OAuth 2.1** (login no navegador). Você ganha as mesmas ferramentas de pesquisa jurídica; as skills prontas (pacotes de plugin do Claude e do Codex) e os subagentes especializados (só no Claude Code) descritos acima não acompanham a conexão direta.
+Assistentes que aceitam um servidor MCP por URL conectam ao IAJUS sem plugin, apontando para `https://mcp.iajus.com.br/mcp` e autenticando por **OAuth 2.1** (login no navegador). Você ganha as mesmas ferramentas de pesquisa jurídica; as skills prontas (pacotes de plugin do Claude e do Codex) e os subagentes especializados do plugin descritos acima não acompanham a conexão direta.
 
 - **Mistral (Le Chat):** Contexto → Conectores → Adicionar Conector → aba "Conector MCP personalizado" → Título `IAJUS`, Servidor `https://mcp.iajus.com.br/mcp`, Descrição `Pesquisa Jurídica`, Método de Autenticação **OAuth2.1** → Conectar → Autorizar.
 - **Manus:** Plugins → Criar → "Adicionar MCP por URL" → Nome `IAJUS`, URL `https://mcp.iajus.com.br/mcp` → Salvar → no card do conector (MCP personalizado) → Conectar → login IAJUS → Autorizar.

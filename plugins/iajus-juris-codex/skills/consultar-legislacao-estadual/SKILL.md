@@ -1,19 +1,34 @@
 ---
 name: consultar-legislacao-estadual
 description: Consulta normas estaduais e municipais brasileiras quando a conexão IAJUS oferece a rota e os filtros territoriais correspondentes. Não presume disponibilidade ao vivo por UF ou município.
-allowed-tools: mcp__iajus__pesquisar_normas, mcp__iajus__consultar_fonte_oficial, mcp__iajus__ler_documento, mcp__iajus__consultar_acervo, mcp__iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__iajus__obter_cobertura_legislacao, mcp__iajus__buscar_hibrida, mcp__iajus__buscar_semantica, mcp__iajus__buscar_fts, mcp__iajus__buscar_por_ontologia
+allowed-tools: mcp__iajus__pesquisar_normas, mcp__iajus__consultar_fonte_oficial, mcp__iajus__ler_documento, mcp__iajus__consultar_acervo
 ---
 
 # Consultar legislação estadual e municipal
 
+No Codex, se as ferramentas IAJUS não estiverem listadas ou toda chamada voltar 401 ou não autorizado, peça ao usuário que rode `codex mcp login iajus` e reinicie a sessão; enquanto isso, não responda de memória.
+
 Use somente ferramentas e filtros que a conexão realmente listar. Um mapa cadastral não comprova que a fonte responda agora nem quantos documentos estão servidos.
 
-Quando listada, pesquisar_normas pode aceitar esfera estadual/municipal e recortes territoriais em alguns modos. consultar_fonte_oficial pode localizar uma norma por uma variante de identidade estadual ou municipal; ler_documento pode ler norma por identidade. Aplique UF, município, tipo, número e ano somente nos ramos que o schema aceitar. Se faltar um dado exigido pelo schema, peça-o ao usuário em vez de inventar a identidade.
+Em pergunta de direitos, deveres ou regime sem indicação do ente, pergunte se é a União, um estado ou um município antes de buscar norma estadual ou municipal; a norma federal canônica está em consultar-legislacao.
 
-consultar_acervo com modo cobertura_legislacao mostra o mapa cadastrado de fontes por esfera e UF. Isso não prova que uma consulta pontual funcione, que haja documentos servidos ou que a cobertura seja completa. Só descreva disponibilidade, texto, vigência e link oficial que o resultado de uma chamada real confirmar.
+Não imponha piso temporal para legislação estadual ou municipal. Use ano apenas como identidade ou recorte solicitado; determine vigência pela fonte consultada, nunca pelo ano de publicação.
+
+Rotas, quando listadas:
+
+- consultar_fonte_oficial com operacao localizar identifica uma norma estadual ou municipal pela identidade exata: numero e filtros esfera, tipo e ano, mais uf (estadual) ou municipio (municipal), todos obrigatórios nessas esferas. A busca por tema (consulta) é só federal; alteracoes e enumerar também são só federais.
+- ler_documento com leitura.modo texto_norma lê o texto pela identidade: numero e filtros tipo e ano, mais esfera estadual com uf ou esfera municipal com municipio. Estado e município exigem prova temporal do executor.
+- pesquisar_normas aceita esfera estadual ou municipal apenas nos modos nome_ou_apelido e numero.
+
+Exemplos:
+
+```json
+{"consulta": {"operacao": "localizar", "numero": "10177", "filtros": {"esfera": "estadual", "uf": "SP", "tipo": "LEI", "ano": 1998}}}
+{"leitura": {"modo": "texto_norma", "numero": "10177", "filtros": {"tipo": "LEI", "ano": 1998, "esfera": "estadual", "uf": "SP"}}}
+```
+
+Aplique UF, município, tipo, número e ano somente nos ramos que o schema aceitar. Se faltar um dado exigido pelo schema, peça-o ao usuário em vez de inventar a identidade.
+
+consultar_acervo com consulta.modo cobertura_legislacao mostra o mapa cadastrado de fontes por esfera e UF (filtros esfera e uf). Isso não prova que uma consulta pontual funcione, que haja documentos servidos ou que a cobertura seja completa. Só descreva disponibilidade, texto, vigência e link oficial que o resultado de uma chamada real confirmar.
 
 Trate erro, indisponibilidade, timeout, parcialidade e zero medido conforme os indicadores devolvidos. Um mapa de adaptadores ou uma resposta vazia sem evidência de consulta não autoriza afirmar que a UF não é coberta.
-
-## Conexão legacy
-
-Se as rotas integradas não estiverem listadas, use somente ferramentas legacy descobertas: `buscar_norma_fonte_oficial` e `obter_texto_norma` para identidade, fonte e conteúdo; `obter_cobertura_legislacao` para consultar o mapa cadastral. Buscas temáticas por `buscar_hibrida`, `buscar_semantica`, `buscar_fts` ou `buscar_por_ontologia` só servem quando estiverem listadas e o schema aceitar o recorte territorial. Não converta filtros para nomes presumidos nem remova filtros para repetir uma chamada.

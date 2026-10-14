@@ -1,7 +1,7 @@
 {
   "name": "iajus-juris",
-  "version": "2.6.14",
-  "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com sete modalidades de busca, 28 ferramentas e seis skills. Citações apontam para fontes oficiais quando disponíveis. Autenticação OAuth 2.1.",
+  "version": "3.0.14",
+  "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com busca de decisões por seis modalidades, leitura de normas e decisões e seis skills. A pesquisa Lex é um recurso beta, com limite por conta. Citações apontam para fontes oficiais quando disponíveis. Autenticação OAuth 2.1.",
   "author": {
     "name": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
     "email": "contato@iajus.com.br",
@@ -9,14 +9,14 @@
   },
   "homepage": "https://iajus.com.br",
   "repository": "https://github.com/rafaelob/iajus-plugin-public",
-  "license": "LicenseRef-Proprietary",
+  "license": "Apache-2.0",
   "keywords": ["jurisprudencia", "legislacao", "direito", "brasil", "stf", "stj", "mcp"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "IAJUS Direito Brasileiro",
     "shortDescription": "Pesquisa jurídica brasileira",
-    "longDescription": "Pesquise jurisprudência e legislação brasileira no MCP remoto IAJUS, usando sete modalidades de busca e 28 ferramentas. O plugin inclui seis skills e autenticação OAuth 2.1; links para fontes oficiais são apresentados quando disponíveis.",
+    "longDescription": "Pesquise jurisprudência e legislação brasileira no MCP remoto IAJUS, com busca de decisões por seis modalidades e leitura de normas e decisões. O plugin inclui seis skills e autenticação OAuth 2.1, com a pesquisa Lex em beta e com limite por conta; links para fontes oficiais são apresentados quando disponíveis.",
     "developerName": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
     "category": "Productivity",
     "capabilities": ["Read"],
@@ -27,7 +27,7 @@
     "defaultPrompt": [
       "Mapeie a evolução do entendimento do STJ sobre vazamento de dados desde 2020 e cite precedentes oficiais divergentes.",
       "Audite as citações desta peça: confirme existência, fidelidade e vigência, e sinalize precedentes superados com fontes oficiais.",
-      "Reconstrua a versão vigente do art. 927 do Código Civil, explique cada alteração e cite as fontes oficiais."
+      "Localize o art. 927 do Código Civil nas fontes disponíveis, cite sua origem e informe os limites temporais."
     ],
     "composerIcon": "./assets/iajus-icon-512.png",
     "logo": "./assets/iajus-icon-512.png"

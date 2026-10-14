@@ -9,8 +9,17 @@ Escolha ferramentas pelo propósito e pelo schema listado nesta conexão:
 
 Grafo e lista de alterações são evidências distintas. Não deduza vigência atual, completude histórica ou inexistência de mudança da falta de um evento. Para citar a redação, use o texto e a fonte retornados; sinalize limites de data, executor, território ou leitura integral.
 
+Não apresente redação revogada como amparo vigente. Quando o retorno identificar norma apenas alteradora (is_amending_only=true), use como amparo substantivo a norma alterada consolidada no recorte temporal pedido. Ao explicar uma alteração, informe norma alteradora e data quando retornadas.
+
 Normas estaduais/municipais exigem que o retorno comprove a identidade e a leitura daquele recorte. O mapa de fontes em consultar_acervo é cadastral e não testa disponibilidade agora.
 
-Se as ferramentas integradas não estiverem listadas, use apenas as rotas legacy descobertas: `obter_alteracoes_norma`, `obter_grafo_norma`, `obter_dispositivo_legal` e `obter_texto_norma`. Cada rota usa seu próprio schema; não envie campos de outra ferramenta.
+Exemplos (federal; o grafo usa a norma_id canônica, como LEI_8112_1990):
+
+```json
+{"consulta": {"operacao": "alteracoes", "numero": "8112", "filtros": {"tipo": "LEI", "ano": 1990}}}
+{"relacao": {"modo": "grafo_norma", "filtros": {"norma_ref": "LEI_8112_1990"}}}
+```
+
+Quando listada, consultar_alteracoes_norma faz essa mesma operação com os campos planos numero, tipo e ano. A operação alteracoes só cobre norma federal. Para estadual ou municipal não há consulta de alterações: diga que a fonte consultada não oferece esse histórico.
 
 Use as ferramentas e schemas disponíveis nesta conexão; se uma rota estiver indisponível, informe a limitação.

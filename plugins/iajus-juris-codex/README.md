@@ -1,7 +1,11 @@
 # IAJUS - plugin para OpenAI Codex (via marketplace)
 
+## Licença
+
+O código e as skills deste pacote são licenciados sob Apache-2.0. Consulte [`LICENSE`](LICENSE) e [`NOTICE`](NOTICE) para o escopo do pacote e os componentes excluídos.
+
 Plugin Codex que entrega as **6 skills** jurídicas IAJUS e conecta ao endpoint
-MCP único `https://mcp.iajus.com.br/mcp` (28 ferramentas). Ele cobre a mesma família
+MCP único `https://mcp.iajus.com.br/mcp` (ferramentas de pesquisa de decisões, precedentes, normas e artigos, leitura de documentos, relações, vocabulário, cobertura e fonte oficial, mais a pesquisa Lex em beta). Ele cobre a mesma família
 funcional do plugin Claude Code `iajus-juris`,
 mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
 byte-idênticos. Ambos usam o mesmo MCP remoto. Autentica por **OAuth 2.1** (login no
@@ -10,7 +14,7 @@ máquina.
 
 ## Instalação
 
-### Opção A - ZIP, sem git (recomendado para a maioria)
+### Pacote ZIP, sem git
 
 1. Baixe e extraia o pacote `iajus-juris-codex` (um marketplace local pronto, com
    `.agents/plugins/marketplace.json` + `plugins/iajus-juris-codex/`).
@@ -19,32 +23,24 @@ máquina.
 ```bash
 codex plugin marketplace add ./iajus-juris-codex     # caminho local extraído
 codex plugin add iajus-juris@iajus
+codex mcp login iajus
 ```
 
-### Opção B - marketplace privado IAJUS (git, para quem usa credential-helper)
-
-```bash
-# o catálogo é servido por git smart-HTTP privado (HTTP Basic: usuário = seu e-mail,
-# senha = sua chave ik_*). Configure a credencial no git credential-helper -
-# NUNCA coloque usuário/senha na URL (vaza em config/history/logs).
-codex plugin marketplace add https://dist.iajus.com.br/marketplace.git
-codex plugin add iajus-juris@iajus
-```
-
-> O Basic gateia só o **clone do catálogo**. O **runtime do MCP** usa OAuth. Acesso
-> (conta + `ik_*`) em <https://iajus.com.br>.
-
-## Runtime: OAuth na primeira chamada
+## Login OAuth: um passo, uma vez
 
 O `.mcp.json` declara o servidor com `oauth_resource` + `scopes` e **sem** token
-estático, então o Codex dispara o **login OAuth** automaticamente - no install do
-plugin ou na primeira chamada a uma tool `iajus` (abre o navegador em
-`app.iajus.com.br`, guarda o token no store do Codex, renova sozinho via
-`offline_access`). Se o login não disparar sozinho, force com:
+estático. O Codex só abre o login sozinho quando o plugin é instalado pela interface
+(`/plugins` na TUI, app ou IDE). Instalado pela linha de comando (`codex plugin add`),
+o login **não** abre, nem na primeira chamada: o Codex só avisa que o servidor não fez
+login. Rode uma vez:
 
 ```bash
 codex mcp login iajus
 ```
+
+O navegador abre em `app.iajus.com.br`. O token fica guardado no Codex e se renova
+sozinho via `offline_access`. Se as ferramentas `iajus` não aparecerem ou toda chamada
+voltar 401, rode o comando de novo e reinicie a sessão.
 
 ## Como liberar todas as ferramentas (autorizar por padrão)
 
@@ -54,9 +50,8 @@ codex mcp login iajus
 
 ### Codex
 
-1. **Confirme a conexão.** Após instalar, garanta que o MCP `iajus` autenticou -
-   o OAuth abre no navegador na primeira chamada, ou force com `codex mcp login
-   iajus`.
+1. **Confirme a conexão.** Após instalar, garanta que o MCP `iajus` autenticou:
+   pela linha de comando, rode `codex mcp login iajus` (o login não abre sozinho).
 2. **Instalar não auto-aprova.** As suas configurações de aprovação do Codex
    continuam valendo depois de instalar o plugin - por isso o Codex pode pedir
    confirmação a cada chamada de ferramenta.
@@ -106,6 +101,18 @@ vez por superfície). O passo a passo completo está no README do plugin Claude 
 
 ## Privacidade e suporte
 
+- **O que o IAJUS guarda no servidor:** nas ferramentas de consulta ao acervo (decisões,
+  precedentes, normas, documentos), o texto da consulta pode ser armazenado após um filtro
+  automático de dados pessoais e credenciais. Esse filtro não garante anonimização. Também
+  ficam registros de uso (ferramenta, recortes como tribunal e ano, data, hora e resultado). Na busca
+  semântica, o texto pode ser enviado a provedores externos de embeddings (OpenAI ou Google)
+  apenas para gerar o vetor de busca. Na pesquisa Lex (`pesquisa_juridica_lex` e
+  `pesquisa_profunda_lex`) a conversa é guardada: consulta, contexto, restrições e resposta
+  ficam em histórico próprio do canal MCP e plugin, separado do Studio, ligado à sua conta e
+  cifrado. A conversa pode ser retomada por 7 dias a partir da criação, sem renovação, e
+  continua guardada, sem descarte automático, até você apagar: pelo Studio, apagando o
+  histórico inteiro (todos os canais de uma vez; apagar só um canal não alcança estas
+  conversas), ou excluindo a conta.
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
@@ -115,6 +122,8 @@ vez por superfície). O passo a passo completo está no README do plugin Claude 
   outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
   server-side.
 
-## Pesquisa Lex na conexão nova
+## Pesquisa Lex (beta)
 
-A skill `pesquisa-juridica-lex` usa a pesquisa comum ou profunda apenas quando essas ferramentas estiverem expostas. Conserva contexto, restrições, IDs e a chave de repetição; consulta e cancelamento acompanham a mesma tarefa. Na conexão legada, as ferramentas de pesquisa existentes continuam disponíveis.
+A skill `pesquisa-juridica-lex` usa a pesquisa comum (`pesquisa_juridica_lex`) ou profunda (`pesquisa_profunda_lex`) apenas quando essas ferramentas estiverem expostas. Conserva contexto, restrições, IDs e a chave de repetição; `consultar_tarefa_lex` e `cancelar_tarefa_lex` acompanham a mesma tarefa profunda. O painel (`abrir_painel_iajus`) é opcional e não inicia pesquisa.
+
+As duas pesquisas são recurso **beta** e têm limite por conta, compartilhado entre ChatGPT, Claude, Codex e Microsoft: pesquisa comum 3 por dia e 10 por semana; pesquisa profunda 1 por dia e 7 por semana (o dia vira às 00:00 de America/Sao_Paulo; a semana, na segunda-feira às 00:00). Os números podem mudar: vale o que o servidor devolve em `limites`, quando o devolve; sem `limites`, a skill não calcula saldo. Depois de uma recusa por limite a skill não repete a chamada: informa o saldo e a renovação, se vieram, e oferece as ferramentas de corpus, que não consomem esse limite.

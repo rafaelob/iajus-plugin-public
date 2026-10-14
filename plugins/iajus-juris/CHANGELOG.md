@@ -5,6 +5,83 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [3.0.14] - 2026-10-13
+
+### Alterado
+
+- As skills ensinam as 7 ferramentas por operação de vocabulário e de fonte oficial: quando escolher cada uma, como tratar entrada recusada, resultado vazio e fonte indisponível ou parcial. Essas ferramentas vêm do catálogo BR do MCP, que as lista quando as serve; sem elas na lista, as skills usam `consultar_vocabulario_juridico` e `consultar_fonte_oficial`. O pacote do plugin não traz ferramenta nova e a conexão e a rota não mudam.
+
+## [3.0.1] - 2026-10-08
+
+### Alterado
+
+- A skill de pesquisa de jurisprudência deixa de mandar reescrever «no.» em «REsp no. 1.604.048» e de pedir a classe quando o número vem só com UF («1.604.048/RS»): a busca por número já corrige essas duas formas, então a skill manda chamar com o texto como o usuário escreveu.
+- O README deixa de listar, na permissão de exemplo, a ferramenta que apaga conversas, que o catálogo servido não tem mais: só `cancelar_tarefa_lex` fica em `ask`.
+- Nenhuma ferramenta, rota ou schema muda.
+
+## [3.0.0] - 2026-10-07
+
+### Alterado (incompatível)
+
+- Skills e agentes passam a usar o catálogo novo do MCP, servido na mesma URL `https://mcp.iajus.com.br/mcp`: `pesquisar_decisoes`, `pesquisar_precedentes`, `pesquisar_informativos`, `ver_historico_juridico`, `pesquisar_normas`, `pesquisar_artigos`, `ler_documento`, `explorar_relacoes_juridicas`, `consultar_vocabulario_juridico`, `consultar_acervo`, `consultar_fonte_oficial`, `abrir_painel_iajus` e a pesquisa Lex (`pesquisa_juridica_lex`, `pesquisa_profunda_lex`, `consultar_tarefa_lex`, `cancelar_tarefa_lex`). Os nomes antigos deixam de ser ensinados.
+- A pesquisa Lex é beta, com limites por conta compartilhados entre os hosts: pesquisa comum 3 por dia e 10 por semana, profunda 1 por dia e 7 por semana, com o dia virando às 00:00 de São Paulo e a semana na segunda-feira. As skills mostram o saldo e a renovação devolvidos em `limites` e não repetem a chamada depois de uma recusa por limite.
+- A leitura de uma decisão localizada passa por `ler_documento`.
+- Exige a conexão OAuth já servindo o catálogo novo. A distro de linha de comando com chave `ik_` fica na 2.6.29, com o catálogo antigo, enquanto a chave continuar nele.
+
+## [2.6.29] - 2026-10-06
+
+### Alterado
+
+- A skill de pesquisa passa a ensinar a consulta por número de processo a partir do registro de identificadores que a própria busca usa. Uma tabela diz, para cada forma citada, os tribunais alcançados, a ferramenta e como passar: o CNJ de 20 dígitos, a classe com o número e os incidentes que a busca lê, o número sem classe com o tribunal obrigatório e o acórdão do TCU. Uma lista traz as formas que a busca não lê, cada uma com o que fazer: tirar o excesso e buscar a mesma citação, ou pedir ao usuário a parte que só ele sabe, sem montá-la.
+- As skills de pesquisa e de verificação deixam de mandar reagir ao selo `numero_ambiguo`, que nenhuma busca emite mais.
+- Nenhuma ferramenta, rota ou schema muda; as instruções continuam condicionadas às ferramentas listadas na conexão.
+
+## [2.6.28] - 2026-10-05
+
+### Alterado
+
+- As skills de pesquisa e de verificação ensinam a consulta por número de processo (CNJ de 20 dígitos ou número legado como o advogado o cita, e CNJ incompleto por sequencial, ano e segmento, sem inventar a origem), a reação a cada recusa ou selo da busca (entrada recusada, filtro não aplicado, número ambíguo, janela limitada, busca que falhou, zero medido) e a fundamentação dura: dados de um julgamento só de trecho devolvido na conversa.
+- A skill de legislação manda buscar a norma canônica pelo número antes da jurisprudência em perguntas de direitos, deveres e regime, com um mapa por assunto, e a de legislação estadual manda perguntar o ente quando ele for ambíguo.
+- Nenhuma ferramenta, rota ou schema muda; as instruções continuam condicionadas às ferramentas listadas na conexão.
+
+## [2.6.27] - 2026-10-05
+
+### Corrigido
+
+- O README deixa de ensinar uma permissão que liberaria também as ferramentas que apagam ou cancelam de forma irreversível: o exemplo de `permissions` mantém `allow` para o conjunto e põe `apagar_conversa_lex` e `cancelar_tarefa_lex` em `ask`, de modo que o Claude Code sempre pergunta antes de executá-las. O exemplo de chave `ik_*` passa a usar um marcador no lugar do valor. Nenhuma instrução das skills ou dos agentes muda nesta versão.
+
+## [2.6.26] - 2026-10-05
+
+### Corrigido
+
+- O histórico de versões passa a registrar as versões 2.6.22, 2.6.23 e 2.6.24, que não tinham entrada. Nenhuma instrução das skills ou dos agentes muda nesta versão.
+
+## [2.6.25] - 2026-10-05
+
+### Alterado
+
+- A skill de pesquisa Lex passa a ensinar apagar_conversa_lex: só a pedido expresso do usuário, com o conversa_id recebido em uma pesquisa da conta, de forma definitiva e sem possibilidade de desfazer, mesmo depois das 168 horas de continuação. A conversa pode ser continuada por 168 horas e fica guardada até ser apagada.
+- As instruções continuam condicionadas às ferramentas listadas na conexão.
+
+## [2.6.24] - 2026-10-03
+
+### Corrigido
+
+- O manifesto do plugin passa a apontar para o repositório público do plugin como origem do código. Nenhuma instrução das skills ou dos agentes muda.
+
+## [2.6.23] - 2026-10-03
+
+### Alterado
+
+- Nova numeração do pacote ao selar os pacotes BR (Claude e ChatGPT/Codex). Nenhuma instrução das skills ou dos agentes muda.
+
+## [2.6.22] - 2026-10-02
+
+### Alterado
+
+- As skills de jurisprudência, legislação, verificação de citações e estado do acervo orientam a pesquisa com menos chamadas: começar pela modalidade adequada e buscar de novo só para completar um fato, um dispositivo ou uma verificação que faltam, nunca para reformular a pergunta.
+- Para o entendimento atual, as skills priorizam precedentes qualificados quando a rota existe; antes de afirmar vigência, conferem as alterações disponíveis e declaram a limitação do histórico. Redação revogada não é apresentada como amparo vigente.
+
 ## [2.6.21] - 2026-10-02
 
 ### Corrigido
