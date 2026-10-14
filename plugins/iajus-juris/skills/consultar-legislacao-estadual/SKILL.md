@@ -5,6 +5,11 @@ description: Consulta normas estaduais e municipais brasileiras quando a conexã
 
 # Consultar legislação estadual e municipal
 
+Na conversa principal, execute a pesquisa pelas ferramentas da conexão IAJUS BR. Ao
+delegar a um especialista, leia [coordenação dos agentes](../pesquisar-jurisprudencia/references/coordenacao-agentes.md).
+Se você for o especialista, as consultas abaixo são solicitações ao principal; analise
+somente os resultados recebidos e devolva a lacuna quando faltarem fontes.
+
 Use somente ferramentas e filtros que a conexão realmente listar. Um mapa cadastral não comprova que a fonte responda agora nem quantos documentos estão servidos.
 
 Em pergunta de direitos, deveres ou regime sem indicação do ente, pergunte se é a União, um estado ou um município antes de buscar norma estadual ou municipal; a norma federal canônica está em consultar-legislacao.

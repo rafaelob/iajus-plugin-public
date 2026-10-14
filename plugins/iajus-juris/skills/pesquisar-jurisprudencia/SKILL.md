@@ -5,6 +5,11 @@ description: Pesquisa decisões, precedentes qualificados, informativos e relaç
 
 # Pesquisar jurisprudência brasileira
 
+Na conversa principal, execute a pesquisa pelas ferramentas da conexão IAJUS BR. Ao
+delegar a um dos oito especialistas, leia [coordenação dos agentes](references/coordenacao-agentes.md).
+Se você for o especialista, as consultas abaixo são solicitações ao principal; analise
+somente os resultados recebidos e devolva a lacuna quando faltarem fontes.
+
 Use somente os nomes e schemas que a conexão realmente exibe. Os schemas são fechados: envie apenas os campos aceitos pelo ramo escolhido. Se uma rota não estiver listada, informe a indisponibilidade; não presuma outro nome.
 
 ## Pesquisa de decisões

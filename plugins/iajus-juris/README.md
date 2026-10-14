@@ -30,7 +30,7 @@ municipal**.
 | `skills/corpus-status/` | o que a base declara AGORA (`consultar_acervo`): por família, tribunal, precedentes e legislação, com `as_of`, limites e estado da medição |
 | `skills/verificar-citacoes/` | confere as citações de um texto (petição, parecer, memorial) contra a fonte oficial: existência, fidelidade e **vigência**, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA) - o antídoto da alucinação de citação |
 | `skills/pesquisa-juridica-lex/` | a pesquisa Lex (**beta**): `pesquisa_juridica_lex` e `pesquisa_profunda_lex`, com `consultar_tarefa_lex` e `cancelar_tarefa_lex` para acompanhar a profunda, e os limites por conta |
-| `agents/` (8 subagentes) | `pesquisador-juris`, `elaborador-tese`, `refutador-tese`, `precedentes-vinculantes`, `processo-juris`, `legislacao-juris`, `memorialista-juris`, `conferente-citacoes`. No Claude Code, cada um se chama `iajus-juris:<nome>` (ou `@agent-iajus-juris:<nome>`). Claude Code e Cowork carregam `agents/*.md` quando o plugin e esses arquivos estão carregados nessas superfícies; o chat do claude.ai os ignora. Nos outros clientes, as skills executam o mesmo método diretamente ([matriz oficial da Anthropic](https://claude.com/docs/plugins/platform-support), consultada em 2026-10-09). Cada um declara `tools:` com **allowlist** das ferramentas do servidor MCP deste plugin e de `Skill` e `Read`, para carregar orientações e referências: sem Bash, sem escrita em disco |
+| `agents/` (8 subagentes) | `pesquisador-juris`, `elaborador-tese`, `refutador-tese`, `precedentes-vinculantes`, `processo-juris`, `legislacao-juris`, `memorialista-juris`, `conferente-citacoes`. No Claude Code, cada um se chama `iajus-juris:<nome>`. Claude Code e Cowork carregam `agents/*.md`; o chat do claude.ai usa as skills diretamente ([documentação da Anthropic](https://support.claude.com/en/articles/13837440-use-plugins-in-claude), consultada em 2026-10-14). Os especialistas têm somente `Skill` e `Read`: analisam fontes e solicitam consultas à conversa principal, que usa o MCP conectado. Nenhum agente depende do nome que o host dá ao servidor, recebe Bash ou escreve em disco |
 | `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email offline_access`) |
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
@@ -41,6 +41,13 @@ Claude Code, após instalar/habilitar, rode `/reload-plugins`.
 `Read` permite ler os arquivos autorizados pela sessão, além das referências do plugin;
 `Skill` permite carregar outras skills disponíveis. Os bloqueios e as aprovações do host
 continuam valendo. Disponibilize à sessão somente os diretórios pertinentes ao trabalho.
+
+Os especialistas preservam os oito métodos de trabalho. A conversa principal consulta
+o IAJUS, entrega os resultados ao especialista e atende às lacunas de pesquisa necessárias,
+sem pedir ao usuário que transporte dados entre agentes. A pesquisa simples continua
+direta pelas seis skills. Esse fluxo evita a incompatibilidade entre nomes MCP do Claude
+Code e do Cowork sem liberar ferramentas de outros servidores aos especialistas.
+Leia o [fluxo de pesquisa com especialistas](skills/pesquisar-jurisprudencia/references/coordenacao-agentes.md).
 
 ### Ferramentas do MCP
 
@@ -59,6 +66,7 @@ continuam valendo. Disponibilize à sessão somente os diretórios pertinentes a
 | `consultar_fonte_oficial` | localização, alterações e enumeração de legislação na fonte oficial (Senado, Planalto e portais) |
 | `pesquisa_juridica_lex`, `pesquisa_profunda_lex` | pesquisa Lex (**beta**), comum e profunda; a profunda devolve um `consulta_id` acompanhado por `consultar_tarefa_lex` e interrompido por `cancelar_tarefa_lex` |
 | `abrir_painel_iajus` | painel opcional; não inicia pesquisa |
+| `apresentar_sintese` | apresenta uma síntese já concluída quando o host oferece o painel; não pesquisa nem valida citações |
 
 > Cobertura e contagens vêm de `consultar_acervo` (skill `corpus-status`) e valem
 > pelo `as_of` que o retorno traz; um zero de busca não prova completude do acervo.
@@ -241,8 +249,9 @@ Customizations, Installed MCP Servers, Authenticate. O login OAuth abre no naveg
 
 - **O que o plugin envia:** só as chamadas de ferramenta que o Claude faz ao servidor
   MCP `https://mcp.iajus.com.br/mcp` (a consulta e os parâmetros de busca), com o seu
-  token OAuth. O plugin não tem hooks, scripts nem servidor local: não roda comandos,
-  não lê arquivos e não guarda dados na sua máquina.
+  token OAuth. O plugin não tem hooks, scripts nem servidor local: não executa comandos
+  nem grava arquivos. Os especialistas podem ler referências e arquivos autorizados
+  pela sessão com `Read`; esse acesso segue as permissões do host.
 - **O que o IAJUS guarda no servidor:** nas ferramentas de consulta ao acervo (decisões,
   precedentes, normas, documentos), o texto da consulta pode ser armazenado após um filtro
   automático de dados pessoais e credenciais. Esse filtro não garante anonimização. Também

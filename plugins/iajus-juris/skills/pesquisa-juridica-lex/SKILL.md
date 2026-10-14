@@ -5,6 +5,11 @@ description: Solicita pesquisa jurídica integrada ao Lex (recurso beta, com lim
 
 # Pesquisa jurídica com Lex (beta)
 
+Na conversa principal, execute a pesquisa pelas ferramentas da conexão IAJUS BR. Ao
+delegar a um especialista, leia [coordenação dos agentes](../pesquisar-jurisprudencia/references/coordenacao-agentes.md).
+Se você for o especialista, as consultas abaixo são solicitações ao principal; analise
+somente os resultados recebidos e devolva a lacuna quando faltarem fontes.
+
 pesquisa_juridica_lex e pesquisa_profunda_lex são recursos **beta**: diga isso ao usuário quando o assunto surgir; o comportamento e os limites podem mudar. Use essas duas ferramentas, e consultar_tarefa_lex e cancelar_tarefa_lex como controles da pesquisa profunda, somente quando cada uma estiver listada nesta conexão. Se não estiver, informe que a rota não está disponível. Não prometa Events, análises de peças nem execução automática em segundo plano pelo Claude.
 
 ## Limites por conta

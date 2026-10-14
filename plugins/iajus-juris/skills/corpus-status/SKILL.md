@@ -5,6 +5,11 @@ description: Consulta cobertura e atualização declaradas pelo read-model do co
 
 # Estado do acervo IAJUS
 
+Na conversa principal, execute a pesquisa pelas ferramentas da conexão IAJUS BR. Ao
+delegar a um especialista, leia [coordenação dos agentes](../pesquisar-jurisprudencia/references/coordenacao-agentes.md).
+Se você for o especialista, as consultas abaixo são solicitações ao principal; analise
+somente os resultados recebidos e devolva a lacuna quando faltarem fontes.
+
 Use somente as ferramentas de cobertura listadas nesta conexão. O retorno descreve a medição do leitor; não certifica completude, fonte ao vivo, direito de leitura integral ou serving em produção.
 
 Para consultar a cobertura geral, use consultar_acervo com consulta.modo cobertura. A seção filtros.secao aceita tudo, familias, contadores, orgaos, qualificadas ou legislacao. filtros.familia (jurisprudencia, legislacao ou doutrina) só vale com secao orgaos. O campo limite corta linhas de ranking nas seções tudo e orgaos; não reduz totais. Para o mapa de fontes normativas, use modo cobertura_legislacao e os filtros esfera e uf aceitos pelo schema. O mapa cadastrado não equivale a número de documentos consultáveis.

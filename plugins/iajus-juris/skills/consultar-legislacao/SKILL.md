@@ -5,6 +5,11 @@ description: Pesquisa, lê e confere normas brasileiras. Use para texto de lei, 
 
 # Consultar legislação brasileira
 
+Na conversa principal, execute a pesquisa pelas ferramentas da conexão IAJUS BR. Ao
+delegar a um especialista, leia [coordenação dos agentes](../pesquisar-jurisprudencia/references/coordenacao-agentes.md).
+Se você for o especialista, as consultas abaixo são solicitações ao principal; analise
+somente os resultados recebidos e devolva a lacuna quando faltarem fontes.
+
 Use apenas ferramentas e schemas listados nesta conexão. Os schemas são fechados: envie só os campos do ramo escolhido. Se a rota necessária não estiver disponível, informe isso sem presumir outro nome.
 
 ## Normas e dispositivos

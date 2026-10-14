@@ -5,6 +5,11 @@ description: Verifica uma a uma citações de decisões, precedentes e normas co
 
 # Verificar citações jurídicas
 
+Na conversa principal, execute a pesquisa pelas ferramentas da conexão IAJUS BR. Ao
+delegar a um especialista, leia [coordenação dos agentes](../pesquisar-jurisprudencia/references/coordenacao-agentes.md).
+Se você for o especialista, as consultas abaixo são solicitações ao principal; analise
+somente os resultados recebidos e devolva a lacuna quando faltarem fontes.
+
 Confira cada citação separadamente contra ferramentas e schemas listados nesta conexão. Se a rota necessária não estiver disponível, informe a limitação em vez de presumir outro nome.
 
 | Citação | Rota quando listada |
