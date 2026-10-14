@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "IAJUS marketplace - Brazilian case law and legislation via hosted MCP.",
-    "version": "3.0.14",
+    "version": "3.0.16",
     "pluginRoot": "./plugins"
   },
   "plugins": [

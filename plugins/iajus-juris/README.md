@@ -8,7 +8,7 @@ O código e as skills deste pacote são licenciados sob Apache-2.0. Consulte [`L
 > precedentes, normas, artigos, leitura, relações, vocabulário, cobertura e fonte oficial),
 > as pesquisas Lex (beta) e o painel opcional. Cada ferramenta recebe um único objeto
 > (`busca`, `leitura`, `relacao` ou `consulta`) com `modo`, e os schemas são fechados.
-> Autenticação por **OAuth 2.1** (login no navegador, refresh automático). Ver `CHANGELOG.md`.
+> Autenticação por **OAuth 2.1** (login no navegador, refresh automático). Ver [histórico de alterações](https://github.com/rafaelob/iajus-plugin-public/blob/main/plugins/iajus-juris/CHANGELOG.md).
 
 Com este plugin, você ganha **skills** que ensinam o agente a pesquisar/citar
 jurisprudência e legislação brasileira **+** o **servidor MCP remoto IAJUS** já
@@ -30,13 +30,17 @@ municipal**.
 | `skills/corpus-status/` | o que a base declara AGORA (`consultar_acervo`): por família, tribunal, precedentes e legislação, com `as_of`, limites e estado da medição |
 | `skills/verificar-citacoes/` | confere as citações de um texto (petição, parecer, memorial) contra a fonte oficial: existência, fidelidade e **vigência**, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA) - o antídoto da alucinação de citação |
 | `skills/pesquisa-juridica-lex/` | a pesquisa Lex (**beta**): `pesquisa_juridica_lex` e `pesquisa_profunda_lex`, com `consultar_tarefa_lex` e `cancelar_tarefa_lex` para acompanhar a profunda, e os limites por conta |
-| `agents/` (8 subagentes) | `pesquisador-juris`, `elaborador-tese`, `refutador-tese`, `precedentes-vinculantes`, `processo-juris`, `legislacao-juris`, `memorialista-juris`, `conferente-citacoes`. No Claude Code, cada um se chama `iajus-juris:<nome>` (ou `@agent-iajus-juris:<nome>`). Claude Code e Cowork carregam `agents/*.md` quando o plugin e esses arquivos estão carregados nessas superfícies; o chat do claude.ai os ignora. Nos outros clientes, as skills executam o mesmo método diretamente ([matriz oficial da Anthropic](https://claude.com/docs/plugins/platform-support), consultada em 2026-10-09). Cada um declara `tools:` com **allowlist** só das ferramentas do servidor MCP deste plugin: sem Bash, sem escrita em disco |
+| `agents/` (8 subagentes) | `pesquisador-juris`, `elaborador-tese`, `refutador-tese`, `precedentes-vinculantes`, `processo-juris`, `legislacao-juris`, `memorialista-juris`, `conferente-citacoes`. No Claude Code, cada um se chama `iajus-juris:<nome>` (ou `@agent-iajus-juris:<nome>`). Claude Code e Cowork carregam `agents/*.md` quando o plugin e esses arquivos estão carregados nessas superfícies; o chat do claude.ai os ignora. Nos outros clientes, as skills executam o mesmo método diretamente ([matriz oficial da Anthropic](https://claude.com/docs/plugins/platform-support), consultada em 2026-10-09). Cada um declara `tools:` com **allowlist** das ferramentas do servidor MCP deste plugin e de `Skill` e `Read`, para carregar orientações e referências: sem Bash, sem escrita em disco |
 | `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email offline_access`) |
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
 jurisprudência ou legislação. Elas não pré-aprovam nenhuma ferramenta: cada chamada
 segue as suas regras de permissão (veja "Como liberar todas as ferramentas"). No
 Claude Code, após instalar/habilitar, rode `/reload-plugins`.
+
+`Read` permite ler os arquivos autorizados pela sessão, além das referências do plugin;
+`Skill` permite carregar outras skills disponíveis. Os bloqueios e as aprovações do host
+continuam valendo. Disponibilize à sessão somente os diretórios pertinentes ao trabalho.
 
 ### Ferramentas do MCP
 
@@ -168,7 +172,7 @@ iajus` uma vez (instalado pela linha de comando, o login não abre sozinho). Ins
 auto-aprova as chamadas: as suas configurações de aprovação continuam valendo. Para
 evitar confirmação por chamada, ajuste o **approval mode** do Codex - veja a doc
 oficial de approvals do Codex (<https://developers.openai.com/codex>). Passo a passo
-de instalação em `plugins/iajus-juris-codex/README.md`.
+de instalação no [guia do plugin Codex](https://github.com/rafaelob/iajus-plugin-public/blob/main/plugins/iajus-juris-codex/README.md).
 
 ### ChatGPT (conector MCP)
 
@@ -195,7 +199,7 @@ cole a chave em commits ou chat.**
 Plugin Codex equivalente, também por OAuth 2.1. Caminho **sem git** (ZIP): extraia o
 pacote e `codex plugin marketplace add ./iajus-juris-codex` → `codex plugin add
 iajus-juris@iajus` → `codex mcp login iajus`. Os outros caminhos de instalação estão em
-`plugins/iajus-juris-codex/README.md`.
+[guia do plugin Codex](https://github.com/rafaelob/iajus-plugin-public/blob/main/plugins/iajus-juris-codex/README.md).
 
 ## Antigravity 2.0 (Google): mesmo MCP remoto
 
