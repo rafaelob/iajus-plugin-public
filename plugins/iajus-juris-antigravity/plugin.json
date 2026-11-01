@@ -1,0 +1,30 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "author": {
+    "email": "contato@iajus.com.br",
+    "name": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
+    "url": "https://iajus.com.br"
+  },
+  "description": "Pesquise jurisprudência e legislação brasileiras, confira citações e consulte a cobertura do acervo com referências às fontes disponíveis.",
+  "displayName": "IAJUS Direito Brasileiro",
+  "homepage": "https://iajus.com.br",
+  "keywords": [
+    "jurisprudencia",
+    "legislacao",
+    "direito",
+    "brasil",
+    "stf",
+    "stj",
+    "mcp"
+  ],
+  "license": "Apache-2.0",
+  "logo": "assets/iajus-icon-512.png",
+  "name": "iajus-juris",
+  "repository": "https://github.com/rafaelob/iajus-plugin-public",
+  "suggestedPrompts": [
+    "Mapeie a evolução do entendimento do STJ sobre vazamento de dados desde 2020 e cite precedentes oficiais divergentes.",
+    "Audite as citações desta peça: confirme existência, fidelidade e vigência, e sinalize precedentes superados com fontes oficiais.",
+    "Localize o art. 927 do Código Civil nas fontes disponíveis, cite sua origem e informe os limites temporais."
+  ],
+  "version": "3.0.23"
+}
