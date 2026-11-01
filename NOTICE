@@ -1,3 +1,5 @@
 Copyright 2026 Celeris Juris Tecnologia e Inteligência Jurídica LTDA.
 
 The code and skills in the plugins distributed from this repository are licensed under Apache License 2.0; see LICENSE. This NOTICE does not add conditions to or narrow rights granted by that license. Product logos, icons, trademarks and other brand assets; IAJUS servers and APIs; datasets and legal corpus; models; infrastructure; and remotely supplied content are outside this repository's package license and remain subject to their applicable terms.
+
+The license above covers only the files in the packages of this repository. The IAJUS MCP server, its APIs, and the sources and legal corpus behind it are proprietary to Celeris Juris Tecnologia e Inteligência Jurídica LTDA and are not licensed by these packages. Access follows IAJUS plans, authentication, limits and terms.

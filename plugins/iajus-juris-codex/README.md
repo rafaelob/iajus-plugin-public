@@ -4,6 +4,8 @@
 
 O código e as skills deste pacote são licenciados sob Apache-2.0. Consulte [`LICENSE`](LICENSE) e [`NOTICE`](NOTICE) para o escopo do pacote e os componentes excluídos.
 
+A licença deste pacote cobre apenas os arquivos do próprio pacote. O servidor MCP IAJUS, suas APIs, as fontes e o corpus jurídico por trás dele são proprietários da Celeris Juris Tecnologia e Inteligência Jurídica LTDA e não são licenciados por este pacote. O acesso segue os planos, a autenticação, os limites e os termos IAJUS.
+
 Plugin Codex que entrega as **6 skills** jurídicas IAJUS e conecta ao endpoint
 MCP único `https://mcp.iajus.com.br/mcp` (ferramentas de pesquisa de decisões, precedentes, normas e artigos, leitura de documentos, relações, vocabulário, cobertura e fonte oficial, mais a pesquisa Lex em beta). Ele cobre a mesma família
 funcional do plugin Claude Code `iajus-juris`,

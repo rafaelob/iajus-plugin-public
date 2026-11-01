@@ -19,9 +19,9 @@ Escolha a rota pela intenção, usando-a somente se estiver listada:
 - pesquisar_normas recebe busca com modo: hibrida, semantica, textual, expressao, ontologia, nome_ou_apelido ou numero. Use só os filtros do ramo selecionado. Esfera e visão normativa aparecem apenas nos ramos nome_ou_apelido e numero; não acrescente filtros por analogia.
 - pesquisar_artigos localiza dispositivos legais, não artigos acadêmicos: busca com consulta opcional e filtros norma (norma_id, como LEI_13709_2018), tipo_unidade, ojbu_l1 e visao_normativa. Devolve até 200 resultados, sem cursor. Use o identificador retornado ao ler um dispositivo.
 - ler_documento recebe leitura. Para texto normativo use modo texto_norma (numero e filtros tipo e ano, obrigatórios); para um dispositivo específico use modo dispositivo com id_dispositivo (o node_id retornado por uma busca).
-- consultar_fonte_oficial recebe consulta com operacao localizar, alteracoes ou enumerar. Informe somente fonte, identidade e filtros aceitos pela variante. Serve também para identificar uma norma na fonte oficial antes de lê-la com ler_documento.
+- Fonte oficial (identificar uma norma antes de lê-la com ler_documento, alterações, inventário de um ano): localizar_norma_fonte_oficial, consultar_alteracoes_norma e enumerar_normas_federais, uma ferramenta por operação, descritas na seção «Fonte oficial: uma ferramenta por operação».
 - explorar_relacoes_juridicas consulta o grafo de uma norma federal pelo modo grafo_norma e, pelos modos citantes_dispositivo e dispositivos_citados, quem cita um artigo e o que um documento cita; use identificadores devolvidos pela pesquisa.
-- consultar_vocabulario_juridico, modo tipo_documental, indica a família e sugestões de ramo de um tipo normativo (como LEI) pelo tipo, número e ano.
+- consultar_tipo_documental indica a família e sugestões de ramo de um tipo normativo (como LEI) pelo tipo, número e ano (numero e ano opcionais; ano exige numero).
 
 Exemplos:
 
@@ -29,7 +29,12 @@ Exemplos:
 {"busca": {"modo": "numero", "numero": "8112", "filtros": {"tipo": "LEI", "ano": 1990, "esfera": "federal"}}}
 {"leitura": {"modo": "texto_norma", "numero": "8112", "filtros": {"tipo": "LEI", "ano": 1990, "artigo": "117"}}}
 {"leitura": {"modo": "dispositivo", "id_dispositivo": "<node_id devolvido pela pesquisa>"}}
-{"consulta": {"operacao": "localizar", "consulta": "licitações e contratos administrativos", "filtros": {"esfera": "federal", "tipo": "LEI"}}}
+```
+
+Fonte oficial, por tema, com localizar_norma_fonte_oficial e campos planos:
+
+```json
+{"consulta": "licitações e contratos administrativos", "tipo": "LEI"}
 ```
 
 Na leitura federal, formato texto (o padrão) recorta artigo, artigo_fim e anexo; formato markdown pagina por offset, prosseguindo com next_offset. Estado e município exigem prova temporal do executor, e não há leitura histórica por data. Observe direitos, versão e limites devolvidos.
@@ -44,7 +49,7 @@ Uma resolução por nome, número ou tema direciona a leitura. Consultas adicion
 
 ## Fonte oficial: uma ferramenta por operação
 
-Quando listadas, estas ferramentas fazem uma operação de consultar_fonte_oficial com campos planos, sem o objeto consulta; o retorno e os limites são os mesmos. Se só a agregada estiver listada, use-a. Escolha pela intenção:
+Cada operação da fonte oficial é uma ferramenta própria, com campos planos. Escolha pela intenção:
 
 - localizar_norma_fonte_oficial: descobrir ou identificar uma norma antes de lê-la. Por tema, com consulta (só federal; tipo, ano e limite de 1 a 50, padrão 20, são opcionais), ou pela identidade exata, com numero e tipo. esfera omitida é federal; a estadual exige uf, numero, tipo e ano; a municipal exige municipio, numero, tipo e ano e não aceita uf (para «Belo Horizonte, MG», envie só municipio «Belo Horizonte»). consulta e numero não se combinam, e limite só vale na busca temática. Não lê o texto: use ler_documento com a identidade devolvida.
 - consultar_alteracoes_norma: numero, tipo e ano de uma norma federal já identificada; devolve as alterações registradas. Não dá a redação vigente em data histórica.

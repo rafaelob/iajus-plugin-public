@@ -4,10 +4,13 @@
 
 O código e as skills deste pacote são licenciados sob Apache-2.0. Consulte [`LICENSE`](LICENSE) e [`NOTICE`](NOTICE) para o escopo do pacote e os componentes excluídos.
 
-> O MCP IAJUS expõe um catálogo enxuto: onze ferramentas de corpus (decisões,
+A licença deste pacote cobre apenas os arquivos do próprio pacote. O servidor MCP IAJUS, suas APIs, as fontes e o corpus jurídico por trás dele são proprietários da Celeris Juris Tecnologia e Inteligência Jurídica LTDA e não são licenciados por este pacote. O acesso segue os planos, a autenticação, os limites e os termos IAJUS.
+
+> O MCP IAJUS expõe um catálogo enxuto: dezessete ferramentas de corpus (decisões,
 > precedentes, normas, artigos, leitura, relações, vocabulário, cobertura e fonte oficial),
-> as pesquisas Lex (beta) e o painel opcional. Cada ferramenta recebe um único objeto
-> (`busca`, `leitura`, `relacao` ou `consulta`) com `modo`, e os schemas são fechados.
+> seis da pesquisa Lex (beta) e duas do painel opcional, 25 no total. Use os argumentos
+> do schema anunciado por cada ferramenta: algumas recebem objetos como `busca` ou
+> `leitura`; outras recebem campos diretos. Não acrescente `modo` quando não for previsto.
 > Autenticação por **OAuth 2.1** (login no navegador, refresh automático). Ver [histórico de alterações](https://github.com/rafaelob/iajus-plugin-public/blob/main/plugins/iajus-juris/CHANGELOG.md).
 
 Com este plugin, você ganha **skills** que ensinam o agente a pesquisar/citar
@@ -25,9 +28,9 @@ municipal**.
 | Componente | Conteúdo |
 |---|---|
 | `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos, súmulas, temas e informativos com `pesquisar_decisoes` (híbrida, semântica, textual, expressão, ontologia e CNJ), `pesquisar_precedentes`, `pesquisar_informativos` e `ler_documento` (todas as famílias: superiores, TJs, TRFs, TRTs, TREs, Tribunais de Contas, Turmas Recursais, administrativo CARF) |
-| `skills/consultar-legislacao/` | como localizar leis e dispositivos **federais** por nome, número ou tema com `pesquisar_normas` e `pesquisar_artigos`, ler o texto com `ler_documento` e conferir alterações e grafo com `consultar_fonte_oficial` e `explorar_relacoes_juridicas` |
+| `skills/consultar-legislacao/` | como localizar leis e dispositivos **federais** por nome, número ou tema com `pesquisar_normas` e `pesquisar_artigos`, ler o texto com `ler_documento` e identificar e conferir alterações na fonte oficial com `localizar_norma_fonte_oficial`, `consultar_alteracoes_norma` e `enumerar_normas_federais`, e o grafo com `explorar_relacoes_juridicas` |
 | `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** e localizar a fonte oficial quando disponível (UF [+ município] + tipo + número + ano) |
-| `skills/corpus-status/` | o que a base declara AGORA (`consultar_acervo`): por família, tribunal, precedentes e legislação, com `as_of`, limites e estado da medição |
+| `skills/corpus-status/` | o que a base declara AGORA (`consultar_cobertura_acervo` e `consultar_cobertura_legislacao`): por família, tribunal, precedentes e legislação, com `as_of`, limites e estado da medição |
 | `skills/verificar-citacoes/` | confere as citações de um texto (petição, parecer, memorial) contra a fonte oficial: existência, fidelidade e **vigência**, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA) - o antídoto da alucinação de citação |
 | `skills/pesquisa-juridica-lex/` | a pesquisa Lex (**beta**): `pesquisa_juridica_lex` e `pesquisa_profunda_lex`, com `consultar_tarefa_lex` e `cancelar_tarefa_lex` para acompanhar a profunda, e os limites por conta |
 | `agents/` (8 subagentes) | `pesquisador-juris`, `elaborador-tese`, `refutador-tese`, `precedentes-vinculantes`, `processo-juris`, `legislacao-juris`, `memorialista-juris`, `conferente-citacoes`. No Claude Code, cada um se chama `iajus-juris:<nome>`. Claude Code e Cowork carregam `agents/*.md`; o chat do claude.ai usa as skills diretamente ([documentação da Anthropic](https://support.claude.com/en/articles/13837440-use-plugins-in-claude), consultada em 2026-10-14). Os especialistas têm somente `Skill` e `Read`: analisam fontes e solicitam consultas à conversa principal, que usa o MCP conectado. Nenhum agente depende do nome que o host dá ao servidor, recebe Bash ou escreve em disco |
@@ -61,14 +64,21 @@ Leia o [fluxo de pesquisa com especialistas](skills/pesquisar-jurisprudencia/ref
 | `pesquisar_artigos` | artigos e outros dispositivos legais, por texto, norma, tipo de unidade ou ramo |
 | `ler_documento` | lê uma norma por tipo, número e ano (`texto_norma`), um dispositivo pelo identificador (`dispositivo`) ou o texto de uma decisão pelo `unit_id` (`texto_acordao`) |
 | `explorar_relacoes_juridicas` | citações, quem cita uma norma ou artigo, dispositivos citados por um documento e grafo de alterações de uma norma federal |
-| `consultar_vocabulario_juridico` | ontologia OJBU e códigos TPU, protocolo de classificação, tipos documentais e órgãos julgadores de um tribunal |
-| `consultar_acervo` | cobertura e atualização declaradas do acervo, e mapa cadastrado de fontes de legislação por esfera e UF |
-| `consultar_fonte_oficial` | localização, alterações e enumeração de legislação na fonte oficial (Senado, Planalto e portais) |
+| `consultar_ontologia_ojbu` | ontologia OJBU: ramos, temas transversais e códigos TPU |
+| `consultar_regras_classificacao` | protocolo da classificação OJBU: desempate, temas, schema e exemplos |
+| `consultar_tipo_documental` | família e sugestões de ramo de um tipo documental, como LEI, SUM ou PEC |
+| `consultar_orgaos_julgadores` | turmas, câmaras e seções de um tribunal, para o filtro `orgao_julgador` |
+| `consultar_cobertura_acervo` | cobertura e atualização declaradas do acervo, por seção e família |
+| `consultar_cobertura_legislacao` | mapa cadastrado de fontes de legislação por esfera e UF |
+| `localizar_norma_fonte_oficial` | localiza uma norma na fonte oficial (Senado, Planalto e portais), por tema federal ou pela identidade exata |
+| `consultar_alteracoes_norma` | alterações registradas de uma norma federal |
+| `enumerar_normas_federais` | normas federais de um tipo e ano, como a fonte as devolve |
 | `pesquisa_juridica_lex`, `pesquisa_profunda_lex` | pesquisa Lex (**beta**), comum e profunda; a profunda devolve um `consulta_id` acompanhado por `consultar_tarefa_lex` e interrompido por `cancelar_tarefa_lex` |
+| `listar_conversas_lex`, `consultar_conversa_lex` | histórico das conversas Lex da conta IAJUS, para retomar uma conversa |
 | `abrir_painel_iajus` | painel opcional; não inicia pesquisa |
-| `apresentar_sintese` | apresenta uma síntese já concluída quando o host oferece o painel; não pesquisa nem valida citações |
+| `apresentar_sintese` | apresenta uma síntese já concluída quando o host oferece o painel; exige autorização explícita do usuário para enviar o texto; não pesquisa nem valida citações |
 
-> Cobertura e contagens vêm de `consultar_acervo` (skill `corpus-status`) e valem
+> Cobertura e contagens vêm de `consultar_cobertura_acervo` (skill `corpus-status`) e valem
 > pelo `as_of` que o retorno traz; um zero de busca não prova completude do acervo.
 
 Cada resposta traz identificadores, fonte, link, datas e estado de vigência quando a

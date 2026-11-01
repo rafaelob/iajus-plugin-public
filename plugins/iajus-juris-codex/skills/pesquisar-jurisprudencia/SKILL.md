@@ -1,12 +1,12 @@
 ---
 name: pesquisar-jurisprudencia
 description: Pesquisa decisões, precedentes qualificados, informativos e relações jurídicas brasileiras no IAJUS. Use para acórdãos, número CNJ, súmulas, temas e teses de tribunais. Não use para pesquisar legislação.
-allowed-tools: mcp__iajus__pesquisar_decisoes, mcp__iajus__pesquisar_precedentes, mcp__iajus__pesquisar_informativos, mcp__iajus__ver_historico_juridico, mcp__iajus__ler_documento, mcp__iajus__explorar_relacoes_juridicas, mcp__iajus__consultar_vocabulario_juridico, mcp__iajus__consultar_acervo, mcp__iajus__abrir_painel_iajus, mcp__iajus__apresentar_sintese
+allowed-tools: mcp__iajus__pesquisar_decisoes, mcp__iajus__pesquisar_precedentes, mcp__iajus__pesquisar_informativos, mcp__iajus__ver_historico_juridico, mcp__iajus__ler_documento, mcp__iajus__explorar_relacoes_juridicas, mcp__iajus__consultar_ontologia_ojbu, mcp__iajus__consultar_regras_classificacao, mcp__iajus__consultar_tipo_documental, mcp__iajus__consultar_orgaos_julgadores, mcp__iajus__consultar_alteracoes_norma, mcp__iajus__consultar_cobertura_acervo, mcp__iajus__abrir_painel_iajus, mcp__iajus__apresentar_sintese
 ---
 
 # Pesquisar jurisprudência brasileira
 
-No Codex, se as ferramentas IAJUS não estiverem listadas ou toda chamada voltar 401 ou não autorizado, peça ao usuário que rode `codex mcp login iajus` e reinicie a sessão; enquanto isso, não responda de memória.
+Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar o IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
 
 Use somente os nomes e schemas que a conexão realmente exibe. Os schemas são fechados: envie apenas os campos aceitos pelo ramo escolhido. Se uma rota não estiver listada, informe a indisponibilidade; não presuma outro nome.
 
@@ -109,15 +109,26 @@ Dados de um julgamento (relator, redator, vencidos, votos, placar, resultado, te
 
 Em pergunta sobre direitos, deveres ou regime jurídico de uma categoria, busque antes a norma canônica pelo número (skill consultar-legislacao, que traz o mapa por assunto) e só depois a jurisprudência sobre ela.
 
+## Vocabulário jurídico por operação
+
+Cada uma destas ferramentas faz uma operação de vocabulário, com campos planos. Servem para descobrir o valor certo de um filtro antes de pesquisar_decisoes. Não pesquisam nem abrem decisões, não classificam texto novo e não mostram rótulos atribuídos a um documento.
+
+- consultar_ontologia_ojbu (formato markdown ou json; ramo opcional): resolve sigla de ramo, tema transversal ou código TPU para ojbu_l1, ojbu_l2, ojbu_l3 ou tema_transversal da modalidade ontologia (references/ontologia-ojbu.md). Sem ramo devolve a ontologia inteira; quando já se sabe a área, informe ramo.
+- consultar_regras_classificacao (secao opcional: protocolo, desempate, temas, schema ou exemplos): explica como a classificação OJBU decide, para conferir ou justificar um rótulo; sem secao devolve todas.
+- consultar_tipo_documental (tipo; numero e ano opcionais, e ano exige numero): dá a família e sugestões de ramo de um tipo como LEI, SUM ou PEC. Tipo desconhecido volta com nota e família presumida: é presunção, não confirmação.
+- consultar_orgaos_julgadores (tribunal; trecho_nome e limite opcionais): lista turmas, câmaras e seções, das mais às menos frequentes, para preencher orgao_julgador em pesquisar_decisoes. O padrão é 50 e o máximo 200; use trecho_nome para estreitar.
+
+Leia notas, recusas e limites do retorno. Entrada recusada (entrada_invalida) tem sempre a mensagem «Confira os campos e os limites da consulta.» e não nomeia o campo: reconfira os campos obrigatórios e as faixas no schema listado, como ano sem numero, e repita; não corrija por palpite. Resultado vazio diz só que o vocabulário não tem aquela chave neste recorte: confira a grafia, a sigla ou o tribunal e não invente código nem órgão; não conclua que o assunto, o tipo ou o órgão não existe no corpus. A lista de órgãos até o limite não é o rol completo do tribunal.
+
 ## Outras intenções
 
 - Pesquisar tese qualificada: pesquisar_precedentes, por numero (do ato ou tema) ou consulta (matéria ou ramo, como trabalhista; não é texto livre), com filtros de tipo (súmula, SV, tema, IAC, IRDR, OJ, precedente normativo), tribunal, apenas_vinculantes e tipo_familia. Exemplo: `{"busca": {"numero": "7", "filtros": {"tribunal": "STJ", "tipo": "sumula"}}}`. Para texto livre, pesquise decisões. O limite é 10 e não há cursor. Canceladas ficam incluídas e marcadas por padrão (incluir_canceladas); a vinculatividade depende do registro.
 - Pesquisar conteúdo editorial: pesquisar_informativos exige busca.tribunal (STF ou STJ) e aceita consulta e filtros de ramo, ano ou numero_informativo. O padrão é 20 notas, com limite de 1 a 50. Para continuar, repita o recorte e a quantidade com page_info.next_cursor em busca.cursor; pare na quantidade pedida. A janela recuperada cobre até três páginas, limitada a 50 notas, e seu fim não prova fim do acervo. Informativo não substitui o acórdão nem prova vinculatividade.
-- Ver versões de uma tese: ver_historico_juridico exige busca.id_documento (o entity_id devolvido por uma pesquisa de precedentes). Alterações de normas ficam em consultar_fonte_oficial.
+- Ver versões de uma tese: ver_historico_juridico exige busca.id_documento (o entity_id devolvido por uma pesquisa de precedentes). Alterações de normas ficam em consultar_alteracoes_norma.
 - Explorar citações: explorar_relacoes_juridicas, com relacao.modo citacoes (id_documento ou filtros.referencia_normalizada; filtros de sentido, tipo de relação e profundidade de 1 a 3), citantes_dispositivo (quem cita uma norma ou artigo) ou dispositivos_citados (o que um documento cita), sempre com identificadores devolvidos pela busca. Não invente IDs nem converta uma relação em decisão de mérito.
-- Órgãos julgadores de um tribunal (turmas, câmaras, seções), para usar no filtro orgao_julgador: consultar_vocabulario_juridico com consulta.modo orgaos_julgadores e filtros.tribunal. Não é uma busca de decisões.
-- Consultar cobertura: use consultar_acervo e indique o as_of retornado. Contagem de cobertura não comprova completude nem serving.
+- Órgãos julgadores de um tribunal (turmas, câmaras, seções), para usar no filtro orgao_julgador: consultar_orgaos_julgadores com tribunal (seção «Vocabulário jurídico por operação»). Não é uma busca de decisões.
+- Consultar cobertura: use consultar_cobertura_acervo e indique o as_of retornado. Contagem de cobertura não comprova completude nem serving.
 - Abrir painel: chame abrir_painel_iajus apenas se a conexão o listar e o usuário pedir o painel ou houver um resultado profundo existente que deva ser aberto. Abrir o painel não inicia pesquisa.
-- Apresentar síntese (opcional): se a conexão expuser apresentar_sintese e o host suportar o painel, envie o texto puro da análise já escrita (até 8.192 bytes UTF-8) e, se útil, até 20 entity_ids de decisões BR retornadas na pesquisa. Use o entity_id real; não use unit_id, consulta_id ou query_id e não peça ao usuário que digite IDs. O corpus valida os metadados e descarta IDs indisponíveis; referências localizadas não confirmam mérito nem citações. A tool não pesquisa, inicia Lex, chama modelo nem lê o histórico do host. Continue a pesquisa e a resposta normalmente por @; o painel só auxilia a apresentação.
+- Apresentar síntese (opcional): a chamada a apresentar_sintese transmite o texto da análise ao serviço remoto IAJUS, mesmo sendo uma operação de apresentação. Use somente se a conexão expuser a ferramenta, o host suportar o painel e o usuário tiver autorizado explicitamente o envio desse texto à IAJUS. Se essa autorização ainda não existir, mostre o texto a enviar, explique o destino e peça autorização antes da chamada. Um pedido de pesquisa, verificação de citações ou abertura do painel não autoriza por si só essa transmissão. Sem autorização, ou se o usuário recusar, não chame apresentar_sintese e entregue a análise normalmente no chat. Quando autorizado, envie somente o texto aprovado (até 8.192 bytes UTF-8) e, se útil, até 20 entity_ids de decisões BR retornadas na pesquisa. Use o entity_id real; não use unit_id, consulta_id ou query_id e não peça ao usuário que digite IDs. O corpus valida os metadados e descarta IDs indisponíveis; referências localizadas não confirmam mérito nem citações. A tool não pesquisa, inicia Lex, chama modelo nem lê o histórico do host. O painel só auxilia a apresentação.
 
 Cite apenas registros, links, trechos e estados que o retorno realmente trouxer. Diferencie zero medido, erro, timeout, indisponibilidade e resultado parcial conforme os campos retornados. Consulte references/campos-e-trust.md para tratar campos de autoridade.

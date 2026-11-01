@@ -19,7 +19,7 @@ Confira cada citação separadamente contra ferramentas e schemas listados nesta
 | Acórdão citado por tese ou ementa | `pesquisar_decisoes` em modo hibrida, semantica ou textual, com os filtros pertinentes. |
 | Trecho que se atribui a uma decisão | `ler_documento` com leitura.modo texto_acordao e o unit_id devolvido pela busca (ver abaixo). |
 | Informativo STF/STJ citado | `pesquisar_informativos` com tribunal, consulta e, se citado, ano ou numero_informativo. |
-| Norma ou dispositivo legal | `pesquisar_normas` por nome/número; `consultar_fonte_oficial` para localização/alterações; `pesquisar_artigos` para localizar um dispositivo; `ler_documento` para ler a norma ou dispositivo identificado. |
+| Norma ou dispositivo legal | `pesquisar_normas` por nome/número; `localizar_norma_fonte_oficial` para localização e `consultar_alteracoes_norma` para alterações federais; `pesquisar_artigos` para localizar um dispositivo; `ler_documento` para ler a norma ou dispositivo identificado. |
 | Relação de citações | `explorar_relacoes_juridicas` somente depois de obter o identificador pelo resultado de busca. |
 
 Confirme identidade e conteúdo pelo registro retornado. Preserve link oficial, órgão, número, data, redação e situação exatamente como aparecem. Declare CONFIRMADA somente quando a fonte sustentar a referência e a afirmação do texto. Declare DESATUALIZADA apenas com evidência de versão ou estado adverso. Use NÃO LOCALIZADA somente após uma busca concluída e medida; use NÃO VERIFICÁVEL quando houver erro, indisponibilidade, limite, retorno parcial ou falta de fonte/conteúdo suficiente.

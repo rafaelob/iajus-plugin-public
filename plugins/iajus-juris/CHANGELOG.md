@@ -5,6 +5,44 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [3.0.24] - 2026-10-30
+
+### Alterado
+
+- A skill `pesquisa-juridica-lex` passa a orientar a retomada da pesquisa Lex comum que fica pendente. A chamada aguarda o resultado por até cerca de 50 segundos. Se o serviço devolver o erro repetível `em_execucao`, a skill manda informar que o resultado está pendente (isso não é falha nem ausência de resultados) e, após cerca de um minuto, repetir `pesquisa_juridica_lex` com a mesma `chave_idempotencia` e os mesmos argumentos, no máximo cinco chamadas por rodada: a inicial e até quatro repetições. Cada repetição preserva a mesma admissão, sem iniciar outra pesquisa nem consumir nova unidade de uso. O teto limita o acompanhamento na conversa e não cancela a pesquisa: ao atingi-lo, a skill manda informar que ela segue em andamento e que o usuário pode pedir a retomada mais tarde, com a mesma chave e os mesmos argumentos.
+- Timeout de transporte ou perda de resposta deixam o resultado desconhecido, não uma falha: a skill manda repetir a chamada idempotente, dentro do mesmo teto de cinco chamadas, e não responder o mérito nem iniciar outra pesquisa enquanto o resultado estiver pendente ou desconhecido. Falha só é informada quando o serviço a confirma como terminal.
+- Nenhuma ferramenta, rota ou schema muda.
+
+## [3.0.23] - 2026-10-28
+
+### Documentação
+
+- O README e o NOTICE do pacote declaram que a licença Apache-2.0 cobre apenas os arquivos do pacote. O servidor MCP IAJUS, suas APIs, as fontes e o corpus jurídico por trás dele são proprietários da Celeris Juris Tecnologia e Inteligência Jurídica LTDA, e o acesso segue os planos, a autenticação, os limites e os termos IAJUS. A licença do pacote não muda.
+
+## [3.0.22] - 2026-10-28
+
+### Documentação
+
+- Este histórico passa a registrar as versões 3.0.20 e 3.0.21.
+
+## [3.0.21] - 2026-10-28
+
+### Documentação
+
+- O README descreve o catálogo servido: dezessete ferramentas de corpus, seis da pesquisa Lex e duas do painel, 25 no total. A tabela de ferramentas passa a listar `listar_conversas_lex` e `consultar_conversa_lex`, que recuperam o histórico das conversas Lex da conta para retomá-las.
+
+## [3.0.20] - 2026-10-26
+
+### Alterado
+
+- `apresentar_sintese` transmite o texto da análise ao serviço remoto IAJUS. A skill `pesquisar-jurisprudencia`, o agente `pesquisador-juris` e o README passam a exigir autorização explícita do usuário para esse envio: sem ela, a análise é entregue só no chat.
+
+## [3.0.19] - 2026-10-14
+
+### Alterado (incompatível)
+
+- O catálogo BR do MCP deixa de servir `consultar_acervo`, `consultar_vocabulario_juridico` e `consultar_fonte_oficial`, que faziam várias operações numa só ferramenta. A cobertura passa a `consultar_cobertura_acervo` (seção, família e limite) e `consultar_cobertura_legislacao` (esfera e UF); vocabulário e fonte oficial ficam nas ferramentas por operação já servidas (`consultar_ontologia_ojbu`, `consultar_regras_classificacao`, `consultar_tipo_documental`, `consultar_orgaos_julgadores`, `localizar_norma_fonte_oficial`, `consultar_alteracoes_norma`, `enumerar_normas_federais`). Skills, agentes e README ensinam só esses nomes e deixam de usar a ferramenta agregada como alternativa. A conexão e a rota não mudam; o MCP de Portugal mantém `consultar_acervo`.
+
 ## [3.0.14] - 2026-10-13
 
 ### Alterado

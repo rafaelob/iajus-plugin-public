@@ -77,7 +77,7 @@ Depois que o plugin estiver listado:
 1. **Cursor:** abra **Customize** na barra lateral, busque **IAJUS** / `iajus-juris`, instale (escopo do projeto ou do usuário) e autorize o OAuth no navegador. O servidor MCP é `https://mcp.iajus.com.br/mcp`.
 2. **Grok Bot:** abra **Plugins** (ou o card **Connect** no chat), busque **IAJUS**, adicione e autorize no navegador. Confirme o plugin em **Installed**.
 
-Este empacotamento usa Apache-2.0 para o código e as skills. Consulte `LICENSE` e `NOTICE` na raiz e nos pacotes para o escopo e as exclusões.
+Este empacotamento usa Apache-2.0 para o código e as skills. Consulte `LICENSE` e `NOTICE` na raiz e nos pacotes para o escopo e as exclusões. A licença cobre apenas os arquivos dos pacotes: o servidor MCP IAJUS, suas APIs, as fontes e o corpus jurídico por trás dele são proprietários da Celeris Juris Tecnologia e Inteligência Jurídica LTDA e não são licenciados por eles. O acesso segue os planos, a autenticação, os limites e os termos IAJUS.
 
 ### Outros assistentes (conexão direta ao servidor MCP)
 
