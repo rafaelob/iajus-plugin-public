@@ -5,6 +5,25 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [3.0.29] - 2026-11-02
+
+### Documentação
+
+- O histórico passa a registrar as alterações de schema, cancelamento e saldo das versões 3.0.26 e 3.0.27. Nenhuma ferramenta, rota, skill ou regra de consumo muda nesta versão.
+
+## [3.0.27] - 2026-11-02
+
+### Corrigido
+
+- A skill `pesquisa-juridica-lex` distingue o pedido de cancelamento da confirmação: só informa que a pesquisa profunda foi cancelada quando o servidor retorna o estado terminal `cancelada`. Depois, consulta o saldo em `limites` quando o servidor o disponibiliza e, se não vier, informa que o saldo não foi informado. A skill não orienta iniciar outra pesquisa para verificar o saldo nem prometer devolução da unidade ou prazo para ela. Uma pesquisa já concluída preserva o resultado e o consumo.
+
+## [3.0.26] - 2026-11-01
+
+### Corrigido
+
+- O README orienta usar os argumentos do schema anunciado por cada ferramenta: algumas recebem objetos como `busca` ou `leitura`, outras recebem campos diretos; `modo` só deve ser enviado quando estiver previsto.
+- A skill `pesquisa-juridica-lex` revisa a orientação de cancelamento de pesquisa profunda para distinguir o pedido do estado terminal. O tratamento do saldo é corrigido novamente na versão 3.0.27.
+
 ## [3.0.24] - 2026-10-30
 
 ### Alterado
