@@ -2,7 +2,7 @@
 
 Pesquise jurisprudência e legislação brasileiras, confira citações e consulte a cobertura do acervo com referências às fontes disponíveis.
 
-Plugin nativo do Google Antigravity, versão 3.0.27. Ele conecta ao servidor MCP remoto IAJUS do Brasil, em https://mcp.iajus.com.br/mcp, e exige uma conta IAJUS. Os resultados trazem a fonte, a data e o link oficial quando disponíveis.
+Plugin nativo do Google Antigravity, versão 3.0.28. Ele conecta ao servidor MCP remoto IAJUS do Brasil, em https://mcp.iajus.com.br/mcp, e exige uma conta IAJUS. Os resultados trazem a fonte, a data e o link oficial quando disponíveis.
 
 ## O que vem no pacote
 
