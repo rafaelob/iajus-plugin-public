@@ -16,7 +16,7 @@ Remova com `agy plugin uninstall iajus-juris`. O pacote não inclui credenciais.
 
 ## Estado da integração
 
-Em 3 de novembro de 2026, o CLI oficial 1.4.10 validou a versão 3.0.26 com `--strict`, instalou o pacote e listou `iajus-juris` num perfil isolado. A autenticação MCP, a pesquisa com a conta IAJUS, a renovação da sessão e a aprovação no marketplace continuam pendentes.
+Em 3 de novembro de 2026, o CLI oficial 1.4.10 validou a versão 3.0.27 com `--strict`, instalou o pacote e listou `iajus-juris` num perfil isolado. A autenticação MCP, a pesquisa com a conta IAJUS, a renovação da sessão e a aprovação no marketplace continuam pendentes.
 
 Use apenas as ferramentas realmente descobertas para sua conta e seus schemas. As skills não ampliam o catálogo, não habilitam extensões que o host não suporta e não garantem cobertura integral do acervo. O saldo e os limites são informados pelo serviço.
 
