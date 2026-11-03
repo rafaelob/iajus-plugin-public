@@ -45,6 +45,10 @@ Busca híbrida ou semântica de normas pode chamar provedores e atualizar caches
 
 Leia redação e estado de vigência somente do resultado/fonte retornado. A ausência de um campo de status ou de histórico não prova vigência nem inexistência de alterações. Se não houver resultado medido, falha ou recorte parcial, diga qual limite ocorreu. Nunca retire um filtro para tentar fazer a chamada passar sem autorização do usuário.
 
+Quando a cobertura for necessária à pergunta, consulte primeiro corpus-status e preserve seus limites. Em seguida, identifique a norma com pesquisar_normas ou localizar_norma_fonte_oficial; se vigência ou histórico forem relevantes para uma norma federal, confira as alterações disponíveis com consultar_alteracoes_norma. Leia a redação pertinente com ler_documento em texto_norma (numero, filtros.tipo e filtros.ano) ou localize o dispositivo com pesquisar_artigos e leia-o em dispositivo (id_dispositivo devolvido). Cite a identidade, a fonte e o trecho efetivamente obtidos. Um resultado de busca ou link isolado não comprova o conteúdo; se faltar leitura ou estado suficiente, diga qual etapa ficou sem prova.
+
+A data de vigência que se quer apurar e a data limite do conhecimento, se pedida, são recortes distintos. Os modos texto_norma e dispositivo de ler_documento não recebem data histórica nem corte de conhecimento. visao_normativa historica ou incluir_historico podem recuperar material histórico, mas não reconstroem por si só a redação vigente numa data escolhida. Para uma pergunta histórica, use fonte retornada que comprove a redação e o período pertinentes; se houver corte de conhecimento, é necessária também evidência de que o registro estava disponível até aquele momento. Sem a prova necessária, declare o limite. Se a data mudar a resposta e não puder ser inferida, pergunte; caso contrário, informe o recorte temporal adotado.
+
 Uma resolução por nome, número ou tema direciona a leitura. Consultas adicionais só para dispositivo faltante, cadeia de alterações ou metadado necessário à afirmação, nunca apenas para reformular. Antes de afirmar vigência de dispositivo, confira as alterações disponíveis e declare eventual limitação do histórico. Não imponha um piso temporal não solicitado.
 
 ## Fonte oficial: uma ferramenta por operação
@@ -76,6 +80,6 @@ Em pergunta de direitos, deveres ou regime, busque primeiro a norma canônica pe
 | Criança e adolescente | ECA, Lei 8.069/1990 |
 | Consumidor | CDC, Lei 8.078/1990 |
 
-Se o ente for ambíguo (União, estado ou município; servidor sem indicação de ente), pergunte antes e não misture leis de outro ente. Só diga «norma ausente» se o lookup canônico foi executado e falhou ou veio vazio com medição concluída; se a ferramenta certa nem foi chamada, chame-a.
+Se o ente for ambíguo (União, estado ou município; servidor sem indicação de ente), pergunte antes e não misture leis de outro ente. Só diga «norma ausente» neste recorte se o lookup canônico foi concluído com zero medido; falha não comprova ausência. Se a ferramenta certa nem foi chamada, chame-a.
 
 Para mudanças por dispositivo, abra references/grafo-alteracoes.md. Para legislação subnacional, use consultar-legislacao-estadual.

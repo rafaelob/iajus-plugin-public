@@ -1,6 +1,6 @@
 # IAJUS para Antigravity
 
-O pacote brasileiro está em [`plugins/iajus-juris-antigravity`](plugins/iajus-juris-antigravity/). Ele contém seis skills e a configuração do servidor MCP remoto IAJUS. A identidade do plugin é `iajus-juris`, versão 3.0.24.
+O pacote brasileiro `iajus-juris` contém seis skills e a configuração do servidor MCP remoto IAJUS. A versão está no [manifesto da pasta de instalação](plugins/iajus-juris-antigravity/plugin.json).
 
 ## Instalar a partir deste repositório
 
@@ -16,7 +16,7 @@ Remova com `agy plugin uninstall iajus-juris`. O pacote não inclui credenciais.
 
 ## Estado da integração
 
-Esta publicação disponibiliza o pacote; não declara aprovação no marketplace. A versão 3.0.24 passou pela validação estrita, instalação, listagem e remoção no CLI oficial 1.4.10, na AWS em 02/11/2026: seis skills, um servidor MCP e inventários vazios antes da instalação e após a remoção. A validação de arquivos não comprova autenticação, pesquisa ou renovação de sessão. O aceite dessas três etapas nativas permanece pendente.
+Em 3 de novembro de 2026, o CLI oficial 1.4.10 validou a versão 3.0.26 com `--strict`, instalou o pacote e listou `iajus-juris` num perfil isolado. A autenticação MCP, a pesquisa com a conta IAJUS, a renovação da sessão e a aprovação no marketplace continuam pendentes.
 
 Use apenas as ferramentas realmente descobertas para sua conta e seus schemas. As skills não ampliam o catálogo, não habilitam extensões que o host não suporta e não garantem cobertura integral do acervo. O saldo e os limites são informados pelo serviço.
 

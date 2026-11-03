@@ -14,6 +14,8 @@ Use somente ferramentas e filtros que a conexão realmente listar. Um mapa cadas
 
 Em pergunta de direitos, deveres ou regime sem indicação do ente, pergunte se é a União, um estado ou um município antes de buscar norma estadual ou municipal; a norma federal canônica está em consultar-legislacao.
 
+Ao comparar normas federais, estaduais e municipais, examine a matéria, o território e a competência pertinente, inclusive as regras gerais e locais aplicáveis. Não presuma prevalência apenas pela esfera nem confunda o regime de um ente com o de outro. Se a competência ou a solução de uma colisão não tiver suporte suficiente, exponha a dúvida.
+
 Não imponha piso temporal para legislação estadual ou municipal. Use ano apenas como identidade ou recorte solicitado; determine vigência pela fonte consultada, nunca pelo ano de publicação.
 
 Rotas, quando listadas:
