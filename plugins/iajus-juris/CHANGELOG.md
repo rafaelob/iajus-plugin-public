@@ -5,6 +5,30 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [3.0.33] - 2026-11-03
+
+### Documentação
+
+- O histórico registra as mudanças nas skills e nos agentes das versões 3.0.30 a 3.0.32.
+
+## [3.0.32] - 2026-11-03
+
+### Corrigido
+
+- A skill de pesquisa Lex pede intenção explícita antes de cancelar uma tarefa e respeita a decisão de confirmação do cliente. Para acompanhar a pesquisa, consulta a tarefa existente.
+
+## [3.0.31] - 2026-11-03
+
+### Corrigido
+
+- O agente de legislação só informa que uma norma não foi localizada quando a busca exata termina sem resultados no recorte indicado. O agente de memoriais considera competência, vigência e aplicabilidade da norma e a força do precedente no caso concreto.
+
+## [3.0.30] - 2026-11-03
+
+### Alterado
+
+- As skills de legislação, jurisprudência e citações orientam como combinar consultas e verificar as fontes, a vigência e a aplicabilidade antes de fundamentar uma resposta.
+
 ## [3.0.29] - 2026-11-02
 
 ### Documentação

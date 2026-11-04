@@ -1,6 +1,6 @@
 {
   "name": "iajus-juris",
-  "version": "3.0.24",
+  "version": "3.0.29",
   "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com busca de decisões por seis modalidades, leitura de normas e decisões e seis skills. A pesquisa Lex é um recurso beta, com limite por conta. Citações apontam para fontes oficiais quando disponíveis. Autenticação OAuth 2.1.",
   "author": {
     "name": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
@@ -16,10 +16,10 @@
   "interface": {
     "displayName": "IAJUS Direito Brasileiro",
     "shortDescription": "Pesquisa jurídica brasileira",
-    "longDescription": "Pesquise jurisprudência e legislação brasileira no MCP remoto IAJUS, com busca de decisões por seis modalidades e leitura de normas e decisões. O plugin inclui seis skills e autenticação OAuth 2.1, com a pesquisa Lex em beta e com limite por conta; links para fontes oficiais são apresentados quando disponíveis.",
+    "longDescription": "Investigue uma questão de direito brasileiro: localize decisões, precedentes qualificados e dispositivos legais e confira cada citação nos registros e trechos disponíveis. Para um artigo de lei em uma data indicada, consulte o texto e as alterações disponíveis e informe quando o histórico não permite confirmar a redação ou a vigência naquela data. Os resultados preservam a proveniência e as fontes oficiais quando disponíveis, distinguindo lacunas, pesquisa parcial e ausência de íntegra. A pesquisa Lex é beta, com limite por conta. Requer uma conta IAJUS e autenticação OAuth 2.1.",
     "developerName": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
-    "category": "Productivity",
-    "capabilities": ["Read"],
+    "category": "Education & Research",
+    "capabilities": ["Case-law research", "Qualified precedents", "Statutory article research", "Citation verification"],
     "websiteURL": "https://iajus.com.br",
     "supportURL": "https://iajus.com.br/contato",
     "privacyPolicyURL": "https://iajus.com.br/privacidade",

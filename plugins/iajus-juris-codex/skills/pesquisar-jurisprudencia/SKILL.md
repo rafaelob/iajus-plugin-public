@@ -35,6 +35,8 @@ Híbrida, semântica, textual e ontológica percorrem uma janela de até três p
 
 Comece pela modalidade adequada à pergunta. Buscas adicionais só para fato faltante, pedido exaustivo ou afirmação ainda sem suporte, não para melhorar o fraseado. Para “entendimento atual”, priorize precedentes qualificados (pesquisar_precedentes); confira o estado retornado antes de usá-los como amparo.
 
+Ranking, similaridade semântica e proximidade na ontologia ajudam a encontrar candidatos; não demonstram a força jurídica, a atualidade ou a pertinência ao caso. Para avaliar um precedente, confira espécie, órgão, tese e situação retornados e seu alcance no caso. O filtro apenas_vinculantes seleciona a vinculatividade registrada, mas não confirma sozinho a situação atual nem a aplicação aos fatos. Distinga fundamento vinculante comprovado de orientação ou informação editorial; não atribua efeito vinculante apenas pelo nome, pelo órgão ou pela posição na busca.
+
 ## Consulta por número de processo
 
 Quando o usuário citar um número, a tabela abaixo diz a ferramenta e como passar cada forma. O CNJ incompleto tem regra própria, depois da tabela e da lista do que a busca não lê.
@@ -108,6 +110,8 @@ Dados de um julgamento (relator, redator, vencidos, votos, placar, resultado, te
 ## Direitos, deveres e regime
 
 Em pergunta sobre direitos, deveres ou regime jurídico de uma categoria, busque antes a norma canônica pelo número (skill consultar-legislacao, que traz o mapa por assunto) e só depois a jurisprudência sobre ela.
+
+Se também for relevante a cobertura de órgãos de jurisprudência, consulte primeiro consultar_cobertura_acervo com secao orgaos e familia jurisprudencia, quando disponível, e preserve as_of e limites. Após verificar a identidade, data e redação da norma, ou registrar o que faltou conforme consultar-legislacao, localize a decisão em pesquisar_decisoes, leia o trecho pertinente com ler_documento em texto_acordao usando o unit_id retornado e associe a citação ao que foi lido. Para conferir uma citação já fornecida, siga verificar-citacoes. Se uma etapa faltar, informe a lacuna e limite a conclusão ao que foi comprovado; cobertura não confirma um documento específico. Data de julgamento filtra decisões, não prova a redação normativa vigente naquela data.
 
 ## Vocabulário jurídico por operação
 
