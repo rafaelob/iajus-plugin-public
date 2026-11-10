@@ -5,6 +5,19 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [3.0.34] - 2026-11-10
+
+### Alterado
+
+- A skill `pesquisa-juridica-lex` passa a dizer como o servidor trata a conversa: reutilizar o `conversa_id` nas perguntas seguintes da mesma conversa, sem pedi-lo nem mostrá-lo ao usuário; omiti-lo só para um assunto novo; a conversa pode ser continuada por 7 dias da criação, sem renovação. A skill também ensina o argumento `evidencias` de `abrir_painel_iajus`, que exige o `consulta_id` e devolve as fontes da pesquisa conferidas no acervo atual. Os limites de uso seguem como o servidor os informa.
+- Os agentes `pesquisador-juris` e `memorialista-juris` orientam continuar ou reler uma conversa Lex anterior (`listar_conversas_lex` e `consultar_conversa_lex`) em vez de repetir uma pesquisa que consome o limite da conta.
+- A skill `pesquisar-jurisprudencia` lista, na tabela de filtros, os filtros do Brasil (`classe_cnj`, `uf_origem`, `assunto_cnj`, `tema_tipo`, `tema_numero`, `is_repercussao_geral`) e os da modalidade ontologia (`tribunal`, `ano_min`, `ano_max`, `relator`, `escopo_rotulo`, `somente_principal`), com o tipo e as modalidades que os aceitam.
+
+### Documentação
+
+- O README traz o aviso de que as respostas são apoio à pesquisa e não aconselhamento jurídico, exemplos de pedidos, solução de problemas (login, limite de uso e zero resultados), a declaração do que o plugin envia e o endereço de suporte do manifesto.
+- Nenhuma ferramenta, rota ou schema muda.
+
 ## [3.0.33] - 2026-11-03
 
 ### Documentação
