@@ -24,12 +24,23 @@ Mantenha todos os filtros escolhidos em uma repetição.
 
 | modo | Uso e filtros próprios |
 |---|---|
-| hibrida | Pergunta em consulta; combina significado e texto. Aceita tribunal, ano_min/ano_max e data_julgamento_min/max (AAAA-MM-DD), relator, orgao_julgador, tipo e tipo_unidade, classe e filtros CNJ, tema, OJBU (ramo_l1) e natureza_foro. |
+| hibrida | Pergunta em consulta; combina significado e texto. Aceita tribunal, ano_min/ano_max e data_julgamento_min/max (AAAA-MM-DD), relator, orgao_julgador, tipo e tipo_unidade, classe, OJBU (ramo_l1) e natureza_foro, mais os filtros do Brasil abaixo. |
 | semantica | Consulta por significado. Aceita tribunal, um único ano, kind, ramo_l1, natureza_foro e discovery_only. Não aceita faixa de anos. |
-| textual | Termos no texto em consulta; filtros de órgão, classe_sigla, anos/datas e frase_exata, mais filtros CNJ/tema. Aceita ordenar_por (relevancia, ano, tamanho) e direcao_ordenacao. |
-| expressao | Regex POSIX em expressao (não em consulta); filtros de órgão, classe_sigla, anos/datas e ignorar_maiusculas. allow_unindexed_scan é opt-in explícito e o padrão é falso. |
-| ontologia | filtros é obrigatório: informe ojbu_l1 (código ou slug) ou tema_transversal. L2/L3 e escopo do rótulo dependem do ramo; tema_transversal não combina com filtros de ramo. Consulte references/ontologia-ojbu.md. |
+| textual | Termos no texto em consulta; filtros de órgão, classe_sigla, anos/datas e frase_exata, mais os filtros do Brasil abaixo. Aceita ordenar_por (relevancia, ano, tamanho) e direcao_ordenacao. |
+| expressao | Regex POSIX em expressao (não em consulta); filtros de órgão, classe_sigla, anos/datas e ignorar_maiusculas, mais os filtros do Brasil abaixo. allow_unindexed_scan é opt-in explícito e o padrão é falso. |
+| ontologia | filtros é obrigatório: informe ojbu_l1 (código ou slug) ou tema_transversal. Aceita também tribunal e ano_min/ano_max (inteiros, ano de julgamento). ojbu_l2 e ojbu_l3 (inteiros) exigem ojbu_l1; relator, escopo_rotulo e somente_principal (booleano, padrão verdadeiro) valem só no recorte por ramo, e tema_transversal não combina com filtros de ramo, escopo, relator nem somente_principal. Consulte references/ontologia-ojbu.md. |
 | cnj | Informe numero completo ou componentes em filtros (sequencial, ano, segmento, tribunal_cnj, origem), não ambos. Aceita ordenar_por (data, ano, recente). |
+
+Filtros do Brasil, em filtros:
+
+| Filtro | Tipo | Modos que aceitam |
+|---|---|---|
+| classe_cnj | inteiro a partir de 1 (código da classe processual CNJ) | hibrida, textual, expressao |
+| uf_origem | texto de duas letras (UF de origem) | hibrida, textual, expressao |
+| assunto_cnj | inteiro a partir de 1 ou lista de inteiros; a lista exige todos os códigos | hibrida |
+| tema_tipo | texto (categoria do tema registrada na decisão) | hibrida, textual, expressao |
+| tema_numero | inteiro a partir de 1 (número do tema registrado na decisão) | hibrida, textual, expressao |
+| is_repercussao_geral | booleano (recorta o reconhecimento de repercussão geral) | hibrida, textual, expressao |
 
 O limite padrão é 20, ajustável de 1 a 100 conforme a quantidade pedida. Para buscar mais, use page_info.next_cursor em busca.cursor e repita consulta, filtros e tamanho; pare na quantidade solicitada ou quando não houver continuação. Não percorra todas as páginas sem necessidade.
 

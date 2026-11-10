@@ -23,6 +23,12 @@ O corpus cobre **milhões de acórdãos** nas famílias: **tribunais superiores*
 **jurisprudência administrativa** (CARF) - mais **legislação federal, estadual e
 municipal**.
 
+> **Apoio à pesquisa, não aconselhamento jurídico.** As respostas geradas com este plugin
+> são apoio à pesquisa e podem conter erros ou lacunas. Elas não substituem a análise de
+> um profissional habilitado: um profissional do direito deve conferir cada fonte
+> (existência, texto, vigência e aplicabilidade) antes de usá-la em petição, parecer ou
+> decisão.
+
 ## O que vem no plugin
 
 | Componente | Conteúdo |
@@ -84,6 +90,37 @@ Leia o [fluxo de pesquisa com especialistas](skills/pesquisar-jurisprudencia/ref
 Cada resposta traz identificadores, fonte, link, datas e estado de vigência quando a
 fonte os informa: cheque a vigência antes de citar como amparo e nunca complete um
 campo ausente de memória.
+
+## Exemplos de pedidos
+
+Depois de instalar e conectar, peça em linguagem natural; o Claude escolhe a skill e a
+ferramenta:
+
+- «Pesquise no STJ, desde 2020, decisões sobre dano moral por vazamento de dados pessoais e
+  mostre tribunal, data, número e link de cada uma.» (`pesquisar_decisoes`)
+- «Localize a Súmula 7 do STJ e informe o estado registrado.» (`pesquisar_precedentes`)
+- «Mostre o texto do art. 927 do Código de Processo Civil (Lei 13.105/2015) e as alterações
+  registradas na fonte oficial.» (`pesquisar_artigos`, `ler_documento`,
+  `consultar_alteracoes_norma`)
+- «Confira as citações deste parecer contra a fonte oficial e dê o veredito de cada uma:
+  [cole o texto].» (skill `verificar-citacoes`)
+- «O que a base IAJUS declara hoje sobre a cobertura do TJSP, e com que data de medição?»
+  (`consultar_cobertura_acervo`)
+- «Faça uma pesquisa Lex comum: o STJ admite dano moral in re ipsa em caso de vazamento de
+  dados pessoais?» (`pesquisa_juridica_lex`, recurso beta que consome o limite da conta)
+
+## Solução de problemas
+
+- **Login ou OAuth (erro 401):** a sessão OAuth está ausente ou expirou. No Claude Code, rode
+  `/mcp`, escolha `iajus` e autentique de novo; no claude.ai e no Cowork, reconecte o conector
+  `iajus` na aba **Connectors** do plugin. Use a mesma conta da aplicação IAJUS.
+- **Limite de uso (`quota_esgotada`):** a pesquisa Lex (beta) tem limite por conta, descrito
+  em "Pesquisa Lex (beta)" abaixo. Não repita a chamada: o retorno traz `limites` com o saldo e a
+  renovação, e as ferramentas de corpus (decisões, precedentes, normas) não consomem esse limite.
+- **Zero resultados:** um zero não prova que a decisão ou a norma não existe. O acervo é vivo e
+  cada busca vê só uma janela. Reformule os termos, tente outra modalidade (por exemplo textual
+  com frase exata, ou CNJ para um número de processo), ajuste o tribunal e o período, consulte a
+  cobertura com `consultar_cobertura_acervo` e confira na fonte oficial do tribunal.
 
 ## Autenticação: OAuth 2.1
 
@@ -258,9 +295,12 @@ Customizations, Installed MCP Servers, Authenticate. O login OAuth abre no naveg
 ## Dados, privacidade e suporte
 
 - **O que o plugin envia:** só as chamadas de ferramenta que o Claude faz ao servidor
-  MCP `https://mcp.iajus.com.br/mcp` (a consulta e os parâmetros de busca), com o seu
-  token OAuth. O plugin não tem hooks, scripts nem servidor local: não executa comandos
-  nem grava arquivos. Os especialistas podem ler referências e arquivos autorizados
+  MCP `https://mcp.iajus.com.br/mcp`, por HTTPS e com o seu token OAuth 2.1 (a consulta e os
+  parâmetros de busca). Sai da sua máquina apenas o que o seu pedido exige: a consulta e os
+  filtros e, na pesquisa Lex, o contexto e as restrições que você informa. O plugin não
+  instrui o Claude a enviar memória nem histórico de conversas, e `apresentar_sintese` só
+  transmite um texto com a sua autorização explícita. O plugin não tem hooks, scripts nem
+  servidor local: não executa comandos nem grava arquivos. Os especialistas podem ler referências e arquivos autorizados
   pela sessão com `Read`; esse acesso segue as permissões do host.
 - **O que o IAJUS guarda no servidor:** nas ferramentas de consulta ao acervo (decisões,
   precedentes, normas, documentos), o texto da consulta pode ser armazenado após um filtro
@@ -277,7 +317,8 @@ Customizations, Installed MCP Servers, Authenticate. O login OAuth abre no naveg
 - **Política de privacidade** (LGPD): <https://iajus.com.br/privacidade>. Descreve
   categorias de dados, finalidades, retenção, subprocessadores e direitos do titular.
 - **Termos de uso:** <https://iajus.com.br/termos>.
-- **Suporte / contato:** <contato@iajus.com.br> (também o canal do DPO).
+- **Suporte / contato:** <https://iajus.com.br/contato> ou <contato@iajus.com.br> (também o
+  canal do DPO).
 - **Editor:** Celeris Juris Tecnologia e Inteligência Jurídica LTDA - CNPJ 68.398.872/0001-93 - <https://iajus.com.br>.
 - **Escopo dos dados:** use o MCP para pesquisa jurídica brasileira no corpus IAJUS
   (jurisprudência e legislação normalizadas). Não inclua dados pessoais, credenciais ou
