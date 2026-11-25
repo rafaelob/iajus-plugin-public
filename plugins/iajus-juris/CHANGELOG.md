@@ -5,6 +5,49 @@ Versões relevantes do plugin público `iajus-juris`. Formato baseado em
 [SemVer](https://semver.org/). O motor de busca e o corpus vivem no MCP remoto
 IAJUS - o plugin é o cliente fino.
 
+## [3.0.44] - 2026-11-24
+
+### Documentação
+
+- README, seção sobre créditos de pesquisa: a seção foi organizada, com a remoção de uma nota interna que não interessava a quem usa o plugin, e a entrada da versão 3.0.43 foi acrescentada a este changelog. Nenhuma ferramenta, rota ou schema muda.
+
+## [3.0.43] - 2026-11-18
+
+### Alterado
+
+- README, seção «Pesquisa Lex»: a nova subseção «Regra comercial e resposta do servidor» distingue créditos de consultas. A pesquisa assistida do Lex Agentis usa 1 crédito e a pesquisa profunda usa 2 créditos, inclusive pelo MCP ou plugin, sem descontar do saldo de consultas das buscas diretas ao acervo, e descreve o benefício de sete dias ilimitados para assinaturas elegíveis com o cupom IAJUSLEX. Ela substitui o parágrafo sobre limites semanais compartilhados e horários de renovação. Depois de uma recusa por limite, o assistente pode oferecer buscas diretas ao acervo, sujeitas ao saldo de consultas e aos direitos do plano, sem apresentá-las como gratuitas ou ilimitadas. Nenhuma ferramenta, rota ou schema muda.
+
+## [3.0.42] - 2026-11-18
+
+### Alterado
+
+- Copy: plano da conta; marca no feminino; limite do Gratuito; liberação do Raio-X, do Bisturi e dos Oráculos. A pesquisa Lex passa a seguir os limites semanais do plano da conta, a marca aparece no feminino («a IAJUS») e o Gratuito declara um limite semanal de consultas e créditos, sem números nem lista de órgãos no plugin (a cobertura e os limites atuais de cada plano ficam na página de planos). Raio-X e Bisturi constam em liberação gradual e os Agentes Oráculos Jurídicos como «em breve». Nenhuma ferramenta, rota ou schema muda.
+
+## [3.0.38] - 2026-11-18
+
+### Alterado
+
+- `pesquisar-jurisprudencia`: a tabela de identificadores passa a nomear o modo de busca servido em vez de um nome de ferramenta que o servidor não expõe. Nenhuma ferramenta, rota ou schema muda.
+
+## [3.0.37] - 2026-11-17
+
+### Alterado
+
+- As skills ganham a seção «Planos e limites»: o acesso segue o plano da conta IAJUS (Gratuito, Essencial, Pro, Max, Equipe e Empresarial, com link para os planos); o Gratuito cobre apenas os tribunais superiores (STF, STJ, TST, TSE e STM) e os TRFs e não inclui o IAJUS Studio nem a pesquisa profunda.
+- `plan_quota_exhausted`: a skill explica que o limite semanal do plano foi atingido, informa a renovação só quando o retorno a traz e não repete a chamada. `plan_court_not_included` ou um `notice` com órgãos excluídos: a skill diz quais órgãos o Gratuito cobre e nunca apresenta a busca como cobertura dos demais.
+- Raio-X, Bisturi e Agentes Oráculos Jurídicos passam a constar como fase experimental, com liberação gradual.
+- Os textos que valem para qualquer assistente deixam de nomear o ChatGPT (limite compartilhado entre os assistentes conectados à conta e histórico Lex).
+
+### Documentação
+
+- O README traz a seção «Planos e limites». Nenhuma ferramenta, rota ou schema muda.
+
+## [3.0.36] - 2026-11-15
+
+### Alterado
+
+- A skill `pesquisa-juridica-lex` lê `limites` na forma que o servidor passa a devolver: o estado de cada janela (`ok` ou `esgotado`) e as datas de renovação, sem números de limite nem de uso. Depois de cada pesquisa ela diz se a pesquisa segue disponível e quando renova; depois de uma recusa por limite, diz quando renova.
+
 ## [3.0.34] - 2026-11-10
 
 ### Alterado
@@ -118,7 +161,7 @@ IAJUS - o plugin é o cliente fino.
 ### Alterado (incompatível)
 
 - Skills e agentes passam a usar o catálogo novo do MCP, servido na mesma URL `https://mcp.iajus.com.br/mcp`: `pesquisar_decisoes`, `pesquisar_precedentes`, `pesquisar_informativos`, `ver_historico_juridico`, `pesquisar_normas`, `pesquisar_artigos`, `ler_documento`, `explorar_relacoes_juridicas`, `consultar_vocabulario_juridico`, `consultar_acervo`, `consultar_fonte_oficial`, `abrir_painel_iajus` e a pesquisa Lex (`pesquisa_juridica_lex`, `pesquisa_profunda_lex`, `consultar_tarefa_lex`, `cancelar_tarefa_lex`). Os nomes antigos deixam de ser ensinados.
-- A pesquisa Lex é beta, com limites por conta compartilhados entre os hosts: pesquisa comum 3 por dia e 10 por semana, profunda 1 por dia e 7 por semana, com o dia virando às 00:00 de São Paulo e a semana na segunda-feira. As skills mostram o saldo e a renovação devolvidos em `limites` e não repetem a chamada depois de uma recusa por limite.
+- A pesquisa Lex é beta, com limites por conta compartilhados entre os hosts: no beta o uso segue condições exclusivas, com o dia virando às 00:00 de São Paulo e a semana na segunda-feira. As skills mostram o saldo e a renovação devolvidos em `limites` e não repetem a chamada depois de uma recusa por limite.
 - A leitura de uma decisão localizada passa por `ler_documento`.
 - Exige a conexão OAuth já servindo o catálogo novo. A distro de linha de comando com chave `ik_` fica na 2.6.29, com o catálogo antigo, enquanto a chave continuar nele.
 

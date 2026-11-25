@@ -1,6 +1,6 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa decisões, precedentes qualificados, informativos e relações jurídicas brasileiras no IAJUS. Use para acórdãos, número CNJ, súmulas, temas e teses de tribunais. Não use para pesquisar legislação.
+description: Pesquisa decisões, precedentes qualificados, informativos e relações jurídicas brasileiras na IAJUS. Use para acórdãos, número CNJ, súmulas, temas e teses de tribunais. Não use para pesquisar legislação.
 ---
 
 # Pesquisar jurisprudência brasileira
@@ -55,7 +55,7 @@ Ranking, similaridade semântica e proximidade na ontologia ajudam a encontrar c
 Quando o usuário citar um número, a tabela abaixo diz a ferramenta e como passar cada forma. O CNJ incompleto tem regra própria, depois da tabela e da lista do que a busca não lê.
 
 <!-- registro_identificadores:inicio -->
-<!-- registro de identificadores, versão 3: gerado por scripts/ops/render_skill_identificadores.py --write; não editar à mão -->
+<!-- registro de identificadores, versão 4: gerado por scripts/ops/render_skill_identificadores.py --write; não editar à mão -->
 
 | Forma citada | Tribunais | Ferramenta | Como passar | Exemplos |
 |---|---|---|---|---|
@@ -63,6 +63,8 @@ Quando o usuário citar um número, a tabela abaixo diz a ferramenta e como pass
 | classe + número de registro (citação de STF, STJ e TSE) | STF, STJ, TSE | `pesquisar_decisoes` com `busca.modo` = `cnj` | `numero` como o advogado cita, com a sigla da classe antes do número. A UF final é opcional. Incidentes vêm na frente (TutPrv, AgInt, AgRgRD, AgRg, EDcl, EDv, AgRE, AgR, EAg, RCDESP, RCD, PetExe, Pet, QO, ED, ProAfR, PExt, PDist, PSusOr, ParExe, ImpExe, RtPaut, IUJur, IAC, EInf, EXC, DESIS, Acordo, OF, Embargos de decl, Emb. de decl, Emb de decl, Embargos, Emb., Emb, seguidos de nos, nas, no, na ou em) ou atrás do número (EDv, AgR, ED, MC, RG, QO, Ref). A rota alcança só STF, STJ e TSE. | «RE 1.003.433», «HC 111.840» |
 | número de registro sem classe | STF, STJ, TSE | `pesquisar_decisoes` com `busca.modo` = `cnj` | `numero` só com os dígitos, com o filtro `filtros.tribunal` obrigatório. Sem ele o mesmo número pode existir no STF, no STJ e no TSE. | «126292», «1.003.433» |
 | Acórdão N/AAAA do TCU | TCU | `pesquisar_decisoes` com `busca.modo` = `hibrida` | Na `consulta`, «Acórdão N/AAAA». A forma nua «N/AAAA» só vale com `filtros.tribunal` = `TCU` e nenhum outro tribunal. | «Acórdão 2622/2015», «Acórdão 1234/2019» |
+| número do PROCESSO do CARF (NUP, NNNNN.NNNNNN/AAAA-DD) | CARF | `pesquisar_decisoes` com `busca.modo` = `cnj` | `numero` só com o número, sem palavras em volta, com ou sem a máscara, e o filtro `filtros.tribunal` = `CARF` obrigatório (sem ele a busca por número não olha o CARF; a máscara é a do processo federal em geral, então o número sozinho não prova que o caso é do CARF). O número completo tem 17 dígitos; com 15 ou menos (sem os dois finais, ano de dois dígitos, parcial) é PARCIAL: tente uma vez e, se voltar vazio, diga exatamente qual número não casou e peça o número completo de 17 dígitos ou busque por texto no CARF; nunca diga que o processo não existe. Só é o processo pedido o hit do CARF cujo `numero_processo` tem os mesmos dígitos; outro processo ou acórdão é «semelhante» e se apresenta como semelhante, nunca como o pedido. Número de acórdão não é número de processo (veja a linha seguinte). Se o usuário insistir depois de um «não encontrado», não repita a chamada: busque de outro modo, por tema ou ano com `filtros.tribunal` = `CARF`. | «10880.123456/2010-11», «10880123456201011» |
+| número do ACÓRDÃO do CARF (NNNN-NNN.NNN) | CARF | `pesquisar_decisoes` com `busca.modo` = `hibrida` | Na `consulta`, o número do acórdão como o usuário o escreveu, com `filtros.tribunal` = `CARF`. Não é número de processo: `busca.modo` = `cnj` o compara com o número do processo e não o acha, e o CARF não tem chave exata para o acórdão. Só é o acórdão pedido o hit cujo `numero_acordao` é exatamente esse número; outro é «semelhante» e se apresenta como semelhante. Sem hit igual, diga que o número do acórdão não foi localizado e peça o número do processo (NUP) ou o tema e o ano. | «9202-009.123», «1201-001.234» |
 
 Formas que a busca não lê como estão:
 
@@ -149,3 +151,10 @@ Leia notas, recusas e limites do retorno. Entrada recusada (entrada_invalida) é
 - Apresentar síntese (opcional): a chamada a apresentar_sintese transmite o texto da análise ao serviço remoto IAJUS, mesmo sendo uma operação de apresentação. Use somente se a conexão expuser a ferramenta, o host suportar o painel e o usuário tiver autorizado explicitamente o envio desse texto à IAJUS. Se essa autorização ainda não existir, mostre o texto a enviar, explique o destino e peça autorização antes da chamada. Um pedido de pesquisa, verificação de citações ou abertura do painel não autoriza por si só essa transmissão. Sem autorização, ou se o usuário recusar, não chame apresentar_sintese e entregue a análise normalmente no chat. Quando autorizado, envie somente o texto aprovado (até 8.192 bytes UTF-8) e, se útil, até 20 entity_ids de decisões BR retornadas na pesquisa. Use o entity_id real; não use unit_id, consulta_id ou query_id e não peça ao usuário que digite IDs. O corpus valida os metadados e descarta IDs indisponíveis; referências localizadas não confirmam mérito nem citações. A tool não pesquisa, inicia Lex, chama modelo nem lê o histórico do host. O painel só auxilia a apresentação.
 
 Cite apenas registros, links, trechos e estados que o retorno realmente trouxer. Diferencie zero medido, erro, timeout, indisponibilidade e resultado parcial conforme os campos retornados. Consulte references/campos-e-trust.md para tratar campos de autoridade.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS: Gratuito, Essencial, Pro, Max, Equipe (3 a 12 pessoas) e Empresarial. Planos e valores: https://iajus.com.br/planos. O Gratuito tem limite semanal de consultas e créditos, e a cobertura e os limites atuais de cada plano estão nessa página; o Gratuito não inclui o IAJUS Studio nem a pesquisa profunda. Raio-X e Bisturi estão em liberação gradual, com disponibilidade em até uma semana, e os Agentes Oráculos Jurídicos chegam em breve: não diga que estão abertos a todos os assinantes nem os simule.
+
+- `error.code` `plan_quota_exhausted`: o limite semanal do plano foi atingido. Explique que o limite é semanal, informe quando renova só se o retorno trouxer a data e ofereça o link dos planos. Não repita a chamada, nem por outra ferramenta ou outra chave.
+- `error.code` `plan_court_not_included`, ou um `notice` que liste órgãos excluídos: o plano da conta não alcança esses órgãos. Diga que a cobertura de cada plano está na página de planos e nomeie os órgãos excluídos que o retorno indicar. A busca não cobriu esses órgãos: nunca apresente o resultado como cobertura deles nem diga «não está no acervo» ou «sem decisões» sobre eles. Para ampliar o alcance, ofereça o link dos planos.

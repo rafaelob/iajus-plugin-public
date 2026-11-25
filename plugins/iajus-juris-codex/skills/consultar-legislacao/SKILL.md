@@ -6,7 +6,7 @@ allowed-tools: mcp__iajus__pesquisar_normas, mcp__iajus__pesquisar_artigos, mcp_
 
 # Consultar legislação brasileira
 
-Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar o IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
+Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar a IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
 
 Use apenas ferramentas e schemas listados nesta conexão. Os schemas são fechados: envie só os campos do ramo escolhido. Se a rota necessária não estiver disponível, informe isso sem presumir outro nome.
 
@@ -81,3 +81,7 @@ Em pergunta de direitos, deveres ou regime, busque primeiro a norma canônica pe
 Se o ente for ambíguo (União, estado ou município; servidor sem indicação de ente), pergunte antes e não misture leis de outro ente. Só diga «norma ausente» neste recorte se o lookup canônico foi concluído com zero medido; falha não comprova ausência. Se a ferramenta certa nem foi chamada, chame-a.
 
 Para mudanças por dispositivo, abra references/grafo-alteracoes.md. Para legislação subnacional, use consultar-legislacao-estadual.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS; planos e valores: https://iajus.com.br/planos. Se uma ferramenta retornar `error.code` `plan_quota_exhausted`, o limite semanal do plano foi atingido: explique que o limite é semanal, informe quando renova só se o retorno trouxer a data, ofereça o link dos planos e não repita a chamada.

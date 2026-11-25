@@ -7,7 +7,7 @@ O código e as skills deste pacote são licenciados sob Apache-2.0. Consulte [`L
 A licença deste pacote cobre apenas os arquivos do próprio pacote. O servidor MCP IAJUS, suas APIs, as fontes e o corpus jurídico por trás dele são proprietários da Celeris Juris Tecnologia e Inteligência Jurídica LTDA e não são licenciados por este pacote. O acesso segue os planos, a autenticação, os limites e os termos IAJUS.
 
 Plugin Codex que entrega as **6 skills** jurídicas IAJUS e conecta ao endpoint
-MCP único `https://mcp.iajus.com.br/mcp` (ferramentas de pesquisa de decisões, precedentes, normas e artigos, leitura de documentos, relações, vocabulário, cobertura e fonte oficial, mais a pesquisa Lex em beta). Ele cobre a mesma família
+MCP único `https://mcp.iajus.com.br/mcp` (ferramentas de pesquisa de decisões, precedentes, normas e artigos, leitura de documentos, relações, vocabulário, cobertura e fonte oficial, mais a pesquisa Lex, conforme o plano da conta). Ele cobre a mesma família
 funcional do plugin Claude Code `iajus-juris`,
 mas mantém instruções próprias para Codex/OpenAI; os pacotes não precisam ser
 byte-idênticos. Ambos usam o mesmo MCP remoto. Autentica por **OAuth 2.1** (login no
@@ -64,7 +64,7 @@ voltar 401, rode o comando de novo e reinicie a sessão.
 
 ### ChatGPT (conector MCP)
 
-O IAJUS conecta-se ao ChatGPT pelo conector MCP remoto no endpoint único
+A IAJUS conecta-se ao ChatGPT pelo conector MCP remoto no endpoint único
 `https://mcp.iajus.com.br/mcp`. Autorize a conexão com OAuth 2.1; as confirmações
 continuam sob controle do cliente e do usuário. O plugin não pré-aprova chamadas.
 
@@ -89,7 +89,7 @@ continuam sob controle do cliente e do usuário. O plugin não pré-aprova chama
 
 O mesmo servidor MCP remoto também conecta no Antigravity 2.0 (IDE e CLI) pelo arquivo
 compartilhado `~/.gemini/config/mcp_config.json` (o Antigravity usa a chave `serverUrl`,
-não `url`, para HTTP remoto). O IAJUS autentica por **OAuth 2.1**: o Authorization Server
+não `url`, para HTTP remoto). A IAJUS autentica por **OAuth 2.1**: o Authorization Server
 em `app.iajus.com.br` suporta DCR, então o login OAuth dispara sozinho e você adiciona o
 servidor **sem token estático**:
 
@@ -103,7 +103,7 @@ vez por superfície). O passo a passo completo está no README do plugin Claude 
 
 ## Privacidade e suporte
 
-- **O que o IAJUS guarda no servidor:** nas ferramentas de consulta ao acervo (decisões,
+- **O que a IAJUS guarda no servidor:** nas ferramentas de consulta ao acervo (decisões,
   precedentes, normas, documentos), o texto da consulta pode ser armazenado após um filtro
   automático de dados pessoais e credenciais. Esse filtro não garante anonimização. Também
   ficam registros de uso (ferramenta, recortes como tribunal e ano, data, hora e resultado). Na busca
@@ -124,8 +124,18 @@ vez por superfície). O passo a passo completo está no README do plugin Claude 
   outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
   server-side.
 
-## Pesquisa Lex (beta)
+## Pesquisa Lex
 
 A skill `pesquisa-juridica-lex` usa a pesquisa comum (`pesquisa_juridica_lex`) ou profunda (`pesquisa_profunda_lex`) apenas quando essas ferramentas estiverem expostas. Conserva contexto, restrições, IDs e a chave de repetição; `consultar_tarefa_lex` e `cancelar_tarefa_lex` acompanham a mesma tarefa profunda. O painel (`abrir_painel_iajus`) é opcional e não inicia pesquisa.
 
-As duas pesquisas são recurso **beta** e têm limite por conta, compartilhado entre ChatGPT, Claude, Codex e Microsoft: pesquisa comum 3 por dia e 10 por semana; pesquisa profunda 1 por dia e 7 por semana (o dia vira às 00:00 de America/Sao_Paulo; a semana, na segunda-feira às 00:00). Os números podem mudar: vale o que o servidor devolve em `limites`, quando o devolve; sem `limites`, a skill não calcula saldo. Depois de uma recusa por limite a skill não repete a chamada: informa o saldo e a renovação, se vieram, e oferece as ferramentas de corpus, que não consomem esse limite.
+As duas pesquisas seguem os limites semanais do plano da conta, compartilhados entre todos os assistentes e clientes conectados à mesma conta (o dia vira às 00:00 de America/Sao_Paulo; a semana, na segunda-feira às 00:00). Os limites podem mudar: vale o que o servidor devolve em `limites` (o estado do dia e da semana e quando renovam, sem números de limite ou de uso), quando o devolve; sem `limites`, a skill não estima a disponibilidade. Depois de uma recusa por limite a skill não repete a chamada: informa quando renova, se veio, e oferece as ferramentas de corpus, que não consomem esse limite.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS: Gratuito, Essencial, Pro, Max, Equipe (3 a 12 pessoas) e Empresarial. Planos e valores: <https://iajus.com.br/planos>.
+
+- **Gratuito:** limite semanal de consultas e créditos (a cobertura e os limites atuais de cada plano estão na página de planos); não inclui o IAJUS Studio nem a pesquisa profunda.
+- **Raio-X e Bisturi:** em liberação gradual, com disponibilidade em até uma semana.
+- **Agentes Oráculos Jurídicos:** em breve.
+- **`plan_quota_exhausted`:** o limite semanal do plano foi atingido. O assistente explica o limite, informa a renovação quando o retorno a traz e indica a página de planos.
+- **`plan_court_not_included`** (ou um `notice` com órgãos excluídos): a busca não cobriu os órgãos fora do plano. O assistente diz quais órgãos o Gratuito cobre e não apresenta o resultado como cobertura dos demais.

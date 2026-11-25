@@ -83,3 +83,7 @@ Em pergunta de direitos, deveres ou regime, busque primeiro a norma canônica pe
 Se o ente for ambíguo (União, estado ou município; servidor sem indicação de ente), pergunte antes e não misture leis de outro ente. Só diga «norma ausente» neste recorte se o lookup canônico foi concluído com zero medido; falha não comprova ausência. Se a ferramenta certa nem foi chamada, chame-a.
 
 Para mudanças por dispositivo, abra references/grafo-alteracoes.md. Para legislação subnacional, use consultar-legislacao-estadual.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS; planos e valores: https://iajus.com.br/planos. Se uma ferramenta retornar `error.code` `plan_quota_exhausted`, o limite semanal do plano foi atingido: explique que o limite é semanal, informe quando renova só se o retorno trouxer a data, ofereça o link dos planos e não repita a chamada.

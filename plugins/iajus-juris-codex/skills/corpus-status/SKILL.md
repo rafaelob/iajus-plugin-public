@@ -6,7 +6,7 @@ allowed-tools: mcp__iajus__consultar_cobertura_acervo, mcp__iajus__consultar_cob
 
 # Estado do acervo IAJUS
 
-Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar o IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
+Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar a IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
 
 Use somente as ferramentas de cobertura listadas nesta conexão. O retorno descreve a medição do leitor; não certifica completude, fonte ao vivo, direito de leitura integral ou serving em produção.
 
@@ -20,3 +20,7 @@ consultar_cobertura_legislacao {"esfera": "estadual", "uf": "SP"}
 Repita o as_of, o estado e os limites retornados. live indica medição na chamada; um timestamp anterior é um retrato daquele instante. Esse as_of descreve a medição, não a vigência de uma norma, a atualização de cada documento ou um corte histórico escolhido pelo usuário; essas entradas não recebem as_of. Não converta ausência de uma métrica, falha, parcialidade ou timeout em zero. Zero medido difere de ausência ou de falha de medição. A saída não atesta que um documento específico está servido. Use consultar_ontologia_ojbu, consultar_tipo_documental ou consultar_orgaos_julgadores apenas para identificar códigos, classificações ou os órgãos julgadores de um tribunal, não para contar cobertura.
 
 Normalmente uma chamada resolve o panorama. Chamadas adicionais só para recortar uma seção ou completar uma métrica efetivamente disponível, não para reformular a mesma pergunta. Não some contagens de recortes que possam se sobrepor.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS; planos e valores: https://iajus.com.br/planos. A cobertura do acervo não é a cobertura do plano: o plano da conta pode cobrir menos órgãos que o acervo, então não apresente a cobertura do acervo como o que a conta do usuário alcança. Se uma ferramenta retornar `error.code` `plan_quota_exhausted`, o limite semanal do plano foi atingido: explique que o limite é semanal, informe quando renova só se o retorno trouxer a data, ofereça o link dos planos e não repita a chamada.

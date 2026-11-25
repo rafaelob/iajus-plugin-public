@@ -36,3 +36,7 @@ Aplique UF, município, tipo, número e ano somente nos ramos que o schema aceit
 consultar_cobertura_legislacao mostra o mapa cadastrado de fontes por esfera e UF (esfera e uf opcionais; federal não aceita uf). Isso não prova que uma consulta pontual funcione, que haja documentos servidos ou que a cobertura seja completa. Só descreva disponibilidade, texto, vigência e link oficial que o resultado de uma chamada real confirmar.
 
 Trate erro, indisponibilidade, timeout, parcialidade e zero medido conforme os indicadores devolvidos. Um mapa de adaptadores ou uma resposta vazia sem evidência de consulta não autoriza afirmar que a UF não é coberta.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS; planos e valores: https://iajus.com.br/planos. Se uma ferramenta retornar `error.code` `plan_quota_exhausted`, o limite semanal do plano foi atingido: explique que o limite é semanal, informe quando renova só se o retorno trouxer a data, ofereça o link dos planos e não repita a chamada.
