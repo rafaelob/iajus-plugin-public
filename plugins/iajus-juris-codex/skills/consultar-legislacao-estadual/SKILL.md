@@ -6,7 +6,7 @@ allowed-tools: mcp__iajus__pesquisar_normas, mcp__iajus__localizar_norma_fonte_o
 
 # Consultar legislação estadual e municipal
 
-Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar o IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
+Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar a IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
 
 Use somente ferramentas e filtros que a conexão realmente listar. Um mapa cadastral não comprova que a fonte responda agora nem quantos documentos estão servidos.
 
@@ -34,3 +34,7 @@ Aplique UF, município, tipo, número e ano somente nos ramos que o schema aceit
 consultar_cobertura_legislacao mostra o mapa cadastrado de fontes por esfera e UF (esfera e uf opcionais; federal não aceita uf). Isso não prova que uma consulta pontual funcione, que haja documentos servidos ou que a cobertura seja completa. Só descreva disponibilidade, texto, vigência e link oficial que o resultado de uma chamada real confirmar.
 
 Trate erro, indisponibilidade, timeout, parcialidade e zero medido conforme os indicadores devolvidos. Um mapa de adaptadores ou uma resposta vazia sem evidência de consulta não autoriza afirmar que a UF não é coberta.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS; planos e valores: https://iajus.com.br/planos. Se uma ferramenta retornar `error.code` `plan_quota_exhausted`, o limite semanal do plano foi atingido: explique que o limite é semanal, informe quando renova só se o retorno trouxer a data, ofereça o link dos planos e não repita a chamada.

@@ -6,7 +6,7 @@ allowed-tools: mcp__iajus__pesquisar_decisoes, mcp__iajus__pesquisar_precedentes
 
 # Verificar citações jurídicas
 
-Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar o IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
+Se a conexão retornar 401 ou pedir autenticação, oriente a reconexão no host: no ChatGPT, reconectar a IAJUS pelas configurações da conexão; no Codex, executar `codex mcp login iajus` e reiniciar a sessão. Não peça tokens ou senhas no chat. Se uma ferramenta continuar ausente após autenticação, informe a indisponibilidade nesta conexão; não invente alias nem responda o mérito jurídico de memória.
 
 Confira cada citação separadamente contra ferramentas e schemas listados nesta conexão. Se a rota necessária não estiver disponível, informe a limitação em vez de presumir outro nome.
 
@@ -49,3 +49,10 @@ Para achar a frase citada num acórdão longo sem paginar tudo, leia dentro da d
 ```
 
 consulta (até 500 caracteres, sem diferença de acento, caixa ou espaço, mas a pontuação conta) devolve trechos e escopo no lugar da página. Em exato, procure o trecho literal mais longo da citação sem marcas de omissão ((...), [...]) nem aspas: com elas o exato dá 0 e o servidor avisa que o inteiro teor não contém a frase, mesmo que a decisão a traga. modo_leitura, só com consulta: exato procura a frase literal e conta todas as ocorrências em total_ocorrencias; relevancia (o padrão) devolve os k trechos mais relevantes e não prova ausência. Também aceitos: secao (só no inteiro teor; valores e escopo dos aliases em pesquisar-jurisprudencia), janela e k, os dois só com consulta; os limites estão em pesquisar-jurisprudencia. CONFIRMADA exige o trecho devolvido. Só o modo exato sobre o inteiro teor completo sustenta que a decisão não traz a frase (total_ocorrencias 0 e o aviso de que o inteiro teor não contém a frase), e antes de concluir ausência a partir de um zero confirme com modo_leitura relevancia: se ele devolver o trecho, a frase consta. Uma busca com secao prova ausência só naquela seção (o aviso diz «na seção X»); para afirmar que a decisão não traz a frase, repita sem secao. Se a leitura parou antes do fim, busca_status veio parcial, veio só a ementa ou o inteiro teor não foi servido, a citação fica NÃO VERIFICÁVEL.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS; planos e valores: https://iajus.com.br/planos. A cobertura de cada plano está nessa página.
+
+- `error.code` `plan_quota_exhausted`: o limite semanal do plano foi atingido. Explique que o limite é semanal, informe quando renova só se o retorno trouxer a data, ofereça o link dos planos e não repita a chamada. As citações ainda não conferidas ficam NÃO VERIFICÁVEL.
+- `error.code` `plan_court_not_included`, ou um `notice` que liste órgãos excluídos: a citação de um órgão fora do plano fica NÃO VERIFICÁVEL, nunca inexistente. Diga que a cobertura de cada plano está na página de planos, nomeie os órgãos excluídos que o retorno indicar e não apresente a conferência como cobertura deles.

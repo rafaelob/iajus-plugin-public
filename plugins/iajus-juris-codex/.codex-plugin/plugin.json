@@ -1,7 +1,7 @@
 {
   "name": "iajus-juris",
-  "version": "3.0.29",
-  "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com busca de decisões por seis modalidades, leitura de normas e decisões e seis skills. A pesquisa Lex é um recurso beta, com limite por conta. Citações apontam para fontes oficiais quando disponíveis. Autenticação OAuth 2.1.",
+  "version": "3.0.37",
+  "description": "Pesquisa jurídica brasileira pelo MCP remoto IAJUS em https://mcp.iajus.com.br/mcp: jurisprudência, precedentes qualificados e legislação federal, estadual e municipal, com busca de decisões por seis modalidades, leitura de normas e decisões e seis skills. Acesso e pesquisa Lex conforme o plano da conta; o Gratuito tem limite semanal de consultas e créditos. Cobertura e limites: página de planos. Citações apontam para fontes oficiais quando disponíveis. Autenticação OAuth 2.1.",
   "author": {
     "name": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
     "email": "contato@iajus.com.br",
@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "IAJUS Direito Brasileiro",
     "shortDescription": "Pesquisa jurídica brasileira",
-    "longDescription": "Investigue uma questão de direito brasileiro: localize decisões, precedentes qualificados e dispositivos legais e confira cada citação nos registros e trechos disponíveis. Para um artigo de lei em uma data indicada, consulte o texto e as alterações disponíveis e informe quando o histórico não permite confirmar a redação ou a vigência naquela data. Os resultados preservam a proveniência e as fontes oficiais quando disponíveis, distinguindo lacunas, pesquisa parcial e ausência de íntegra. A pesquisa Lex é beta, com limite por conta. Requer uma conta IAJUS e autenticação OAuth 2.1.",
+    "longDescription": "Investigue uma questão de direito brasileiro: localize decisões, precedentes qualificados e dispositivos legais e confira cada citação nos registros e trechos disponíveis. Para um artigo de lei em uma data indicada, consulte o texto e as alterações disponíveis e informe quando o histórico não permite confirmar a redação ou a vigência naquela data. Os resultados preservam a proveniência e as fontes oficiais quando disponíveis, distinguindo lacunas, pesquisa parcial e ausência de íntegra. O acesso segue o plano da conta IAJUS (planos em https://iajus.com.br/planos): o Gratuito tem limite semanal de consultas e créditos, e a cobertura e os limites atuais de cada plano estão na página de planos. A pesquisa Lex segue os limites semanais do plano da conta. Requer uma conta IAJUS e autenticação OAuth 2.1.",
     "developerName": "Celeris Juris Tecnologia e Inteligência Jurídica LTDA",
     "category": "Education & Research",
     "capabilities": ["Case-law research", "Qualified precedents", "Statutory article research", "Citation verification"],

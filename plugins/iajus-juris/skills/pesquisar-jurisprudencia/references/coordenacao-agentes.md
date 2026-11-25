@@ -1,7 +1,7 @@
 # Pesquisa com os especialistas jurídicos
 
 Os oito especialistas analisam fontes e formulam a próxima consulta. A conversa principal
-executa as consultas no IAJUS conectado, usando os nomes e schemas que o host realmente
+executa as consultas na IAJUS conectada, usando os nomes e schemas que o host realmente
 oferece. Esse fluxo é o mesmo no Claude Code e no Cowork: não dependa do prefixo do servidor.
 
 ## Na conversa principal

@@ -8,7 +8,7 @@ A licença deste pacote cobre apenas os arquivos do próprio pacote. O servidor 
 
 > O MCP IAJUS expõe um catálogo enxuto: dezessete ferramentas de corpus (decisões,
 > precedentes, normas, artigos, leitura, relações, vocabulário, cobertura e fonte oficial),
-> seis da pesquisa Lex (beta) e duas do painel opcional, 25 no total. Use os argumentos
+> seis da pesquisa Lex e duas do painel opcional, 25 no total. Use os argumentos
 > do schema anunciado por cada ferramenta: algumas recebem objetos como `busca` ou
 > `leitura`; outras recebem campos diretos. Não acrescente `modo` quando não for previsto.
 > Autenticação por **OAuth 2.1** (login no navegador, refresh automático). Ver [histórico de alterações](https://github.com/rafaelob/iajus-plugin-public/blob/main/plugins/iajus-juris/CHANGELOG.md).
@@ -38,7 +38,7 @@ municipal**.
 | `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual e municipal** e localizar a fonte oficial quando disponível (UF [+ município] + tipo + número + ano) |
 | `skills/corpus-status/` | o que a base declara AGORA (`consultar_cobertura_acervo` e `consultar_cobertura_legislacao`): por família, tribunal, precedentes e legislação, com `as_of`, limites e estado da medição |
 | `skills/verificar-citacoes/` | confere as citações de um texto (petição, parecer, memorial) contra a fonte oficial: existência, fidelidade e **vigência**, com veredito por citação (CONFIRMADA / DESATUALIZADA / NÃO LOCALIZADA) - o antídoto da alucinação de citação |
-| `skills/pesquisa-juridica-lex/` | a pesquisa Lex (**beta**): `pesquisa_juridica_lex` e `pesquisa_profunda_lex`, com `consultar_tarefa_lex` e `cancelar_tarefa_lex` para acompanhar a profunda, e os limites por conta |
+| `skills/pesquisa-juridica-lex/` | a pesquisa Lex: `pesquisa_juridica_lex` e `pesquisa_profunda_lex`, com `consultar_tarefa_lex` e `cancelar_tarefa_lex` para acompanhar a profunda, e os limites semanais do plano da conta |
 | `agents/` (8 subagentes) | `pesquisador-juris`, `elaborador-tese`, `refutador-tese`, `precedentes-vinculantes`, `processo-juris`, `legislacao-juris`, `memorialista-juris`, `conferente-citacoes`. No Claude Code, cada um se chama `iajus-juris:<nome>`. Claude Code e Cowork carregam `agents/*.md`; o chat do claude.ai usa as skills diretamente ([documentação da Anthropic](https://support.claude.com/en/articles/13837440-use-plugins-in-claude), consultada em 2026-10-14). Os especialistas têm somente `Skill` e `Read`: analisam fontes e solicitam consultas à conversa principal, que usa o MCP conectado. Nenhum agente depende do nome que o host dá ao servidor, recebe Bash ou escreve em disco |
 | `.mcp.json` | servidor `iajus` (streamable-HTTP) autenticado por **OAuth 2.1** (`oauth.scopes` = `openid email offline_access`) |
 
@@ -52,7 +52,7 @@ Claude Code, após instalar/habilitar, rode `/reload-plugins`.
 continuam valendo. Disponibilize à sessão somente os diretórios pertinentes ao trabalho.
 
 Os especialistas preservam os oito métodos de trabalho. A conversa principal consulta
-o IAJUS, entrega os resultados ao especialista e atende às lacunas de pesquisa necessárias,
+a IAJUS, entrega os resultados ao especialista e atende às lacunas de pesquisa necessárias,
 sem pedir ao usuário que transporte dados entre agentes. A pesquisa simples continua
 direta pelas seis skills. Esse fluxo evita a incompatibilidade entre nomes MCP do Claude
 Code e do Cowork sem liberar ferramentas de outros servidores aos especialistas.
@@ -79,7 +79,7 @@ Leia o [fluxo de pesquisa com especialistas](skills/pesquisar-jurisprudencia/ref
 | `localizar_norma_fonte_oficial` | localiza uma norma na fonte oficial (Senado, Planalto e portais), por tema federal ou pela identidade exata |
 | `consultar_alteracoes_norma` | alterações registradas de uma norma federal |
 | `enumerar_normas_federais` | normas federais de um tipo e ano, como a fonte as devolve |
-| `pesquisa_juridica_lex`, `pesquisa_profunda_lex` | pesquisa Lex (**beta**), comum e profunda; a profunda devolve um `consulta_id` acompanhado por `consultar_tarefa_lex` e interrompido por `cancelar_tarefa_lex` |
+| `pesquisa_juridica_lex`, `pesquisa_profunda_lex` | pesquisa Lex, comum e profunda; a profunda devolve um `consulta_id` acompanhado por `consultar_tarefa_lex` e interrompido por `cancelar_tarefa_lex` |
 | `listar_conversas_lex`, `consultar_conversa_lex` | histórico das conversas Lex da conta IAJUS, para retomar uma conversa |
 | `abrir_painel_iajus` | painel opcional; não inicia pesquisa |
 | `apresentar_sintese` | apresenta uma síntese já concluída quando o host oferece o painel; exige autorização explícita do usuário para enviar o texto; não pesquisa nem valida citações |
@@ -107,16 +107,18 @@ ferramenta:
 - «O que a base IAJUS declara hoje sobre a cobertura do TJSP, e com que data de medição?»
   (`consultar_cobertura_acervo`)
 - «Faça uma pesquisa Lex comum: o STJ admite dano moral in re ipsa em caso de vazamento de
-  dados pessoais?» (`pesquisa_juridica_lex`, recurso beta que consome o limite da conta)
+  dados pessoais?» (`pesquisa_juridica_lex`, que consome o limite do plano da conta)
 
 ## Solução de problemas
 
 - **Login ou OAuth (erro 401):** a sessão OAuth está ausente ou expirou. No Claude Code, rode
   `/mcp`, escolha `iajus` e autentique de novo; no claude.ai e no Cowork, reconecte o conector
   `iajus` na aba **Connectors** do plugin. Use a mesma conta da aplicação IAJUS.
-- **Limite de uso (`quota_esgotada`):** a pesquisa Lex (beta) tem limite por conta, descrito
-  em "Pesquisa Lex (beta)" abaixo. Não repita a chamada: o retorno traz `limites` com o saldo e a
-  renovação, e as ferramentas de corpus (decisões, precedentes, normas) não consomem esse limite.
+- **Limite de uso (`quota_esgotada`):** a pesquisa Lex segue os limites semanais do plano da conta, descritos
+  em "Pesquisa Lex" abaixo. Não repita a chamada: o retorno traz `limites` com o estado de cada
+  janela e a renovação, e as ferramentas de corpus (decisões, precedentes, normas) não consomem esse limite.
+- **Limite do plano (`plan_quota_exhausted`) ou órgão fora do plano (`plan_court_not_included`):**
+  veja "Planos e limites" abaixo.
 - **Zero resultados:** um zero não prova que a decisão ou a norma não existe. O acervo é vivo e
   cada busca vê só uma janela. Reformule os termos, tente outra modalidade (por exemplo textual
   com frase exata, ou CNJ para um número de processo), ajuste o tribunal e o período, consulte a
@@ -231,7 +233,7 @@ de instalação no [guia do plugin Codex](https://github.com/rafaelob/iajus-plug
 
 ### ChatGPT (conector MCP)
 
-O IAJUS conecta-se ao ChatGPT pelo conector MCP remoto no endpoint único
+A IAJUS conecta-se ao ChatGPT pelo conector MCP remoto no endpoint único
 `https://mcp.iajus.com.br/mcp`. Autorize a conexão com OAuth 2.1; as confirmações
 continuam sob controle do cliente e do usuário. O plugin não pré-aprova chamadas.
 
@@ -264,7 +266,7 @@ usuário). Também dá para chegar nele pela UI:
 painel do agente, menu MCP Servers, Manage MCP Servers, View raw config.
 
 Para HTTP remoto o Antigravity usa a chave `serverUrl` (não `url`) dentro de
-`mcpServers`. O IAJUS autentica por **OAuth 2.1**: o Authorization Server em
+`mcpServers`. A IAJUS autentica por **OAuth 2.1**: o Authorization Server em
 `app.iajus.com.br` suporta registro dinâmico de cliente (DCR), então o Antigravity
 descobre e faz o login sozinho quando o servidor precisa de OAuth. Adicione o servidor
 **sem token estático**:
@@ -302,7 +304,7 @@ Customizations, Installed MCP Servers, Authenticate. O login OAuth abre no naveg
   transmite um texto com a sua autorização explícita. O plugin não tem hooks, scripts nem
   servidor local: não executa comandos nem grava arquivos. Os especialistas podem ler referências e arquivos autorizados
   pela sessão com `Read`; esse acesso segue as permissões do host.
-- **O que o IAJUS guarda no servidor:** nas ferramentas de consulta ao acervo (decisões,
+- **O que a IAJUS guarda no servidor:** nas ferramentas de consulta ao acervo (decisões,
   precedentes, normas, documentos), o texto da consulta pode ser armazenado após um filtro
   automático de dados pessoais e credenciais. Esse filtro não garante anonimização. Também
   ficam registros de uso (ferramenta, recortes como tribunal e ano, data, hora e resultado). Na busca
@@ -325,8 +327,22 @@ Customizations, Installed MCP Servers, Authenticate. O login OAuth abre no naveg
   outros dados sensíveis em consultas. O acesso é autenticado por conta OAuth e validado
   server-side.
 
-## Pesquisa Lex (beta)
+## Pesquisa Lex
 
 A skill `pesquisa-juridica-lex` usa a pesquisa comum (`pesquisa_juridica_lex`) ou profunda (`pesquisa_profunda_lex`) apenas quando essas ferramentas estiverem expostas. Conserva contexto, restrições, IDs e a chave de repetição; `consultar_tarefa_lex` e `cancelar_tarefa_lex` acompanham a mesma tarefa profunda. O painel (`abrir_painel_iajus`) é opcional e não inicia pesquisa.
 
-As duas pesquisas são recurso **beta** e têm limite por conta, compartilhado entre ChatGPT, Claude, Codex e Microsoft: pesquisa comum 3 por dia e 10 por semana; pesquisa profunda 1 por dia e 7 por semana. O dia vira às 00:00 de America/Sao_Paulo e a semana, na segunda-feira às 00:00 (America/Sao_Paulo). Os números podem mudar: vale o que o servidor devolve em `limites` (usadas e limite do dia e da semana, e quando renovam), quando o devolve; sem `limites`, a skill não calcula saldo. Depois de uma recusa por limite a skill não repete a chamada: informa o saldo e a renovação, se vieram, e oferece as ferramentas de corpus, que não consomem esse limite.
+### Regra comercial e resposta do servidor
+
+A pesquisa assistida do Lex Agentis usa **1 crédito** e a pesquisa profunda usa **2 créditos**, inclusive pelo MCP ou plugin, como no IAJUS Studio. Esses recursos usam o saldo de créditos, **não** o saldo de consultas das buscas diretas ao acervo. Para assinaturas elegíveis com o cupom **IAJUSLEX**, os primeiros sete dias são ilimitados dentro das funcionalidades do plano; depois, aplicam-se os limites normais, sem débito retroativo do uso isento. O benefício não abrange todos os assinantes nem reinicia a cada renovação.
+
+O assistente deve respeitar a autorização e os limites devolvidos pelo servidor, sem estimar disponibilidade quando não há informação. Depois de uma recusa por limite, não repete a chamada: informa a renovação quando fornecida e pode oferecer buscas diretas ao acervo, sujeitas ao saldo de consultas e aos direitos do plano. Não as apresenta como gratuitas ou ilimitadas. Preserva a mesma chave ao retomar uma operação, sem iniciar nova pesquisa por engano.
+
+## Planos e limites
+
+O acesso segue o plano da conta IAJUS: Gratuito, Essencial, Pro, Max, Equipe (3 a 12 pessoas) e Empresarial. Planos e valores: <https://iajus.com.br/planos>.
+
+- **Gratuito:** limite semanal de consultas e créditos (a cobertura e os limites atuais de cada plano estão na página de planos); não inclui o IAJUS Studio nem a pesquisa profunda.
+- **Raio-X e Bisturi:** em liberação gradual, com disponibilidade em até uma semana.
+- **Agentes Oráculos Jurídicos:** em breve.
+- **`plan_quota_exhausted`:** o limite semanal do plano foi atingido. O assistente explica o limite, informa a renovação quando o retorno a traz e indica a página de planos.
+- **`plan_court_not_included`** (ou um `notice` com órgãos excluídos): a busca não cobriu os órgãos fora do plano. O assistente diz quais órgãos o Gratuito cobre e não apresenta o resultado como cobertura dos demais.
